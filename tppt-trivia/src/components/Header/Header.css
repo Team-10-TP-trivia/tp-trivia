@@ -1,0 +1,24 @@
+#header-container{
+    display: flex;
+    justify-content: space-around;
+    gap: 2vw;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #e55151;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+}
+.header-container-buttons{
+    background-color: bisque;
+    border-radius: 20px;
+    text-decoration: none;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 80px;
+}
+.header-container-buttons p{
+    margin: 0;
+}
