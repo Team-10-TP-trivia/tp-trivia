@@ -11,6 +11,7 @@ import Layout from './hoc/Layout';
 import StudentDetails from './view/Register/Student/StudentDetails';
 import TeacherDetails from './view/Register/Teacher/TeacherDetails';
 import { AppContext } from './context/appContext';
+import Profile from './view/Profile/Profile';
 
 function App() {
   const [context, setContext] = useState({
@@ -42,6 +43,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/student-details" element={<StudentDetails />} />
             <Route path="/teacher-details" element={<TeacherDetails />} />
+            <Route path='/profile' element={<Profile />} />
           </Routes>
         </Layout>          
       </AppContext.Provider>

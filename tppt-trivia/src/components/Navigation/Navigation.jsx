@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { AppContext } from "../../context/appContext";
 import { logoutUser } from "../../services/Authentication/auth-service";
+import './Navigation.css'
 
 /**
  * Component for the navigation bar of the webpage.
@@ -59,6 +60,11 @@ export default function Navigation() {
             <NavLink className="navigation-menu" onClick={logOut} to="/">
               Log Out
             </NavLink>
+
+            <NavLink
+              to="/profile" 
+              id="profile-link">
+                {`${userData?.username}'s Profile`}</NavLink>
           </>
         ) : (
           <>
