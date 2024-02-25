@@ -13,6 +13,7 @@ import TeacherDetails from './view/Register/Teacher/TeacherDetails';
 import { AppContext } from './context/appContext';
 import Profile from './view/Profile/Profile';
 import AdminPanel from './view/Admin/AdminPanel/AdminPanel';
+import CreateTrivia from './components/CreateTrivia/CreateTrivia';
 
 function App() {
   const [context, setContext] = useState({
@@ -42,9 +43,10 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/student-registration" element={<StudentDetails />} />
-            <Route path="/teacher-registration" element={<TeacherDetails />} />
+            <Route path="/student" element={<StudentDetails />} />
+            <Route path="/teacher" element={<TeacherDetails />} />
             <Route path='/profile' element={<Profile />} />
+            <Route path='/create-trivia' element={<CreateTrivia />} />
             <Route path='/admin' element={<AdminPanel />} />
           </Routes>
         </Layout>          
