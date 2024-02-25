@@ -7,6 +7,7 @@ import { getUserByHandle } from "../../../services/UserServices/user-services";
 export default function VerifyTeacher({ userData }) {
     const [schoolValue, setSchoolValue] = useState("");
     const [user, setUser] = useState(userData);
+
     useEffect(() => {
         if(userData && userData.username){
             getUserByHandle(userData.username).then((snapshot) => {
@@ -19,9 +20,10 @@ export default function VerifyTeacher({ userData }) {
     
     const verifyTeacher = async () => {
         if(!schoolValue || schoolValue.length < 5) return alert("Please enter a school name");
-        await sendVerificationToAdmins(userData.username, schoolValue);
+        await sendVerificationToAdmins(userData.username, userData.email, userData.firstName,userData.lastName,schoolValue);
         setSchoolValue("");
-        updateSentRequest(userData.username);
+        await updateSentRequest(userData.username);
+        setUser({...user, pendingVerification: true});
     };
     
     const handleSchoolChange = (event) => {

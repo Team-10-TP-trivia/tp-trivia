@@ -26,7 +26,8 @@ export default function AdminUsers() {
           <div key={index}>
             <div>Username: {user.username}</div>
             <div>Email: {user.email}</div>
-            <div>Role: {user.role}</div><br/>
+            <div>Role: {user.role}</div>
+            <button>Block user</button><br/><br/>
           </div>
         );
       })}

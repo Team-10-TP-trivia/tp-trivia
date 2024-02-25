@@ -28,22 +28,8 @@ export const getAllUsers = async () => {
         throw error;
       }
 }
-// For approval of teacher verification
-// export const verifyTeacherFromAdmin = async (userId, school, certificate) => {
-//     try {
-//         const userRef = ref(db, `users/${userId}`);
-//         await update(userRef, {
-//           verified: true,
-//           school,
-//           certificate,
-//         });
-//       } catch (error) {
-//         console.error("Error verifying teacher:", error);
-//         throw error;
-//       }
-// }
 
-export const sendVerificationToAdmins = async (username, school) => {
+export const sendVerificationToAdmins = async (username, mail, firstName, lastName, school) => {
     const users = await getAllUsers();
     const admins = users.filter((user) => user.role === "admin");
 
@@ -52,13 +38,44 @@ export const sendVerificationToAdmins = async (username, school) => {
             const userRef = ref(db, `users/${admin.username}`);
             const userData = await get(userRef);
             const pendingVerifications = userData.val().pendingVerifications || {};
-            pendingVerifications[username] = { school };
+            pendingVerifications[username] = { username, mail, firstName, lastName, school };
             await update(userRef, {
                 pendingVerifications,
             });
         }
     } catch (error) {
         console.error("Error updating admin accounts:", error);
+        throw error;
+    }
+}
+
+export const approveTeacherVerification = async (adminUsername, teacherUsername) => {
+    try {
+        const adminRef = ref(db, `users/${adminUsername}`);
+        const adminData = await get(adminRef);
+        const pendingVerifications = adminData.val().pendingVerifications || {};
+        delete pendingVerifications[teacherUsername];
+        await update(adminRef, {
+            pendingVerifications,
+        });
+
+        const teacherRef = ref(db, `users/${teacherUsername}`);
+        await update(teacherRef, {
+            verified: true,
+        });
+    } catch (error) {
+        console.error("Error approving teacher verification:", error);
+        throw error;
+    }
+}
+
+export const getAllPendingVerifications = async (adminUsername) => {
+    try {
+        const adminRef = ref(db, `users/${adminUsername}`);
+        const adminData = await get(adminRef);
+        return adminData.val().pendingVerifications || [];
+    } catch (error) {
+        console.error("Error fetching pending verifications:", error);
         throw error;
     }
 }
