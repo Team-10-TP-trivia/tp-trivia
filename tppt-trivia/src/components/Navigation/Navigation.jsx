@@ -20,12 +20,14 @@ export default function Navigation() {
    * Checks if the user is an admin when the component mounts or when userData changes.
    */
   useEffect(() => {
-    if (userData && userData.type === "admin") {
+    if (userData && userData.role === 'admin') {
       setAdmin(true);
+    }else{
+      setAdmin(false);
     }
   }, [userData]);
 
-   /**
+  /**
    * Logs out the user.
    *
    * @async
@@ -35,6 +37,7 @@ export default function Navigation() {
     setContext({ user: null, userData: null });
   };
 
+
   return (
     <div className="navigation-container">
       <nav className="navigation">
@@ -43,17 +46,17 @@ export default function Navigation() {
         </NavLink>
         {user ? (
           <>
-            <NavLink className="navigation-menu" to="/create-post">
+            {/* <NavLink className="navigation-menu" to="/create-post">
               Create Post
             </NavLink>
 
             <NavLink className="navigation-menu" to="/all-posts">
               All Posts
-            </NavLink>
+            </NavLink> */}
 
             {admin && (
-              <NavLink className="navigation-menu" to="/users">
-                Users
+              <NavLink className="navigation-menu" to="/admin">
+                Admin&apos;s panel
               </NavLink>
             )}
 

@@ -12,6 +12,7 @@ import StudentDetails from './view/Register/Student/StudentDetails';
 import TeacherDetails from './view/Register/Teacher/TeacherDetails';
 import { AppContext } from './context/appContext';
 import Profile from './view/Profile/Profile';
+import AdminPanel from './view/Admin/AdminPanel/AdminPanel';
 
 function App() {
   const [context, setContext] = useState({
@@ -31,7 +32,7 @@ function App() {
         })
       }
   }, [user]);
-  
+
   return (
     <BrowserRouter>
       <AppContext.Provider value={{ ...context, setContext }}>
@@ -41,9 +42,10 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/student-details" element={<StudentDetails />} />
-            <Route path="/teacher-details" element={<TeacherDetails />} />
+            <Route path="/student-registration" element={<StudentDetails />} />
+            <Route path="/teacher-registration" element={<TeacherDetails />} />
             <Route path='/profile' element={<Profile />} />
+            <Route path='/admin' element={<AdminPanel />} />
           </Routes>
         </Layout>          
       </AppContext.Provider>
