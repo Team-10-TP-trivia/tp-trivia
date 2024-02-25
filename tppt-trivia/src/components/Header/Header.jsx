@@ -14,8 +14,10 @@ export default function Header() {
             Welcome to the TP-Trivia App!
         </h2>
         <HeaderSlider />
-        <Link to={user ? '/': ''} className='header-container-buttons'><p>➕</p>
-        Create trivia</Link>
+        
+        <Link to={user ? '/create-trivia' : '/login'} className='header-container-buttons'>
+          <p>➕</p>Create trivia</Link>
+
         <Link to={user ? '/': ''} className='header-container-buttons'><p>🎮</p>
         Join room</Link>
     </div>

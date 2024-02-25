@@ -12,6 +12,7 @@ import StudentDetails from './view/Register/Student/StudentDetails';
 import TeacherDetails from './view/Register/Teacher/TeacherDetails';
 import { AppContext } from './context/appContext';
 import Profile from './view/Profile/Profile';
+import CreateTrivia from './components/CreateTrivia/CreateTrivia';
 
 function App() {
   const [context, setContext] = useState({
@@ -41,9 +42,10 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/student-details" element={<StudentDetails />} />
-            <Route path="/teacher-details" element={<TeacherDetails />} />
+            <Route path="/student" element={<StudentDetails />} />
+            <Route path="/teacher" element={<TeacherDetails />} />
             <Route path='/profile' element={<Profile />} />
+            <Route path='/create-trivia' element={<CreateTrivia />} />
           </Routes>
         </Layout>          
       </AppContext.Provider>
