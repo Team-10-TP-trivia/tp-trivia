@@ -1,4 +1,5 @@
 import { 
+    onValue,
     //get,
     //set,
     ref,
@@ -14,3 +15,9 @@ export const updateSentRequest = async (username) => {
     updateTeacherRef[`users/${username}/pendingVerification`] = true;
     return update(ref(db), updateTeacherRef);
 };
+
+export const isTeacherApproveChange = async (teacherUsername) => {
+    onValue(ref(db, `users/${teacherUsername}`), (snapshot) => {
+        return snapshot.val();
+    });
+}
