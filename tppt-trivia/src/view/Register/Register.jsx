@@ -8,7 +8,7 @@ export default function Register() {
 
   const handleRoleSelection = (selectedRole) => {
     setRole(selectedRole);
-    navigate(`/${selectedRole}`, { state: { role: selectedRole } });
+    navigate(`/${selectedRole}-registration`, { state: { role: selectedRole } });
   };
 
   return (

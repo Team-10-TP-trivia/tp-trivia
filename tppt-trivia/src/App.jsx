@@ -12,6 +12,7 @@ import StudentDetails from './view/Register/Student/StudentDetails';
 import TeacherDetails from './view/Register/Teacher/TeacherDetails';
 import { AppContext } from './context/appContext';
 import Profile from './view/Profile/Profile';
+import AdminPanel from './view/Admin/AdminPanel/AdminPanel';
 import CreateTrivia from './components/CreateTrivia/CreateTrivia';
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
         })
       }
   }, [user]);
-  
+
   return (
     <BrowserRouter>
       <AppContext.Provider value={{ ...context, setContext }}>
@@ -46,6 +47,7 @@ function App() {
             <Route path="/teacher" element={<TeacherDetails />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/create-trivia' element={<CreateTrivia />} />
+            <Route path='/admin' element={<AdminPanel />} />
           </Routes>
         </Layout>          
       </AppContext.Provider>

@@ -7,15 +7,20 @@ export const getUserByHandle = (username ) => {
   return get(ref(db, `users/${username}`));
 };
 
-export const createUserHandle = (username, uid, email, phoneNumber, role) => {
+export const createUserHandle = (username,firstName,lastName, uid, email, phoneNumber, role) => {
 
   return set(ref(db, `users/${username}`), { 
-    username, 
+    username,
+    firstName,
+    lastName,
     uid, 
     email, 
     phoneNumber,
     role, 
-    createdOn: new Date().valueOf() 
+    createdOn: new Date().valueOf(),
+    isAdmin: false,
+    verified : false,
+    pendingVerification: false,
   });
 };
 

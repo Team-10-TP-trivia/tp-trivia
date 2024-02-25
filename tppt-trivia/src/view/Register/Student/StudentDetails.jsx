@@ -7,9 +7,10 @@ export default function StudentDetails() {
   const navigate = useNavigate();
   const location = useLocation();
   const {role} = location.state || {}
-//   console.log(`Role on load:`, role)
   const [form, setForm] = useState({
     username: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     phoneNumber: '',
@@ -26,7 +27,7 @@ export default function StudentDetails() {
 
   const register = async () => {
     // console.log('Role on register: ', role)
-    if (!form.email || !form.password || !form.phoneNumber || !form.username) {
+    if (!form.email || !form.firstName || !form.lastName || !form.password || !form.phoneNumber || !form.username) {
         setNoCredentials(true);
         return console.log("Please provide the requested details in order to sign up.");
       }
@@ -38,7 +39,7 @@ export default function StudentDetails() {
         }
         const credentials = await registerUser(form.email, form.password);
         navigate('/');
-        await createUserHandle(form.username, credentials.user.uid, form.email, form.phoneNumber, role);
+        await createUserHandle(form.username,form.firstName, form.lastName, credentials.user.uid, form.email, form.phoneNumber, role);
       } catch (error) {
         setEmailExists(true);
         console.log(error.message);
@@ -51,12 +52,18 @@ export default function StudentDetails() {
       <div className="student-register-form">
         <label htmlFor="username">Username</label>
         <input value={form.username} onChange={updateForm('username')} type="text" name="username" id="username" placeholder="Enter username" />
+
+        <label htmlFor="firstName">First Name</label>
+        <input value={form.firstName} onChange={updateForm('firstName')} type="text" name="firstName" id="firstName" placeholder="First name:" />
+
+        <label htmlFor="lastName">Last Name</label>
+        <input value={form.lastName} onChange={updateForm('lastName')} type="text" name="lastName" id="lastName" placeholder="Last name:" />
         
         <label htmlFor="email">Email</label>
         <input value={form.email} onChange={updateForm('email')} type="text" name="email" id="email" placeholder="Enter email" />
         
         <label htmlFor="phoneNumber">Phone Number</label>
-        <input value={form.phoneNumber} onChange={updateForm('phoneNumber')} type="tel" name="phoneNumber" id="phone-number" placeholder="Enter phone number" />
+        <input value={form.phoneNumber} onChange={updateForm('phoneNumber')} type="tel" name="phoneNumber" id="phoneNumber" placeholder="Enter phone number" />
         
         <label htmlFor="password">Password</label>
         <input value={form.password} onChange={updateForm('password')} type="password" name="password" id="password" placeholder="Enter password" />
