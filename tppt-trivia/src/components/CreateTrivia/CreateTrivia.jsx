@@ -5,8 +5,7 @@ import { saveQuiz } from "../../services/QuizService/SaveQuiz";
 import { AppContext } from "../../context/appContext";
 
 export default function CreateTrivia() {
-  const { user } = useContext(AppContext); // Assuming you have a user context
-
+  const { user } = useContext(AppContext); 
   const [slides, setSlides] = useState([
     {
       id: 1,
@@ -21,7 +20,8 @@ export default function CreateTrivia() {
   ]);
 
   const [activeSlideId, setActiveSlideId] = useState(1);
-  const [quizTitle, setQuizTitle] = useState("");
+  const [visibility, setVisibility] = useState("public"); 
+//   const [quizTitle, setQuizTitle] = useState("");
 
   const addSlide = () => {
     const newId = slides.length + 1;
@@ -103,6 +103,7 @@ export default function CreateTrivia() {
         creator: user.uid, 
         title: "Quiz Title",
         description: "Quiz Description", 
+        visibility,
         questions: slides,
     };
 
@@ -184,7 +185,7 @@ export default function CreateTrivia() {
         </div>
       </div>
 
-      <Sidebar onSave={handleSaveQuiz} quizTitle={quizTitle} setQuizTitle={setQuizTitle} />
+      <Sidebar onSave={handleSaveQuiz} visibility={visibility} setVisibility={setVisibility} />
     </div>
   );
 }
