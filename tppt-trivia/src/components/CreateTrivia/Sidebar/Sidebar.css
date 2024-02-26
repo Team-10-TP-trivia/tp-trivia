@@ -1,0 +1,30 @@
+.sidebar-slidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    min-height: 100vh;
+  }
+  
+  .sidebar-item {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar-item label {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .sidebar-item select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    color: #333;
+  }
+  
