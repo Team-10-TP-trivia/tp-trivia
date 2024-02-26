@@ -16,6 +16,8 @@ import AdminPanel from './view/Admin/AdminPanel/AdminPanel';
 import CreateTrivia from './components/CreateTrivia/CreateTrivia';
 import EditProfile from './view/Profile/EditProfile/EditProfile';
 import JoinRoom from './view/Room/JoinRoom';
+import Groups from './view/Groups/Groups';
+import CreateGroup from './view/Groups/CreateGroup/CreateGroup';
 
 function App() {
   const [context, setContext] = useState({
@@ -52,6 +54,8 @@ function App() {
             <Route path='/admin' element={<AdminPanel />} />
             <Route path='/edit-profile' element={<EditProfile />} />
             <Route path='/join-room' element={<JoinRoom />} />
+            <Route path='/groups' element={<Groups />} />
+            <Route path='/groups/create-group/:userId' element={<CreateGroup />} />
           </Routes>
         </Layout>          
       </AppContext.Provider>

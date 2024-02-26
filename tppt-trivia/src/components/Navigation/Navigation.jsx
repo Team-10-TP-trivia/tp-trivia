@@ -15,6 +15,7 @@ import './Navigation.css'
 export default function Navigation() {
   const { user, userData, setContext } = useContext(AppContext);
   const [admin, setAdmin] = useState(false);
+  const [ teacher, setTeacher ] = useState(false);
 
   /**
    * Checks if the user is an admin when the component mounts or when userData changes.
@@ -24,6 +25,12 @@ export default function Navigation() {
       setAdmin(true);
     }else{
       setAdmin(false);
+    }
+
+    if (userData && userData.role === 'teacher') {
+      setTeacher(true);
+    }else{
+      setTeacher(false);
     }
   }, [userData]);
 
@@ -58,6 +65,12 @@ export default function Navigation() {
               <NavLink className="navigation-menu" to="/admin">
                 Admin&apos;s panel
               </NavLink>
+            )}
+            {teacher && (
+              <NavLink className="navigation-menu" to="/groups">
+                Groups
+              </NavLink>
+            
             )}
 
             <NavLink className="navigation-menu" onClick={logOut} to="/">
