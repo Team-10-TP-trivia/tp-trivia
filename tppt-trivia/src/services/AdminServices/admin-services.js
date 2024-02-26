@@ -38,7 +38,7 @@ export const sendVerificationToAdmins = async (username, mail, firstName, lastNa
             const userRef = ref(db, `users/${admin.username}`);
             const userData = await get(userRef);
             const pendingVerifications = userData.val().pendingVerifications || {};
-            pendingVerifications[username] = { username, mail, firstName, lastName, school };
+            pendingVerifications[username] = { username, mail, firstName, lastName, school, approved: false};
             await update(userRef, {
                 pendingVerifications,
             });
@@ -51,22 +51,38 @@ export const sendVerificationToAdmins = async (username, mail, firstName, lastNa
 
 export const approveTeacherVerification = async (adminUsername, teacherUsername) => {
     try {
-        const adminRef = ref(db, `users/${adminUsername}`);
-        const adminData = await get(adminRef);
-        const pendingVerifications = adminData.val().pendingVerifications || {};
-        delete pendingVerifications[teacherUsername];
+        const adminRef = ref(db, `users/${adminUsername}/pendingVerifications/${teacherUsername}`);
         await update(adminRef, {
-            pendingVerifications,
+            approved : true,
         });
 
         const teacherRef = ref(db, `users/${teacherUsername}`);
         await update(teacherRef, {
             verified: true,
+            pendingVerification: 'approved',
         });
     } catch (error) {
         console.error("Error approving teacher verification:", error);
         throw error;
     }
+}
+
+export const denyTeacherVerification = async (adminUsername, teacherUsername) => {
+    try {
+        const adminRef = ref(db, `users/${adminUsername}/pendingVerifications/${teacherUsername}`);
+        await update(adminRef, {
+            approved : false,
+        });
+
+        const teacherRef = ref(db, `users/${teacherUsername}`);
+        await update(teacherRef, {
+            pendingVerification: 'denied',
+        });
+    } catch (error) {
+        console.error("Error denying teacher verification:", error);
+        throw error;
+    }
+
 }
 
 export const getAllPendingVerifications = async (adminUsername) => {

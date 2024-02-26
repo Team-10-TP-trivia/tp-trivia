@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import Navigation from '../components/Navigation/Navigation';
 import Header from '../components/Header/Header';
+import RequestStatus from '../components/RequestsStatus/RequestStatus';
 
 
 /**
@@ -17,6 +18,7 @@ const Layout = props =>  {
       <Header />
       <Navigation />
       {props.children}
+      <RequestStatus />
     </div>
   )
 }
