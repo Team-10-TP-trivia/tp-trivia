@@ -15,7 +15,7 @@ export default function CreateTrivia() {
       ],
     },
   ]);
-  
+
   const [activeSlideId, setActiveSlideId] = useState(1);
 
   const addSlide = () => {
@@ -149,7 +149,7 @@ export default function CreateTrivia() {
 
         <div className="answers-container">
           {getActiveSlide().answers.map((answer, index) => (
-            <div key={index} className={`answer-option ${answer.color}`}>
+            <div key={index} className={`answer-option`}>
               <input
                 type="text"
                 value={answer.text}
