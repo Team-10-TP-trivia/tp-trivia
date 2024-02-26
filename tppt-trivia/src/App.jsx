@@ -14,6 +14,7 @@ import { AppContext } from './context/appContext';
 import Profile from './view/Profile/Profile';
 import AdminPanel from './view/Admin/AdminPanel/AdminPanel';
 import CreateTrivia from './components/CreateTrivia/CreateTrivia';
+import EditProfile from './view/Profile/EditProfile/EditProfile';
 
 function App() {
   const [context, setContext] = useState({
@@ -48,6 +49,7 @@ function App() {
             <Route path='/profile' element={<Profile />} />
             <Route path='/create-trivia' element={<CreateTrivia />} />
             <Route path='/admin' element={<AdminPanel />} />
+            <Route path='/edit-profile' element={<EditProfile />} />
           </Routes>
         </Layout>          
       </AppContext.Provider>
