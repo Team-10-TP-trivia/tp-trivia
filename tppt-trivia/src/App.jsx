@@ -15,6 +15,7 @@ import Profile from './view/Profile/Profile';
 import AdminPanel from './view/Admin/AdminPanel/AdminPanel';
 import CreateTrivia from './components/CreateTrivia/CreateTrivia';
 import EditProfile from './view/Profile/EditProfile/EditProfile';
+import JoinRoom from './view/Room/JoinRoom';
 
 function App() {
   const [context, setContext] = useState({
@@ -50,6 +51,7 @@ function App() {
             <Route path='/create-trivia' element={<CreateTrivia />} />
             <Route path='/admin' element={<AdminPanel />} />
             <Route path='/edit-profile' element={<EditProfile />} />
+            <Route path='/join-room' element={<JoinRoom />} />
           </Routes>
         </Layout>          
       </AppContext.Provider>

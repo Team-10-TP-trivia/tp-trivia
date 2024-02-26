@@ -17,7 +17,7 @@ export default function Header() {
           {user ? <Link to={user ? '/create-trivia' : '/login'} className='header-container-buttons'>
             <p>➕</p>Create trivia</Link> : ''}
   
-          <Link to={user ? '/': ''} className='header-container-buttons'><p>🎮</p>
+          <Link to={user ? '/join-room': '/login'} className='header-container-buttons'><p>🎮</p>
           Join room</Link>
       </div>
       </>
@@ -33,7 +33,7 @@ export default function Header() {
         {userData.role === 'teacher' || userData.role === 'admin' ? <Link to={user ? '/create-trivia' : '/login'} className='header-container-buttons'>
           <p>➕</p>Create trivia</Link> : ''}
 
-        <Link to={user ? '/': ''} className='header-container-buttons'><p>🎮</p>
+        <Link to={user ? '/join-room': '/login'} className='header-container-buttons'><p>🎮</p>
         Join room</Link>
     </div>
     </>
