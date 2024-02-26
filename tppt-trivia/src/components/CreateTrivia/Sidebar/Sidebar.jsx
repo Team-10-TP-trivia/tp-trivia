@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import './Sidebar.css';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const Sidebar = () => {
+const Sidebar = ({ onSave }) => {
   const [questionType, setQuestionType] = useState('Quiz');
   const [timeLimit, setTimeLimit] = useState('20 seconds');
   const navigate = useNavigate();
 
   const handleExit = () => {
     navigate('/');
-  }
+  };
+
 
   return (
     <div className="sidebar-slidebar">
@@ -44,11 +46,14 @@ const Sidebar = () => {
 
       <div className="sidebar-buttons">
         <button onClick={handleExit}>Exit</button>
-        <button>Save</button>
+        <button onClick={onSave}>Save</button>
       </div>
-     
     </div>
   );
 };
+
+Sidebar.propTypes = {
+    onSave: PropTypes.func.isRequired,
+  };
 
 export default Sidebar;
