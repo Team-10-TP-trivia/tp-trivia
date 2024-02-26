@@ -3,16 +3,13 @@ import "./Sidebar.css";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const Sidebar = ({ onSave, visibility, setVisibility }) => {
+const Sidebar = ({ onSave, visibility, setVisibility, timeLimit, setTimeLimit, title, setTitle, description, setDescription }) => {
   const [questionType, setQuestionType] = useState("Quiz");
-  const [timeLimit, setTimeLimit] = useState("20 seconds");
   const navigate = useNavigate();
 
   const handleExit = () => {
     navigate("/");
   };
-
-
 
   return (
     <div className="sidebar-slidebar">
@@ -45,12 +42,20 @@ const Sidebar = ({ onSave, visibility, setVisibility }) => {
 
       <div className="title-sidebar">
         <label htmlFor="title">Title</label>
-        <input type="text" />
+        <input 
+          type="text" 
+          value={title} 
+          onChange={(e) => setTitle(e.target.value)} 
+        />
       </div>
 
       <div className="description-sidebar">
         <label htmlFor="description">Description</label>
-        <input type="text" />
+        <input 
+          type="text" 
+          value={description} 
+          onChange={(e) => setDescription(e.target.value)} 
+        />
       </div>
 
       <div className="sidebar-item">
@@ -88,9 +93,15 @@ const Sidebar = ({ onSave, visibility, setVisibility }) => {
 };
 
 Sidebar.propTypes = {
-  onSave: PropTypes.func.isRequired,
-  visibility: PropTypes.string.isRequired,
-  setVisibility: PropTypes.func.isRequired,
-};
+    onSave: PropTypes.func.isRequired,
+    visibility: PropTypes.string.isRequired,
+    setVisibility: PropTypes.func.isRequired,
+    timeLimit: PropTypes.string.isRequired,
+    setTimeLimit: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+    setTitle: PropTypes.func.isRequired,
+    description: PropTypes.string.isRequired,
+    setDescription: PropTypes.func.isRequired,
+  };
 
 export default Sidebar;

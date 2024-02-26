@@ -5,7 +5,7 @@ import { saveQuiz } from "../../services/QuizService/SaveQuiz";
 import { AppContext } from "../../context/appContext";
 
 export default function CreateTrivia() {
-  const { user } = useContext(AppContext); 
+  const { userData } = useContext(AppContext); 
   const [slides, setSlides] = useState([
     {
       id: 1,
@@ -21,7 +21,9 @@ export default function CreateTrivia() {
 
   const [activeSlideId, setActiveSlideId] = useState(1);
   const [visibility, setVisibility] = useState("public"); 
-//   const [quizTitle, setQuizTitle] = useState("");
+  const [timeLimit, setTimeLimit] = useState("20 seconds");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   const addSlide = () => {
     const newId = slides.length + 1;
@@ -99,12 +101,16 @@ export default function CreateTrivia() {
   };
 
   const handleSaveQuiz = async () => {
+    console.log(userData);
     const quizData = {
-        creator: user.uid, 
-        title: "Quiz Title",
-        description: "Quiz Description", 
+        creatorId: userData.uid, 
+        username: userData.username,
+        title,
+        description, 
         visibility,
+        timeLimit,
         questions: slides,
+        createdOn: new Date().toLocaleDateString("bg-BG")
     };
 
     try {
@@ -185,7 +191,17 @@ export default function CreateTrivia() {
         </div>
       </div>
 
-      <Sidebar onSave={handleSaveQuiz} visibility={visibility} setVisibility={setVisibility} />
+      <Sidebar 
+        onSave={handleSaveQuiz} 
+        visibility={visibility} 
+        setVisibility={setVisibility} 
+        timeLimit={timeLimit} 
+        setTimeLimit={setTimeLimit} 
+        title={title}
+        setTitle={setTitle}
+        description={description}
+        setDescription={setDescription}
+      />
     </div>
   );
 }
