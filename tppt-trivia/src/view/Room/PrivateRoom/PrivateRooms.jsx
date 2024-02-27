@@ -1,34 +1,33 @@
 import { useEffect, useState } from "react";
-import { takeAllQuizzes } from "../../../services/QuizService/Quizzes";
+import PropTypes from "prop-types";
 
-export default function PrivateRooms() {
-    const [quizzes, setQuizzes] = useState([]);
+export default function PrivateRooms({ quizList }) {
+  const [quizzes, setQuizzes] = useState([]);
 
-    useEffect(() => {
-        takeAllQuizzes()
-            .then(snapshot => {
-                if (snapshot.exists()) {
-                    const snapshotArray = Object.values(snapshot.val());
-                    setQuizzes(snapshotArray);
-                }
-            })
-    }, []);
-    
-    return (
-        <div>
-            <h1>Private Rooms</h1>
-            {quizzes ? quizzes
-                .filter((quiz) => quiz.visibility === 'private')
-                .map((quiz) => {
-                    return (
-                        <div key={quiz.id}>
-                            <p>Quiz Title: {quiz.title}</p>
-                            <p>Quiz description: {quiz.description}</p>
-                            <button>Join Quiz</button>
-                        </div>
-                    )
-                })
-                : <p>No quizzes available</p>}
-        </div>
-    )
+  useEffect(() => {
+    setQuizzes(quizList.filter((quiz) => quiz.visibility === "private"));
+  }, [quizList]);
+
+  return (
+    <div>
+      <h1>Private Rooms</h1>
+      {quizzes ? (
+        quizzes.map((quiz) => {
+          return (
+            <div key={quiz.id}>
+              <p>Quiz Title: {quiz.title}</p>
+              <p>Quiz description: {quiz.description}</p>
+              <button>Join Quiz</button>
+            </div>
+          );
+        })
+      ) : (
+        <p>No quizzes available</p>
+      )}
+    </div>
+  );
 }
+
+PrivateRooms.propTypes = {
+  quizList: PropTypes.array,
+};
