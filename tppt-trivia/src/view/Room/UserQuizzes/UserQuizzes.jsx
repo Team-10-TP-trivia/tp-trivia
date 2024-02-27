@@ -1,14 +1,20 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../../context/appContext";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 export default function UserQuizzes({ quizList }) {
   const { userData } = useContext(AppContext);
   const [userQuizzes, setUserQuizzes] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     if (!userData || !userData.uid) return;
     setUserQuizzes(quizList.filter((quiz) => quiz.creatorId === userData.uid));
   }, [userData, quizList]);
+
+  const editQuiz = (quizId) => {
+    navigate(`/edit-quiz/${quizId}`);
+  }
 
   return (
     <div>
@@ -20,7 +26,7 @@ export default function UserQuizzes({ quizList }) {
               <h2>Quiz Name: {quiz.description}</h2>
               <p>Quiz Description: {quiz.description}</p>
               <p>Quiz creator: {quiz.username}</p>
-              <button>Edit quiz</button>
+              <button onClick={() => {editQuiz(quiz.id)}}>Edit quiz</button>
             </div>
           );
         })

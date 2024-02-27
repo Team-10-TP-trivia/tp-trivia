@@ -18,6 +18,7 @@ import EditProfile from './view/Profile/EditProfile/EditProfile';
 import JoinRoom from './view/Room/JoinRoom';
 import Groups from './view/Groups/Groups';
 import CreateGroup from './view/Groups/CreateGroup/CreateGroup';
+import EditQuiz from './components/EditQuiz/EditQuiz';
 
 function App() {
   const [context, setContext] = useState({
@@ -56,6 +57,7 @@ function App() {
             <Route path='/join-room' element={<JoinRoom />} />
             <Route path='/groups' element={<Groups />} />
             <Route path='/groups/create-group/:userId' element={<CreateGroup />} />
+            <Route path='/edit-quiz/:userId' element={<EditQuiz />} />
           </Routes>
         </Layout>          
       </AppContext.Provider>
