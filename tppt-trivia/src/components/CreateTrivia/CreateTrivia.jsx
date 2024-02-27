@@ -5,22 +5,22 @@ import { saveQuiz } from "../../services/QuizService/SaveQuiz";
 import { AppContext } from "../../context/appContext";
 
 export default function CreateTrivia() {
-  const { userData } = useContext(AppContext); 
+  const { userData } = useContext(AppContext);
   const [slides, setSlides] = useState([
     {
       id: 1,
       question: "",
       answers: [
-        { id: 1, text: "",},
-        { id: 2, text: "",},
-        { id: 3, text: "",},
-        { id: 4, text: "",},
+        { id: 1, text: "", isCorrect: false },
+        { id: 2, text: "", isCorrect: false },
+        { id: 3, text: "", isCorrect: false },
+        { id: 4, text: "", isCorrect: false },
       ],
     },
   ]);
 
   const [activeSlideId, setActiveSlideId] = useState(1);
-  const [visibility, setVisibility] = useState("public"); 
+  const [visibility, setVisibility] = useState("public");
   const [timeLimit, setTimeLimit] = useState("20 seconds");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -31,13 +31,15 @@ export default function CreateTrivia() {
       id: newId,
       question: "",
       answers: [
-        { id: 1, text: "",},
-        { id: 2, text: "",},
-        { id: 3, text: "",},
-        { id: 4, text: "",},
+        { id: 1, text: "", isCorrect: false },
+        { id: 2, text: "", isCorrect: false },
+        { id: 3, text: "", isCorrect: false },
+        { id: 4, text: "", isCorrect: false },
       ],
     };
     setSlides([...slides, newSlide]);
+    setTitle('');
+    setDescription('');
     setActiveSlideId(newId);
   };
 
@@ -100,25 +102,40 @@ export default function CreateTrivia() {
     setSlides(updatedSlides);
   };
 
+  const updateCorrectAnswer = (slideId, answerId) => {
+    const updatedSlides = slides.map((slide) => {
+      if (slide.id === slideId) {
+        return {
+          ...slide,
+          answers: slide.answers.map((answer) => {
+            return { ...answer, isCorrect: answer.id === answerId };
+          }),
+        };
+      }
+      return slide;
+    });
+    setSlides(updatedSlides);
+  };
+
   const handleSaveQuiz = async () => {
     console.log(userData);
     const quizData = {
-        creatorId: userData.uid, 
-        username: userData.username,
-        title,
-        description, 
-        visibility,
-        timeLimit,
-        questions: slides,
-        createdOn: new Date().toLocaleDateString("bg-BG")
+      creatorId: userData.uid,
+      username: userData.username,
+      title,
+      description,
+      visibility,
+      timeLimit,
+      questions: slides,
+      createdOn: new Date().toLocaleDateString("bg-BG"),
     };
 
     try {
-        await saveQuiz(quizData);
+      await saveQuiz(quizData);
     } catch (error) {
-        console.error("Error saving quiz:", error);
+      console.error("Error saving quiz:", error);
     }
-};
+  };
 
   return (
     <div className="create-trivia-layout">
@@ -176,7 +193,14 @@ export default function CreateTrivia() {
 
         <div className="answers-container">
           {getActiveSlide().answers.map((answer, index) => (
-            <div key={index} className={`answer-option`}>
+            <div key={index} className="answer-option">
+              <input
+                type="radio"
+                name={`correct-answer-${activeSlideId}`}
+                checked={answer.isCorrect}
+                onChange={() => updateCorrectAnswer(activeSlideId, answer.id)}
+                className="correct-answer-radio"
+              />
               <input
                 type="text"
                 value={answer.text}
@@ -191,12 +215,12 @@ export default function CreateTrivia() {
         </div>
       </div>
 
-      <Sidebar 
-        onSave={handleSaveQuiz} 
-        visibility={visibility} 
-        setVisibility={setVisibility} 
-        timeLimit={timeLimit} 
-        setTimeLimit={setTimeLimit} 
+      <Sidebar
+        onSave={handleSaveQuiz}
+        visibility={visibility}
+        setVisibility={setVisibility}
+        timeLimit={timeLimit}
+        setTimeLimit={setTimeLimit}
         title={title}
         setTitle={setTitle}
         description={description}
