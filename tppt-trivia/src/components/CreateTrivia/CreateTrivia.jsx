@@ -16,14 +16,15 @@ export default function CreateTrivia() {
         { id: 3, text: "", isCorrect: false },
         { id: 4, text: "", isCorrect: false },
       ],
+      timeLimit: '20 seconds'
     },
   ]);
 
   const [activeSlideId, setActiveSlideId] = useState(1);
   const [visibility, setVisibility] = useState("public");
-  const [timeLimit, setTimeLimit] = useState("20 seconds");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("General Knowledge");
 
   const addSlide = () => {
     const newId = slides.length + 1;
@@ -36,11 +37,13 @@ export default function CreateTrivia() {
         { id: 3, text: "", isCorrect: false },
         { id: 4, text: "", isCorrect: false },
       ],
+      timeLimit: "20 seconds",
     };
     setSlides([...slides, newSlide]);
     setTitle('');
     setDescription('');
     setActiveSlideId(newId);
+    setCategory('General Knowledge');
   };
 
   const duplicateSlide = (slideId) => {
@@ -125,7 +128,7 @@ export default function CreateTrivia() {
       title,
       description,
       visibility,
-      timeLimit,
+      category,
       questions: slides,
       createdOn: new Date().toLocaleDateString("bg-BG"),
     };
@@ -135,6 +138,16 @@ export default function CreateTrivia() {
     } catch (error) {
       console.error("Error saving quiz:", error);
     }
+  };
+
+  const updateTimeLimit = (slideId, newTimeLimit) => {
+    const updatedTime = slides.map((slide) => {
+      if (slide.id === slideId) {
+        return { ...slide, timeLimit: newTimeLimit };
+      }
+      return slide;
+    });
+    setSlides(updatedTime);
   };
 
   return (
@@ -219,12 +232,15 @@ export default function CreateTrivia() {
         onSave={handleSaveQuiz}
         visibility={visibility}
         setVisibility={setVisibility}
-        timeLimit={timeLimit}
-        setTimeLimit={setTimeLimit}
+        timeLimit={getActiveSlide().timeLimit}
+        setTimeLimit={(newTimeLimit) => 
+            updateTimeLimit(activeSlideId, newTimeLimit)}
         title={title}
         setTitle={setTitle}
         description={description}
         setDescription={setDescription}
+        category={category}
+        setCategory={setCategory}
       />
     </div>
   );

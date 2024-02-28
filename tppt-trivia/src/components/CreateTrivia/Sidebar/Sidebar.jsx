@@ -3,9 +3,27 @@ import "./Sidebar.css";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const Sidebar = ({ onSave, visibility, setVisibility, timeLimit, setTimeLimit, title, setTitle, description, setDescription }) => {
+const Sidebar = ({ onSave, 
+    visibility, 
+    setVisibility, 
+    timeLimit, 
+    setTimeLimit, 
+    title, setTitle, 
+    description, 
+    setDescription,
+    category,
+    setCategory, }) => {
   const [questionType, setQuestionType] = useState("Quiz");
   const navigate = useNavigate();
+
+
+  const categories = ["General Knowledge", 
+  "Entertainment", 
+  "Science", 
+  "History",
+  "Sports",
+  "Movies",
+  "Shows",]
 
   const handleExit = () => {
     navigate("/");
@@ -37,6 +55,19 @@ const Sidebar = ({ onSave, visibility, setVisibility, timeLimit, setTimeLimit, t
           <option value="40 seconds">40 seconds</option>
           <option value="60 seconds">60 seconds</option>
           <option value="90 seconds">90 seconds</option>
+        </select>
+      </div>
+
+      <div className="sidebar-item">
+        <label htmlFor="category">Category</label>
+        <select
+          id="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          {categories.map((category) => (
+            <option value={category} key={category}>{category}</option>
+          ))}
         </select>
       </div>
 
@@ -102,6 +133,8 @@ Sidebar.propTypes = {
     setTitle: PropTypes.func.isRequired,
     description: PropTypes.string.isRequired,
     setDescription: PropTypes.func.isRequired,
+    category: PropTypes.string.isRequired,
+    setCategory: PropTypes.func.isRequired,
   };
 
 export default Sidebar;
