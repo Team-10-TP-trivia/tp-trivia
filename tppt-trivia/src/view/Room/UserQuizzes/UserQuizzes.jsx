@@ -12,8 +12,8 @@ export default function UserQuizzes({ quizList }) {
     setUserQuizzes(quizList.filter((quiz) => quiz.creatorId === userData.uid));
   }, [userData, quizList]);
 
-  const editQuiz = (quizId) => {
-    navigate(`/edit-quiz/${quizId}`);
+  const editQuiz = (quiz) => {
+    navigate(`/edit-quiz/${quiz.id}`, {state: {quiz}});
   }
 
   return (
@@ -26,7 +26,7 @@ export default function UserQuizzes({ quizList }) {
               <h2>Quiz Name: {quiz.description}</h2>
               <p>Quiz Description: {quiz.description}</p>
               <p>Quiz creator: {quiz.username}</p>
-              <button onClick={() => {editQuiz(quiz.id)}}>Edit quiz</button>
+              <button onClick={() => {editQuiz(quiz)}}>Edit quiz</button>
             </div>
           );
         })
