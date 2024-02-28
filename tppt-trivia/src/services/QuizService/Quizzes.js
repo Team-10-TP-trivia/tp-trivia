@@ -1,4 +1,4 @@
-import { get, query, ref } from "firebase/database";
+import { get, query, ref, update } from "firebase/database";
 import { db } from "../../config/firebase-config";
 
 export const takeAllQuizzes = async () => {
@@ -15,3 +15,9 @@ export const takeAllQuizzes = async () => {
 
   return quizzes;
 };
+
+export const updateQuiz = (quizId, quizData) => {
+  const updateQuiz = {};
+  updateQuiz[`/quizes/${quizId}`] = quizData;
+  return update(ref(db), updateQuiz);
+}
