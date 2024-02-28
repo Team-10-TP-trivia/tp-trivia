@@ -21,3 +21,9 @@ export const updateQuiz = (quizId, quizData) => {
   updateQuiz[`/quizes/${quizId}`] = quizData;
   return update(ref(db), updateQuiz);
 }
+
+export const deleteQuizById = (quizId) => {
+  const updateQuiz = {};
+  updateQuiz[`/quizes/${quizId}`] = null;
+  return update(ref(db), updateQuiz);
+}

@@ -41,6 +41,10 @@ export default function EditQuiz() {
   }, 2000);
   };
 
+  const showABCD = (index) => {
+    return String.fromCharCode(65 + index);
+  }
+
   return (
     <div>
       {updatedQuiz && <div>{updatedQuiz}</div>}
@@ -68,7 +72,7 @@ export default function EditQuiz() {
         quiz.questions.map((question, questionIndex) => {
           return (
             <div key={question.id}>
-              <h2>{question.question}</h2>
+              <h2>Question: {question.question}</h2>
               <label htmlFor={`question_${questionIndex}`}>Change question</label>
               <br />
               <input
@@ -84,7 +88,7 @@ export default function EditQuiz() {
                 return (
                   <div key={answer.id}>
                     <label htmlFor={`answer_${questionIndex}_${answerIndex}`}>
-                      Answer {answerIndex}:
+                      Answer {showABCD(answerIndex)} :
                     </label>
                     <input
                       type="text"
