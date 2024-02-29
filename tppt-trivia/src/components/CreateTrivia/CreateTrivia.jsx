@@ -3,6 +3,7 @@ import "./CreateTrivia.css";
 import Sidebar from "./Sidebar/Sidebar";
 import { saveQuiz } from "../../services/QuizService/SaveQuiz";
 import { AppContext } from "../../context/appContext";
+import Modal from "../ModalComponent/Modal";
 
 export default function CreateTrivia() {
   const { userData } = useContext(AppContext);
@@ -16,7 +17,8 @@ export default function CreateTrivia() {
         { id: 3, text: "", isCorrect: false },
         { id: 4, text: "", isCorrect: false },
       ],
-      timeLimit: '20 seconds'
+      timeLimit: '20 seconds',
+      selectedGif: null,
     },
   ]);
 
@@ -25,6 +27,18 @@ export default function CreateTrivia() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("General Knowledge");
+  //const [selectedImage, setSelectedImage] = useState(null); //TODO
+  const [selectedGif ] = useState(null);
+
+  const handleSelectGif = (gifUrl) => {
+    const updatedSlides = slides.map((slide) => {
+      if (slide.id === activeSlideId) {
+        return { ...slide, selectedGif: gifUrl };
+      }
+      return slide;
+    });
+    setSlides(updatedSlides);
+  };
 
   const addSlide = () => {
     const newId = slides.length + 1;
@@ -38,6 +52,7 @@ export default function CreateTrivia() {
         { id: 4, text: "", isCorrect: false },
       ],
       timeLimit: "20 seconds",
+      selectedGif: null,
     };
     setSlides([...slides, newSlide]);
     setTitle('');
@@ -130,6 +145,7 @@ export default function CreateTrivia() {
       visibility,
       category,
       questions: slides,
+      media: selectedGif,
       createdOn: new Date().toLocaleDateString("bg-BG"),
     };
 
@@ -204,6 +220,19 @@ export default function CreateTrivia() {
           className="question-input"
         />
 
+        <div>
+          <Modal onSelectGif={handleSelectGif} />
+          {getActiveSlide().selectedGif && (
+            <div style={{ marginTop: "20px" }}>
+              <img
+                src={getActiveSlide().selectedGif}
+                alt="Selected GIF"
+                style={{ maxWidth: "100%", maxHeight: "300px" }}
+              />
+            </div>
+          )}
+        </div>
+
         <div className="answers-container">
           {getActiveSlide().answers.map((answer, index) => (
             <div key={index} className="answer-option">
@@ -227,14 +256,14 @@ export default function CreateTrivia() {
           ))}
         </div>
       </div>
-
       <Sidebar
         onSave={handleSaveQuiz}
         visibility={visibility}
         setVisibility={setVisibility}
         timeLimit={getActiveSlide().timeLimit}
-        setTimeLimit={(newTimeLimit) => 
-            updateTimeLimit(activeSlideId, newTimeLimit)}
+        setTimeLimit={(newTimeLimit) =>
+          updateTimeLimit(activeSlideId, newTimeLimit)
+        }
         title={title}
         setTitle={setTitle}
         description={description}

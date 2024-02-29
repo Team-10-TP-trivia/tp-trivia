@@ -1,41 +1,65 @@
 import { useState } from 'react';
-import './Modal.css'; // Make sure to create a corresponding CSS file for styling
+import PropTypes from 'prop-types';
+import TrendingGiphys from '../TrendingGiphys/TrendingGiphys';
+import './Modal.css'; 
 
-export default function Modal () {
+export default function Modal({ onSelectGif }) {
     const [modal, setModal] = useState(false);
+    const [activeTab, setActiveTab] = useState('Images');
 
     const toggleModal = () => {
-        setModal(!modal)
-    }
+        setModal(!modal);
+    };
+
+    const changeTab = (tab) => {
+        setActiveTab(tab);
+    };
 
     return (
-
         <div className='main-modal-component'>
-            <button 
-            onClick={toggleModal}
-            className="btn-modal">
+            <button onClick={toggleModal} className="btn-modal">
                 Settings
             </button>
 
             {modal && (
-        <div className="modal">
-          <div onClick={toggleModal} className="overlay"></div>
-          <div className="modal-content">
-            <h2>Hello Modal</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
-              perferendis suscipit officia recusandae, eveniet quaerat assumenda
-              id fugit, dignissimos maxime non natus placeat illo iusto!
-              Sapiente dolorum id maiores dolores? Illum pariatur possimus
-              quaerat ipsum quos molestiae rem aspernatur dicta tenetur. Sunt
-              placeat tempora vitae enim incidunt porro fuga ea.
-            </p>
-            <button className="close-modal" onClick={toggleModal}>
-              CLOSE
-            </button>
-          </div>
+                <div className="modal">
+                    <div className="overlay" onClick={toggleModal}></div>
+                    <div className="modal-content">
+                        <div className="sidebar-modal">
+                            <button 
+                                onClick={() => changeTab('Images')}
+                                className={`tab-button ${activeTab === 'Images' ? 'active' : ''}`}>
+                                Images
+                            </button>
+                            <button 
+                                onClick={() => changeTab('GIFs')}
+                                className={`tab-button ${activeTab === 'GIFs' ? 'active' : ''}`}>
+                                GIFs
+                            </button>
+                            <button 
+                                onClick={() => changeTab('Videos')}
+                                className={`tab-button ${activeTab === 'Videos' ? 'active' : ''}`}>
+                                Videos
+                            </button>
+                        </div>
+                        <div className="main-content-modal">
+                            {activeTab === 'Images' && (
+                                <div>Unsplash content here</div>
+                            )}
+                            {activeTab === 'GIFs' && (
+                                <TrendingGiphys onSelectMedia={onSelectGif} />
+                            )}
+                            {activeTab === 'Videos' && (
+                                <div>Youtube????</div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 }
+
+Modal.propTypes = {
+    onSelectGif: PropTypes.func.isRequired, 
+};
