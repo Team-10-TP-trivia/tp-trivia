@@ -19,6 +19,10 @@ import JoinRoom from './view/Room/JoinRoom';
 import Groups from './view/Groups/Groups';
 import CreateGroup from './view/Groups/CreateGroup/CreateGroup';
 import EditQuiz from './components/EditQuiz/EditQuiz';
+import Sports from './view/Categories/Sports/Sports';
+import Science from './view/Categories/Science/Science';
+import Math from './view/Categories/Math/Math';
+import GeneralKnowledge from './view/Categories/GeneralKnowledge/GeneralKnowledge';
 
 function App() {
   const [context, setContext] = useState({
@@ -58,6 +62,10 @@ function App() {
             <Route path='/groups' element={<Groups />} />
             <Route path='/groups/create-group/:userId' element={<CreateGroup />} />
             <Route path='/edit-quiz/:userId' element={<EditQuiz />} />
+            <Route path="/sports" element={<Sports />} />
+            <Route path='/science' element={<Science />} />
+            <Route path='/math' element={<Math />} />
+            <Route path='/general-knowledge' element={<GeneralKnowledge />} />
           </Routes>
         </Layout>          
       </AppContext.Provider>
