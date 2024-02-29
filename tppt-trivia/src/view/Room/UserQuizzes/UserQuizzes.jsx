@@ -16,10 +16,11 @@ export default function UserQuizzes({ quizList }) {
     navigate(`/edit-quiz/${quiz.id}`, {state: {quiz}});
   }
 
+  if(!userData) return (<p>Loading...</p>);
   return (
     <div>
-      <h1>User Quizzes</h1>
-      {userQuizzes ? (
+      {userData.role === "teacher" && <h1>User Quizzes</h1>}
+      {userQuizzes.username === userData.username && userQuizzes && (
         userQuizzes.map((quiz) => {
           return (
             <div key={quiz}>
@@ -30,8 +31,6 @@ export default function UserQuizzes({ quizList }) {
             </div>
           );
         })
-      ) : (
-        <p>No quizzes still available</p>
       )}
     </div>
   );
