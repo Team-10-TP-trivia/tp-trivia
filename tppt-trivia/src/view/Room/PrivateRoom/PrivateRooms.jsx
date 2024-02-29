@@ -11,7 +11,7 @@ export default function PrivateRooms({ quizList }) {
   return (
     <div>
       <h1>Private Rooms</h1>
-      {quizzes ? (
+      {quizzes.length > 0 ? (
         quizzes.map((quiz) => {
           return (
             <div key={quiz.id}>
@@ -22,7 +22,7 @@ export default function PrivateRooms({ quizList }) {
           );
         })
       ) : (
-        <p>No quizzes available</p>
+        <p>No private quizzes available</p>
       )}
     </div>
   );

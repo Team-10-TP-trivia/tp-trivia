@@ -47,7 +47,7 @@ export default function Modal({ onSelectGif }) {
                                 <div>Unsplash content here</div>
                             )}
                             {activeTab === 'GIFs' && (
-                                <TrendingGiphys onSelectMedia={onSelectGif} />
+                                <TrendingGiphys onSelectMedia={onSelectGif} setModal={setModal}/>
                             )}
                             {activeTab === 'Videos' && (
                                 <div>Youtube????</div>
