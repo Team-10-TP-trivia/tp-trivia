@@ -23,6 +23,7 @@ import Sports from './view/Categories/Sports/Sports';
 import Science from './view/Categories/Science/Science';
 import Math from './view/Categories/Math/Math';
 import GeneralKnowledge from './view/Categories/GeneralKnowledge/GeneralKnowledge';
+import OpenUserGroup from './view/Groups/UserGroups/OpenUserGroup';
 
 function App() {
   const [context, setContext] = useState({
@@ -66,6 +67,7 @@ function App() {
             <Route path='/science' element={<Science />} />
             <Route path='/math' element={<Math />} />
             <Route path='/general-knowledge' element={<GeneralKnowledge />} />
+            <Route path='/profile/group/:groupId' element={<OpenUserGroup />} />
           </Routes>
         </Layout>          
       </AppContext.Provider>

@@ -7,6 +7,7 @@ import {
   uploadProfilePicture,
 } from "../../services/UserServices/user-post-services";
 import { useNavigate } from "react-router-dom";
+import UserGroups from "../Groups/UserGroups/UserGroups";
 
 const Profile = () => {
   const { userData } = useContext(AppContext);
@@ -60,6 +61,7 @@ const Profile = () => {
         <button onClick={handleSubmit}>Upload Avatar</button>
       </div>
       <button onClick={() => navigate("/edit-profile")}>Edit profile</button>
+      <UserGroups />
     </>
   );
 };
