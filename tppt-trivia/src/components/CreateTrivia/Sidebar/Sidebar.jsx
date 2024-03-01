@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./Sidebar.css";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -12,8 +11,10 @@ const Sidebar = ({ onSave,
     description, 
     setDescription,
     category,
-    setCategory, }) => {
-  const [questionType, setQuestionType] = useState("Quiz");
+    setCategory,
+    questionType,
+    setQuestionType, }) => {
+
   const navigate = useNavigate();
 
 
@@ -135,6 +136,8 @@ Sidebar.propTypes = {
     setDescription: PropTypes.func.isRequired,
     category: PropTypes.string.isRequired,
     setCategory: PropTypes.func.isRequired,
+    questionType: PropTypes.string.isRequired,
+    setQuestionType: PropTypes.func.isRequired
   };
 
 export default Sidebar;

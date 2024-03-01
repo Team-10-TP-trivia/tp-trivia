@@ -7,10 +7,12 @@ import Modal from "../ModalComponent/Modal";
 
 export default function CreateTrivia() {
   const { userData } = useContext(AppContext);
+  const [questionType, setQuestionType] = useState("Quiz");
   const [slides, setSlides] = useState([
     {
       id: 1,
       question: "",
+      questionType: 'Quiz',
       answers: [
         { id: 1, text: "", isCorrect: false },
         { id: 2, text: "", isCorrect: false },
@@ -29,6 +31,7 @@ export default function CreateTrivia() {
   const [category, setCategory] = useState("General Knowledge");
   //const [selectedImage, setSelectedImage] = useState(null); //TODO
   const [selectedGif ] = useState(null);
+  
 
   const handleSelectGif = (gifUrl) => {
     const updatedSlides = slides.map((slide) => {
@@ -45,6 +48,7 @@ export default function CreateTrivia() {
     const newSlide = {
       id: newId,
       question: "",
+      questionType: questionType,
       answers: [
         { id: 1, text: "", isCorrect: false },
         { id: 2, text: "", isCorrect: false },
@@ -59,6 +63,27 @@ export default function CreateTrivia() {
     setDescription('');
     setActiveSlideId(newId);
     setCategory('General Knowledge');
+    setQuestionType('Quiz');
+  };
+
+  const updateQuestionType = (newType) => {
+    setQuestionType(newType);
+    const updatedSlides = slides.map((slide) => {
+      if (slide.id === activeSlideId) {
+        const type = newType === "Quiz" ? [
+          { id: 1, text: "", isCorrect: false },
+          { id: 2, text: "", isCorrect: false },
+          { id: 3, text: "", isCorrect: false },
+          { id: 4, text: "", isCorrect: false },
+        ] : [
+          { id: 1, text: "True", isCorrect: false },
+          { id: 2, text: "False", isCorrect: false },
+        ];
+        return { ...slide, questionType: newType, answers: type };
+      }
+      return slide;
+    });
+    setSlides(updatedSlides);
   };
 
   const duplicateSlide = (slideId) => {
@@ -270,6 +295,8 @@ export default function CreateTrivia() {
         setDescription={setDescription}
         category={category}
         setCategory={setCategory}
+        questionType={questionType}
+        setQuestionType={updateQuestionType}
       />
     </div>
   );
