@@ -10,7 +10,13 @@ import {
   //orderByChild
 } from "firebase/database";
 import { db } from "../../config/firebase-config";
-
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0,
+          v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+  });
+}
 export const createGroup = async (
   userId,
   creatorUsername,
@@ -31,6 +37,7 @@ export const createGroup = async (
     } else {
       // Group doesn't exist, create it
       await set(groupRef, {
+        groupIds: generateUUID(),
         userId,
         firstName,
         lastName,
@@ -44,13 +51,22 @@ export const createGroup = async (
   }
 };
 
-export const getAllGroups = (setGroups) => {
+export const getAllGroups = (setGroups, searchKeyword) => {
   const groupsRef = ref(db, "groups");
 
   // Set up a listener for changes in the groups collection
   const callback = (snapshot) => {
     if (snapshot.exists()) {
-      setGroups(snapshot.val());
+      let groups = snapshot.val();
+
+      // Filter groups by title if searchKeyword is provided
+      if (searchKeyword) {
+        groups = Object.values(groups).filter((group) =>
+          group.groupName.toLowerCase().includes(searchKeyword.toLowerCase())
+        );
+      }
+
+      setGroups(groups);
     } else {
       console.log("No data available");
     }
@@ -68,23 +84,38 @@ export const getGroupById = async (groupId) => {
     return null;
   }
 
-  const tweet = {
+  const group = {
     groupId,
     ...snapshot.val(),
   };
 
-  return tweet;
+  return group;
 };
 
-export const sendJoinGroupRequest = async (groupId, userName,user) => {
+export const sendJoinGroupRequest = async (groupId, userName, user) => {
   const groupUsersUpdate = {};
- groupUsersUpdate[(db, `groups/${groupId}/requests/${userName}`)] = {...user, approved: "pending"};
- return update(ref(db), groupUsersUpdate);
-}
+  groupUsersUpdate[(db, `groups/${groupId}/requests/${userName}`)] = {
+    ...user,
+    approved: "pending",
+  };
+  return update(ref(db), groupUsersUpdate);
+};
 
-export const approveUserRequest = async (groupId, userName,user) => {
+export const approveUserRequest = async (groupId, userName, user) => {
   const groupUsersUpdate = {};
   groupUsersUpdate[(db, `groups/${groupId}/requests/${userName}`)] = null;
   groupUsersUpdate[(db, `groups/${groupId}/users/${userName}`)] = user;
+  return update(ref(db), groupUsersUpdate);
+};
+
+export const rejectUserRequest = async (groupId, userName) => {
+  const groupUsersUpdate = {};
+  groupUsersUpdate[(db, `groups/${groupId}/requests/${userName}`)] = null;
+  return update(ref(db), groupUsersUpdate);
+}
+
+export const removeUserFromGroup = async (groupId, userName) => {
+  const groupUsersUpdate = {};
+  groupUsersUpdate[(db, `groups/${groupId}/users/${userName}`)] = null;
   return update(ref(db), groupUsersUpdate);
 }
