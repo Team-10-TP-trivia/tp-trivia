@@ -1,4 +1,5 @@
 import {
+  get,
   onValue,
   //get,
   //set,
@@ -33,4 +34,22 @@ export const uploadProfilePicture = async (userId, file) => {
 export const updateUserDetails = async (username, userInfo) => {
   const userRef = ref(db, `users/${username}`);
   await update(userRef, userInfo);
+};
+
+export const getAllUsers = async () => {
+  try {
+    const snapshot = await get(ref(db, "users"));
+    if (!snapshot.exists()) {
+      return [];
+    }
+    const users = Object.keys(snapshot.val()).map((key) => ({
+      id: key,
+      ...snapshot.val()[key],
+    }));
+    return users;
+  }
+  catch (error) {
+    console.error("Error fetching users:", error);
+    throw error;
+  }
 };

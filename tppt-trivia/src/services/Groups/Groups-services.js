@@ -5,6 +5,7 @@ import {
   ref,
   off,
   update,
+  push,
   //query,
   //equalTo,
   //orderByChild
@@ -79,17 +80,37 @@ export const getAllGroups = (setGroups, searchKeyword) => {
 };
 
 export const getGroupById = async (groupId) => {
-  const snapshot = await get(ref(db, `groups/${groupId}`));
-  if (!snapshot.exists()) {
-    return null;
-  }
+  const groupRef = ref(db, `groups/${groupId}`);
+  const groupSnapshot = await get(groupRef);
 
-  const group = {
-    groupId,
-    ...snapshot.val(),
+  if (groupSnapshot.exists()) {
+    return groupSnapshot.val();
+  } else {
+    console.log("Group does not exist");
+  }
+};
+
+export const getGroupByIdOnChange = (groupId, setGroup) => {
+  const groupRef = ref(db, `groups/${groupId}`);
+
+  // Set up a listener for changes in the group data
+  const callback = (snapshot) => {
+    if (snapshot.exists()) {
+      const group = {
+        groupId,
+        ...snapshot.val(),
+      };
+
+      setGroup(group);
+    } else {
+      console.log("Group does not exist");
+    }
   };
 
-  return group;
+  onValue(groupRef, callback);
+
+  // Return a function to unsubscribe from the listener
+  return () => off(groupRef, callback);
 };
 
 export const sendJoinGroupRequest = async (groupId, userName, user) => {
@@ -118,4 +139,35 @@ export const removeUserFromGroup = async (groupId, userName) => {
   const groupUsersUpdate = {};
   groupUsersUpdate[(db, `groups/${groupId}/users/${userName}`)] = null;
   return update(ref(db), groupUsersUpdate);
+}
+
+export const sendMessageToGroup = async (groupId,user, message) => {
+  const messageRef = ref(db, `groups/${groupId}/messages/${user.username}`);
+  const userMessage = {
+    id: generateUUID(),
+    message,
+    sender: user.username,
+    timestamp: Date.now(),
+  };
+  await push(messageRef, userMessage);
+
+}
+
+export const getGroupMessages = (groupId, setMessages) => {
+  const messagesRef = ref(db, `groups/${groupId}/messages`);
+
+  // Set up a listener for changes in the messages collection
+  const callback = (snapshot) => {
+    if (snapshot.exists()) {
+      const messages = snapshot.val();
+      setMessages(messages);
+    } else {
+      console.log("No data available");
+    }
+  };
+
+  onValue(messagesRef, callback);
+
+  // Return a function to unsubscribe from the listener
+  return () => off(messagesRef, callback);
 }

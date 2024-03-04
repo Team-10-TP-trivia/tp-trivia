@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { approveUserRequest, getGroupById, rejectUserRequest, removeUserFromGroup } from "../../../services/Groups/Groups-services";
+import { approveUserRequest, getGroupById, getGroupByIdOnChange, rejectUserRequest, removeUserFromGroup } from "../../../services/Groups/Groups-services";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../../../context/appContext";
+import GroupChat from "./GroupChat";
 
 export default function OpenUserGroup() {
   const [group, setGroup] = useState(null);
@@ -9,9 +10,8 @@ export default function OpenUserGroup() {
   const { groupId } = useParams();
 
   useEffect(() => {
-    getGroupById(groupId).then((snapshot) => {
-      setGroup(snapshot);
-    });
+    const unsubscribe = getGroupByIdOnChange(groupId, setGroup);
+    return () => unsubscribe();
   }, [groupId]);
 
   const approveRequest = async (groupId, userName,user ) => {
@@ -58,7 +58,7 @@ export default function OpenUserGroup() {
               </div>
             );
           }) : <h3>No request!</h3>}
-          {group.users && (
+          {(group.creatorUsername === userData.username && group.users) && (
             <div>
               <h2>Group members:</h2>
               {Object.values(group.users).map((user) => {
@@ -76,6 +76,7 @@ export default function OpenUserGroup() {
           )}
         </div>
       )}
+      <GroupChat group={group} setGroup={setGroup}/>
     </div>
   );
 }

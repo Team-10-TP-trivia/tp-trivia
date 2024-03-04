@@ -20,21 +20,26 @@ export default function UserGroups() {
         navigate(`group/${groupId}`);
     }
 
+    if(!groups) {
+        return <div>Loading...</div>
+    }
+
   return (
     <div>
-      <h1>{userData.firstName} {userData.lastName} groups:</h1>
-      {groups ? Object.keys(groups).map((key) => {
-        if (groups[key].userId === userData.uid) {
-          return (
-            <div key={key}>
-              <h2>Group Name: {groups[key].groupName}</h2>
-              <p>Group Description: {groups[key].groupDescription}</p>
-              <button onClick={() => openGroup(key, groups[key])}>Open Group</button>
-            </div>
-          );
-        }
-        return null;
-      }) : <p>No groups still available</p>}
-    </div>
+    <h1>{userData.firstName} {userData.lastName} groups:</h1>
+    {groups && Object.values(groups).map((group, index) => {
+      if (group.userId === userData.uid || (group.users && Object.keys(group.users).includes(userData.username))) {
+        return (
+          <div key={index}>
+            <h2>Group Name: {group.groupName}</h2>
+            <p>Group Description: {group.groupDescription}</p>
+            <button onClick={() => openGroup(group.groupName)}>Open Group</button>
+          </div>
+        );
+      }
+      return null;
+    })}
+    {!groups && <p>No groups still available</p>} 
+  </div>  
   );
 }
