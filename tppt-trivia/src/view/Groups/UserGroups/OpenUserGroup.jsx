@@ -12,7 +12,6 @@ import GroupChat from "./GroupChat";
 import {
   Button,
   Dialog,
-  DialogContent,
   DialogActions,
   Avatar,
 } from "@mui/material";
@@ -134,13 +133,14 @@ export default function OpenUserGroup() {
       </Button>
       <Dialog open={openPopup} onClose={handleClosePopup}>
       <DialogActions>
+        {group && (
+          <Button>{group.groupName} group chat</Button>
+        )}
           <Button onClick={handleClosePopup} color="primary">
             Close
           </Button>
         </DialogActions>
-        <DialogContent>
-          <GroupChat group={group} setGroup={setGroup} />
-        </DialogContent>
+          <GroupChat group={group}/>
       </Dialog>
     </div>
   );
