@@ -5,12 +5,19 @@ import {
   ref,
   off,
   update,
+  push,
   //query,
   //equalTo,
   //orderByChild
 } from "firebase/database";
 import { db } from "../../config/firebase-config";
-
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0,
+          v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+  });
+}
 export const createGroup = async (
   userId,
   creatorUsername,
@@ -31,6 +38,7 @@ export const createGroup = async (
     } else {
       // Group doesn't exist, create it
       await set(groupRef, {
+        groupIds: generateUUID(),
         userId,
         firstName,
         lastName,
@@ -44,13 +52,22 @@ export const createGroup = async (
   }
 };
 
-export const getAllGroups = (setGroups) => {
+export const getAllGroups = (setGroups, searchKeyword) => {
   const groupsRef = ref(db, "groups");
 
   // Set up a listener for changes in the groups collection
   const callback = (snapshot) => {
     if (snapshot.exists()) {
-      setGroups(snapshot.val());
+      let groups = snapshot.val();
+
+      // Filter groups by title if searchKeyword is provided
+      if (searchKeyword) {
+        groups = Object.values(groups).filter((group) =>
+          group.groupName.toLowerCase().includes(searchKeyword.toLowerCase())
+        );
+      }
+
+      setGroups(groups);
     } else {
       console.log("No data available");
     }
@@ -63,28 +80,94 @@ export const getAllGroups = (setGroups) => {
 };
 
 export const getGroupById = async (groupId) => {
-  const snapshot = await get(ref(db, `groups/${groupId}`));
-  if (!snapshot.exists()) {
-    return null;
+  const groupRef = ref(db, `groups/${groupId}`);
+  const groupSnapshot = await get(groupRef);
+
+  if (groupSnapshot.exists()) {
+    return groupSnapshot.val();
+  } else {
+    console.log("Group does not exist");
   }
-
-  const tweet = {
-    groupId,
-    ...snapshot.val(),
-  };
-
-  return tweet;
 };
 
-export const sendJoinGroupRequest = async (groupId, userName,user) => {
-  const groupUsersUpdate = {};
- groupUsersUpdate[(db, `groups/${groupId}/requests/${userName}`)] = {...user, approved: "pending"};
- return update(ref(db), groupUsersUpdate);
-}
+export const getGroupByIdOnChange = (groupId, setGroup) => {
+  const groupRef = ref(db, `groups/${groupId}`);
 
-export const approveUserRequest = async (groupId, userName,user) => {
+  // Set up a listener for changes in the group data
+  const callback = (snapshot) => {
+    if (snapshot.exists()) {
+      const group = {
+        groupId,
+        ...snapshot.val(),
+      };
+
+      setGroup(group);
+    } else {
+      console.log("Group does not exist");
+    }
+  };
+
+  onValue(groupRef, callback);
+
+  // Return a function to unsubscribe from the listener
+  return () => off(groupRef, callback);
+};
+
+export const sendJoinGroupRequest = async (groupId, userName, user) => {
+  const groupUsersUpdate = {};
+  groupUsersUpdate[(db, `groups/${groupId}/requests/${userName}`)] = {
+    ...user,
+    approved: "pending",
+  };
+  return update(ref(db), groupUsersUpdate);
+};
+
+export const approveUserRequest = async (groupId, userName, user) => {
   const groupUsersUpdate = {};
   groupUsersUpdate[(db, `groups/${groupId}/requests/${userName}`)] = null;
   groupUsersUpdate[(db, `groups/${groupId}/users/${userName}`)] = user;
   return update(ref(db), groupUsersUpdate);
+};
+
+export const rejectUserRequest = async (groupId, userName) => {
+  const groupUsersUpdate = {};
+  groupUsersUpdate[(db, `groups/${groupId}/requests/${userName}`)] = null;
+  return update(ref(db), groupUsersUpdate);
+}
+
+export const removeUserFromGroup = async (groupId, userName) => {
+  const groupUsersUpdate = {};
+  groupUsersUpdate[(db, `groups/${groupId}/users/${userName}`)] = null;
+  return update(ref(db), groupUsersUpdate);
+}
+
+export const sendMessageToGroup = async (groupId,user, message) => {
+  const messageRef = ref(db, `groups/${groupId}/messages/${user.username}`);
+  const userMessage = {
+    id: generateUUID(),
+    message,
+    sender: user.username,
+    timestamp: Date.now(),
+  };
+  await push(messageRef, userMessage);
+
+}
+
+export const getGroupMessages = (groupId, setMessages) => {
+  const messagesRef = ref(db, `groups/${groupId}/messages`);
+
+  // Set up a listener for changes in the messages collection
+  const callback = (snapshot) => {
+    if (snapshot.exists()) {
+      const messages = snapshot.val();
+      setMessages(messages);
+    } else {
+      console.log("No data available");
+    }
+  };
+
+  onValue(messagesRef, callback);
+
+  // Return a function to unsubscribe from the listener
+  return () => off(messagesRef, callback);
 }

@@ -17,21 +17,23 @@ export default function UserQuizzes({ quizList }) {
   }
 
   if(!userData) return (<p>Loading...</p>);
+  
   return (
     <div>
       {userData.role === "teacher" && <h1>User Quizzes</h1>}
-      {userQuizzes.username === userData.username && userQuizzes && (
-        userQuizzes.map((quiz) => {
+      {userQuizzes && userQuizzes.map((quiz) => {
+        if (quiz.username === userData.username) {
           return (
-            <div key={quiz}>
+            <div key={quiz.id}>
               <h2>Quiz Name: {quiz.description}</h2>
               <p>Quiz Description: {quiz.description}</p>
               <p>Quiz creator: {quiz.username}</p>
               <button onClick={() => {editQuiz(quiz)}}>Edit quiz</button>
             </div>
           );
-        })
-      )}
+        }
+        return null;
+      })}
     </div>
   );
 }
