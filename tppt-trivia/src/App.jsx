@@ -24,6 +24,7 @@ import Science from './view/Categories/Science/Science';
 import Math from './view/Categories/Math/Math';
 import GeneralKnowledge from './view/Categories/GeneralKnowledge/GeneralKnowledge';
 import OpenUserGroup from './view/Groups/UserGroups/OpenUserGroup';
+import Quiz from './view/Room/Quiz/Quiz';
 
 function App() {
   const [context, setContext] = useState({
@@ -68,6 +69,8 @@ function App() {
             <Route path='/math' element={<Math />} />
             <Route path='/general-knowledge' element={<GeneralKnowledge />} />
             <Route path='/profile/group/:groupId' element={<OpenUserGroup />} />
+            <Route path='/quiz/:quizId' element={<Quiz />} />
+            
           </Routes>
         </Layout>          
       </AppContext.Provider>

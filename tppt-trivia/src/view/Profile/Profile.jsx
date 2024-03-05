@@ -8,6 +8,8 @@ import {
 } from "../../services/UserServices/user-post-services";
 import { useNavigate } from "react-router-dom";
 import UserGroups from "../Groups/UserGroups/UserGroups";
+import { Avatar, Box } from '@mui/material';
+
 
 const Profile = () => {
   const { userData } = useContext(AppContext);
@@ -47,22 +49,28 @@ const Profile = () => {
   };
 
   return (
-    <>
+    <Box display="flex" justifyContent={"space-around"}>
+      <Box>
       {photoURL && (
-        <img src={photoURL} alt="User Avatar" className="profile-avatar" />
+        <Avatar src={photoURL} alt="User Avatar" className="profile-avatar" sx={{ width: 100, height: 100 }} />
       )}
       <div>Username: {userData.username}</div>
       <div>Email: {userData.email}</div>
       <div>Role: {userData.role}</div>
       {userData.role === "teacher" && <div>Verified teacher: {userData.verified.toString()}</div>}
-      {userData.role === "teacher" && <VerifyTeacher userData={userData} />}
-      <div className="avatar-upload-section">
-        <input type="file" onChange={handleFileChange} />
+      <input type="file" onChange={handleFileChange} />
         <button onClick={handleSubmit}>Upload Avatar</button>
+      </Box>
+      
+      
+      <div className="avatar-upload-section">
+      {userData.role === "teacher" && <VerifyTeacher userData={userData} />}
       </div>
+      <div>
       <button onClick={() => navigate("/edit-profile")}>Edit profile</button>
       <UserGroups />
-    </>
+      </div>
+    </Box>
   );
 };
 export default Profile;

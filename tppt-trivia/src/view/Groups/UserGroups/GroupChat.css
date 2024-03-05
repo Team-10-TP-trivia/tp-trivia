@@ -1,0 +1,13 @@
+.single-message{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f2f2f2;
+    border-radius: 20px;
+    border: 1px solid #ec5454;
+    width: 100%;
+    position: relative;
+}

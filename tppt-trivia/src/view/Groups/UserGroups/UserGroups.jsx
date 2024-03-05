@@ -4,7 +4,6 @@ import { getAllGroups } from "../../../services/Groups/Groups-services";
 import { useNavigate } from "react-router-dom";
 
 export default function UserGroups() {
-
     const { userData } = useContext(AppContext);
     const [ groups, setGroups ] = useState([]);
     const navigate = useNavigate();

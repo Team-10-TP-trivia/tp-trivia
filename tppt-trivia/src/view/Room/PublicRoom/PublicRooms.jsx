@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 export default function PublicRooms({ quizList }) {
   const [quizzes, setQuizzes] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setQuizzes(quizList.filter((quiz) => quiz.visibility === "public"));
   }, [quizList]);
+
+  const joinQuiz = (quizId) => {
+    navigate(`/quiz/${quizId}`);
+  }
 
   return (
     <div>
@@ -17,7 +23,7 @@ export default function PublicRooms({ quizList }) {
             <div key={quiz.id}>
               <p>Quiz Title: {quiz.title}</p>
               <p>Quiz description: {quiz.description}</p>
-              <button>Join Quiz</button>
+              <button onClick={() => {joinQuiz(quiz.id)}}>Join Quiz</button>
             </div>
           );
         })
