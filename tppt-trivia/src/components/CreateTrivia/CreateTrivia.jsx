@@ -12,14 +12,15 @@ export default function CreateTrivia() {
     {
       id: 1,
       question: "",
-      questionType: 'Quiz',
+      questionType: "Quiz",
       answers: [
         { id: 1, text: "", isCorrect: false },
         { id: 2, text: "", isCorrect: false },
         { id: 3, text: "", isCorrect: false },
         { id: 4, text: "", isCorrect: false },
       ],
-      timeLimit: '20 seconds',
+      timeLimit: "20 seconds",
+      selectedUnsplash: null,
       selectedGif: null,
     },
   ]);
@@ -29,19 +30,33 @@ export default function CreateTrivia() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("General Knowledge");
-  //const [selectedImage, setSelectedImage] = useState(null); //TODO
-  const [selectedGif ] = useState(null);
-  
+  const [selectedGif, setSelectedGif] = useState(null); 
+  const [selectedUnsplash, setSelectedUnsplash] = useState(null); 
 
-  const handleSelectGif = (gifUrl) => {
+  const handleSelectUnsplash = (unsplashUrl) => {
+    setSelectedUnsplash(unsplashUrl); 
+    setSelectedGif(null);
     const updatedSlides = slides.map((slide) => {
       if (slide.id === activeSlideId) {
-        return { ...slide, selectedGif: gifUrl };
+        return { ...slide, selectedUnsplash: unsplashUrl, selectedGif:null };
       }
       return slide;
     });
     setSlides(updatedSlides);
   };
+
+  const handleSelectGif = (gifUrl) => {
+    setSelectedGif(gifUrl); 
+    setSelectedUnsplash(null);
+    const updatedSlides = slides.map((slide) => {
+      if (slide.id === activeSlideId) {
+        return { ...slide, selectedGif: gifUrl, selectedUnsplash: null };
+      }
+      return slide;
+    });
+    setSlides(updatedSlides);
+  };
+
 
   const addSlide = () => {
     const newId = slides.length + 1;
@@ -56,29 +71,33 @@ export default function CreateTrivia() {
         { id: 4, text: "", isCorrect: false },
       ],
       timeLimit: "20 seconds",
+      selectedUnsplash: null,
       selectedGif: null,
     };
     setSlides([...slides, newSlide]);
-    setTitle('');
-    setDescription('');
+    setTitle("");
+    setDescription("");
     setActiveSlideId(newId);
-    setCategory('General Knowledge');
-    setQuestionType('Quiz');
+    setCategory("General Knowledge");
+    setQuestionType("Quiz");
   };
 
   const updateQuestionType = (newType) => {
     setQuestionType(newType);
     const updatedSlides = slides.map((slide) => {
       if (slide.id === activeSlideId) {
-        const type = newType === "Quiz" ? [
-          { id: 1, text: "", isCorrect: false },
-          { id: 2, text: "", isCorrect: false },
-          { id: 3, text: "", isCorrect: false },
-          { id: 4, text: "", isCorrect: false },
-        ] : [
-          { id: 1, text: "True", isCorrect: false },
-          { id: 2, text: "False", isCorrect: false },
-        ];
+        const type =
+          newType === "Quiz"
+            ? [
+                { id: 1, text: "", isCorrect: false },
+                { id: 2, text: "", isCorrect: false },
+                { id: 3, text: "", isCorrect: false },
+                { id: 4, text: "", isCorrect: false },
+              ]
+            : [
+                { id: 1, text: "True", isCorrect: false },
+                { id: 2, text: "False", isCorrect: false },
+              ];
         return { ...slide, questionType: newType, answers: type };
       }
       return slide;
@@ -170,6 +189,7 @@ export default function CreateTrivia() {
       visibility,
       category,
       questions: slides,
+      unsplashImg: selectedUnsplash,
       media: selectedGif,
       createdOn: new Date().toLocaleDateString("bg-BG"),
     };
@@ -246,12 +266,21 @@ export default function CreateTrivia() {
         />
 
         <div>
-          <Modal onSelectGif={handleSelectGif} />
+          <Modal onSelectGif={handleSelectGif} onSelectUnsplash={handleSelectUnsplash} />
           {getActiveSlide().selectedGif && (
             <div style={{ marginTop: "20px" }}>
               <img
                 src={getActiveSlide().selectedGif}
                 alt="Selected GIF"
+                style={{ maxWidth: "100%", maxHeight: "300px" }}
+              />
+            </div>
+          )}
+          {getActiveSlide().selectedUnsplash && (
+            <div style={{ marginTop: "20px" }}>
+              <img
+                src={getActiveSlide().selectedUnsplash}
+                alt="Selected Unsplash"
                 style={{ maxWidth: "100%", maxHeight: "300px" }}
               />
             </div>

@@ -2,29 +2,32 @@ import "./Sidebar.css";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const Sidebar = ({ onSave, 
-    visibility, 
-    setVisibility, 
-    timeLimit, 
-    setTimeLimit, 
-    title, setTitle, 
-    description, 
-    setDescription,
-    category,
-    setCategory,
-    questionType,
-    setQuestionType, }) => {
-
+const Sidebar = ({
+  onSave,
+  visibility,
+  setVisibility,
+  timeLimit,
+  setTimeLimit,
+  title,
+  setTitle,
+  description,
+  setDescription,
+  category,
+  setCategory,
+  questionType,
+  setQuestionType,
+}) => {
   const navigate = useNavigate();
 
-
-  const categories = ["General Knowledge", 
-  "Entertainment", 
-  "Science", 
-  "History",
-  "Sports",
-  "Movies",
-  "Shows",]
+  const categories = [
+    "General Knowledge",
+    "Entertainment",
+    "Science",
+    "History",
+    "Sports",
+    "Movies",
+    "Shows",
+  ];
 
   const handleExit = () => {
     navigate("/");
@@ -67,27 +70,33 @@ const Sidebar = ({ onSave,
           onChange={(e) => setCategory(e.target.value)}
         >
           {categories.map((category) => (
-            <option value={category} key={category}>{category}</option>
+            <option value={category} key={category}>
+              {category}
+            </option>
           ))}
         </select>
       </div>
 
       <div className="title-sidebar">
         <label htmlFor="title">Title</label>
-        <input 
-          type="text" 
-          value={title} 
-          onChange={(e) => setTitle(e.target.value)} 
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
       </div>
 
       <div className="description-sidebar">
         <label htmlFor="description">Description</label>
-        <input 
-          type="text" 
-          value={description} 
-          onChange={(e) => setDescription(e.target.value)} 
+        <input
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         />
+      </div>
+
+      <div className="cover-image-selection">
+        <button >Select Cover Image</button>
       </div>
 
       <div className="sidebar-item">
@@ -98,7 +107,7 @@ const Sidebar = ({ onSave,
             id="public"
             name="quizVisibility"
             value="public"
-            checked={visibility === 'public'}
+            checked={visibility === "public"}
             onChange={(e) => setVisibility(e.target.value)}
           />
           <label htmlFor="public">Public</label>
@@ -109,7 +118,7 @@ const Sidebar = ({ onSave,
             id="private"
             name="quizVisibility"
             value="private"
-            checked={visibility === 'private'}
+            checked={visibility === "private"}
             onChange={(e) => setVisibility(e.target.value)}
           />
           <label htmlFor="private">Private</label>
@@ -125,19 +134,19 @@ const Sidebar = ({ onSave,
 };
 
 Sidebar.propTypes = {
-    onSave: PropTypes.func.isRequired,
-    visibility: PropTypes.string.isRequired,
-    setVisibility: PropTypes.func.isRequired,
-    timeLimit: PropTypes.string.isRequired,
-    setTimeLimit: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
-    setTitle: PropTypes.func.isRequired,
-    description: PropTypes.string.isRequired,
-    setDescription: PropTypes.func.isRequired,
-    category: PropTypes.string.isRequired,
-    setCategory: PropTypes.func.isRequired,
-    questionType: PropTypes.string.isRequired,
-    setQuestionType: PropTypes.func.isRequired
-  };
+  onSave: PropTypes.func.isRequired,
+  visibility: PropTypes.string.isRequired,
+  setVisibility: PropTypes.func.isRequired,
+  timeLimit: PropTypes.string.isRequired,
+  setTimeLimit: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  setTitle: PropTypes.func.isRequired,
+  description: PropTypes.string.isRequired,
+  setDescription: PropTypes.func.isRequired,
+  category: PropTypes.string.isRequired,
+  setCategory: PropTypes.func.isRequired,
+  questionType: PropTypes.string.isRequired,
+  setQuestionType: PropTypes.func.isRequired,
+};
 
 export default Sidebar;
