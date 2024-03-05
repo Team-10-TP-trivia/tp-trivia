@@ -1,6 +1,8 @@
 import "./Sidebar.css";
 import { useNavigate } from "react-router-dom";
+import ReactDatePicker from "react-datepicker";
 import PropTypes from "prop-types";
+import 'react-datepicker/dist/react-datepicker.css'
 
 const Sidebar = ({
   onSave,
@@ -16,6 +18,8 @@ const Sidebar = ({
   setCategory,
   questionType,
   setQuestionType,
+  activeState,
+  setActiveState,
 }) => {
   const navigate = useNavigate();
 
@@ -47,6 +51,7 @@ const Sidebar = ({
         </select>
       </div>
 
+
       <div className="sidebar-item">
         <label htmlFor="timeLimit">Time limit</label>
         <select
@@ -54,14 +59,25 @@ const Sidebar = ({
           value={timeLimit}
           onChange={(e) => setTimeLimit(e.target.value)}
         >
-          <option value="20 seconds">20 seconds</option>
-          <option value="30 seconds">30 seconds</option>
-          <option value="40 seconds">40 seconds</option>
-          <option value="60 seconds">60 seconds</option>
-          <option value="90 seconds">90 seconds</option>
+          <option value="10 minutes">10 minutes</option>
+          <option value="20 minutes">20 minutes</option>
+          <option value="30 minutes">30 minutes</option>
+          <option value="40 minutes">40 minutes</option>
+          <option value="50 minutes">50 minutes</option>
+          <option value="60 minutes">60 minutes</option>
         </select>
       </div>
 
+      <div className="datepicker-container">
+        <label htmlFor="activeState">Active Until</label><br />
+        <ReactDatePicker
+        selected={activeState}
+        onChange={(date) => setActiveState(date)}
+        dateFormat="MMMM d, yyyy"
+        minDate={new Date()}
+        />
+      </div>
+      
       <div className="sidebar-item">
         <label htmlFor="category">Category</label>
         <select
@@ -147,6 +163,8 @@ Sidebar.propTypes = {
   setCategory: PropTypes.func.isRequired,
   questionType: PropTypes.string.isRequired,
   setQuestionType: PropTypes.func.isRequired,
+  activeState: PropTypes.func.isRequired,
+  setActiveState: PropTypes.func.isRequired,
 };
 
 export default Sidebar;
