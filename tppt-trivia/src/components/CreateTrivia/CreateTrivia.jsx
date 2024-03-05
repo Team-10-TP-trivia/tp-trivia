@@ -19,7 +19,6 @@ export default function CreateTrivia() {
         { id: 3, text: "", isCorrect: false },
         { id: 4, text: "", isCorrect: false },
       ],
-      timeLimit: "20 seconds",
       selectedUnsplash: null,
       selectedGif: null,
     },
@@ -32,6 +31,8 @@ export default function CreateTrivia() {
   const [category, setCategory] = useState("General Knowledge");
   const [selectedGif, setSelectedGif] = useState(null); 
   const [selectedUnsplash, setSelectedUnsplash] = useState(null); 
+  const [timeLimit, setTimeLimit] = useState('10 minutes');
+  const [activeState, setActiveState] = useState(new Date());
 
   const handleSelectUnsplash = (unsplashUrl) => {
     setSelectedUnsplash(unsplashUrl); 
@@ -70,7 +71,6 @@ export default function CreateTrivia() {
         { id: 3, text: "", isCorrect: false },
         { id: 4, text: "", isCorrect: false },
       ],
-      timeLimit: "20 seconds",
       selectedUnsplash: null,
       selectedGif: null,
     };
@@ -180,7 +180,7 @@ export default function CreateTrivia() {
   };
 
   const handleSaveQuiz = async () => {
-    console.log(userData);
+    const isActive = new Date () <= new Date(activeState);
     const quizData = {
       creatorId: userData.uid,
       username: userData.username,
@@ -192,6 +192,9 @@ export default function CreateTrivia() {
       unsplashImg: selectedUnsplash,
       media: selectedGif,
       createdOn: new Date().toLocaleDateString("bg-BG"),
+      timeLimit: timeLimit,
+      isActive,
+      activeState: activeState.toLocaleDateString('bg-BG'),
     };
 
     try {
@@ -199,16 +202,6 @@ export default function CreateTrivia() {
     } catch (error) {
       console.error("Error saving quiz:", error);
     }
-  };
-
-  const updateTimeLimit = (slideId, newTimeLimit) => {
-    const updatedTime = slides.map((slide) => {
-      if (slide.id === slideId) {
-        return { ...slide, timeLimit: newTimeLimit };
-      }
-      return slide;
-    });
-    setSlides(updatedTime);
   };
 
   return (
@@ -314,10 +307,10 @@ export default function CreateTrivia() {
         onSave={handleSaveQuiz}
         visibility={visibility}
         setVisibility={setVisibility}
-        timeLimit={getActiveSlide().timeLimit}
-        setTimeLimit={(newTimeLimit) =>
-          updateTimeLimit(activeSlideId, newTimeLimit)
-        }
+        timeLimit={timeLimit}
+        setTimeLimit={setTimeLimit}
+        activeState={activeState}
+        setActiveState={setActiveState}
         title={title}
         setTitle={setTitle}
         description={description}
