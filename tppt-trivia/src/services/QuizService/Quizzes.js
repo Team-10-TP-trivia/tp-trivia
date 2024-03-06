@@ -27,3 +27,19 @@ export const deleteQuizById = (quizId) => {
   updateQuiz[`/quizes/${quizId}`] = null;
   return update(ref(db), updateQuiz);
 }
+
+export const getQuizById = async(quizId) => {
+  const snapshot = await get(query(ref(db, `quizes/${quizId}`)));
+
+  if (!snapshot.exists()) {
+    return [];
+  }
+
+  return snapshot.val();
+}
+
+export const changeQuizVisibility = (quizId) => {
+  const updateQuiz = {};
+  updateQuiz[`/quizes/${quizId}/isActive`] = false;
+  return update(ref(db), updateQuiz);
+}

@@ -46,8 +46,8 @@ const Sidebar = ({
           value={questionType}
           onChange={(e) => setQuestionType(e.target.value)}
         >
-          <option value="Quiz">Quiz</option>
-          <option value="True-False">True or False</option>
+          <option id="option1" value="Quiz">Quiz</option>
+          <option id="option2" value="True-False">True or False</option>
         </select>
       </div>
 
@@ -59,12 +59,12 @@ const Sidebar = ({
           value={timeLimit}
           onChange={(e) => setTimeLimit(e.target.value)}
         >
-          <option value="10 minutes">10 minutes</option>
-          <option value="20 minutes">20 minutes</option>
-          <option value="30 minutes">30 minutes</option>
-          <option value="40 minutes">40 minutes</option>
-          <option value="50 minutes">50 minutes</option>
-          <option value="60 minutes">60 minutes</option>
+          <option id="option1" value="10 minutes">10 minutes</option>
+          <option id="option2" value="20 minutes">20 minutes</option>
+          <option id="option3" value="30 minutes">30 minutes</option>
+          <option id="option4" value="40 minutes">40 minutes</option>
+          <option id="option5" value="50 minutes">50 minutes</option>
+          <option id="option6" value="60 minutes">60 minutes</option>
         </select>
       </div>
 
@@ -72,6 +72,7 @@ const Sidebar = ({
         <label htmlFor="activeState">Active Until</label><br />
         <ReactDatePicker
         selected={activeState}
+        id="activeState"
         onChange={(date) => setActiveState(date)}
         dateFormat="MMMM d, yyyy"
         minDate={new Date()}
@@ -86,7 +87,7 @@ const Sidebar = ({
           onChange={(e) => setCategory(e.target.value)}
         >
           {categories.map((category) => (
-            <option value={category} key={category}>
+            <option id="option1" value={category} key={category}>
               {category}
             </option>
           ))}
@@ -97,6 +98,7 @@ const Sidebar = ({
         <label htmlFor="title">Title</label>
         <input
           type="text"
+          id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
@@ -107,6 +109,7 @@ const Sidebar = ({
         <input
           type="text"
           value={description}
+          id="description"
           onChange={(e) => setDescription(e.target.value)}
         />
       </div>
@@ -163,7 +166,7 @@ Sidebar.propTypes = {
   setCategory: PropTypes.func.isRequired,
   questionType: PropTypes.string.isRequired,
   setQuestionType: PropTypes.func.isRequired,
-  activeState: PropTypes.func.isRequired,
+  activeState: PropTypes.instanceOf(Date).isRequired,
   setActiveState: PropTypes.func.isRequired,
 };
 
