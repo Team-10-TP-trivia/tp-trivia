@@ -5,7 +5,6 @@ import {
   ref,
   off,
   update,
-  push,
   //query,
   //equalTo,
   //orderByChild
@@ -142,15 +141,15 @@ export const removeUserFromGroup = async (groupId, userName) => {
 }
 
 export const sendMessageToGroup = async (groupId,user, message) => {
-  const messageRef = ref(db, `groups/${groupId}/messages/${user.username}`);
+  const id = generateUUID()
+  const messageRef = ref(db, `groups/${groupId}/messages/${user.username}/${id}`);
   const userMessage = {
-    id: generateUUID(),
+    id,
     message,
     sender: user.username,
     timestamp: Date.now(),
   };
-  await push(messageRef, userMessage);
-
+  await set(messageRef, userMessage);
 }
 
 export const getGroupMessages = (groupId, setMessages) => {
@@ -162,7 +161,7 @@ export const getGroupMessages = (groupId, setMessages) => {
       const messages = snapshot.val();
       setMessages(messages);
     } else {
-      console.log("No data available");
+      setMessages(null);
     }
   };
 
@@ -170,4 +169,15 @@ export const getGroupMessages = (groupId, setMessages) => {
 
   // Return a function to unsubscribe from the listener
   return () => off(messagesRef, callback);
+};
+export const updateUserMessage = async (groupId, username, messageId, message) => {
+  const updateUserMessage = {};
+  updateUserMessage[`groups/${groupId}/messages/${username}/${messageId}/message`] = message;
+  return update(ref(db), updateUserMessage);
+}
+
+export const deleteUserMessage =  (groupId, username, messageId) => {
+  const deleteUserMessage = {};
+  deleteUserMessage[`groups/${groupId}/messages/${username}/${messageId}`] = null;
+  return update(ref(db), deleteUserMessage);
 }

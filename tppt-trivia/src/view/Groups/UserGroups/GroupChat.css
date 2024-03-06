@@ -49,8 +49,8 @@
 }
 .message-options{
     position: absolute;
-    bottom: 50px;
-    left: 470px;
+    bottom: 5vh;
+    left: 25vw;
 }
 #edit:hover, #delete:hover{
     background-color: #ada9a9;
