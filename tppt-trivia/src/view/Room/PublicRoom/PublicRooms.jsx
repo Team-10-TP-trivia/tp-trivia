@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import { changeQuizVisibility } from "../../../services/QuizService/Quizzes";
+import { changeQuizVisibility, updateQuizParticipants } from "../../../services/QuizService/Quizzes";
+import { AppContext } from "../../../context/appContext";
 
 export default function PublicRooms({ quizList }) {
+  const { userData } = useContext(AppContext)
   const [quizzes, setQuizzes] = useState([]);
   const navigate = useNavigate();
   const [time, setTime] = useState({});
@@ -31,6 +33,9 @@ export default function PublicRooms({ quizList }) {
 
   const joinQuiz = (quizId) => {
     navigate(`/quiz/${quizId}`);
+    quizzes.forEach((quiz) => {
+      updateQuizParticipants(quiz.id,{...userData});
+    });
   };
 
   const timeLeft = (quiz) => {

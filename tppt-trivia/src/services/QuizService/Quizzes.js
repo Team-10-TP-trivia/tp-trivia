@@ -1,4 +1,4 @@
-import { get, query, ref, update } from "firebase/database";
+import { get, query, ref, set, update } from "firebase/database";
 import { db } from "../../config/firebase-config";
 
 export const takeAllQuizzes = async () => {
@@ -21,7 +21,11 @@ export const updateQuiz = (quizId, quizData) => {
   updateQuiz[`/quizes/${quizId}`] = quizData;
   return update(ref(db), updateQuiz);
 }
-
+export const updateQuizParticipants = (quizId, user) => {
+  return set(ref(db, `quizes/${quizId}/participants/${user.username}`), {
+    ...user,
+  });
+}
 export const deleteQuizById = (quizId) => {
   const updateQuiz = {};
   updateQuiz[`/quizes/${quizId}`] = null;

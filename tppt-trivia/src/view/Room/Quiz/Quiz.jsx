@@ -1,14 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getQuizById } from "../../../services/QuizService/Quizzes";
 import { useParams } from "react-router-dom";
-import { AppContext } from "../../../context/appContext";
+import Avatar from "@mui/material/Avatar";
+
 export default function Quiz() {
-  const { userData } = useContext(AppContext)
   const { quizId } = useParams();
   const [ quiz, setQuiz ] = useState(null);
   const [ quizQuestions, setQuizQuestions ] = useState([]);
   const [ answers , setAnswers ] = useState([]);
-
+  const [ participants, setParticipants ] = useState(null);
+  
   useEffect(() => {
     if(!quizId) return;
     getQuizById(quizId).then((snapshot) => {
@@ -17,6 +18,7 @@ export default function Quiz() {
       setAnswers(snapshot.questions.map((questionId) => {
         return Object.values(questionId.answers)
       }));
+      setParticipants(snapshot.participants);
     });
   }, [quizId]);
 
@@ -30,6 +32,7 @@ export default function Quiz() {
             return (
               <div key={question.id}>
                 <p>Question {question.id}: {question.question}</p>
+                {question.image && <img src={question.image} alt="question" />}
                 {answers && answers.map((answer) => {
                     return Object.values(answer).map((ans, i) => {
                       return (
@@ -44,6 +47,18 @@ export default function Quiz() {
             );
           })
         }
+        {participants && Object.values(participants).map((participant) => {
+          if(participant.active === true){
+            return (
+              <div key={participant.uid}>
+                <Avatar src={participant.photoURL} alt={participant.username} />
+                <p>Participant: {participant.username}</p>
+                <p>Score: {participant.score}</p>
+              </div>
+            );
+          }
+        })}
+        <p>Participants: {participants ? Object.keys(participants).length : 0}</p>
         </div>
       ) : (
         <p>No quiz available</p>
