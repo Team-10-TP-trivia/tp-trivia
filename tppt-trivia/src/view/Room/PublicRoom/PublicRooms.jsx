@@ -18,7 +18,8 @@ export default function PublicRooms({ quizList }) {
     const interval = setInterval(() => {
       quizzes.forEach((quiz) => {
         const t = timeLeft(quiz);
-        if(t.day <= 0 && t.hour <= 0 && t.minute <= 0 && t.second <= 0) {
+        if(t.day === 0 && t.hour === 0 && t.minute === 0 && t.second === 0) {
+          clearInterval(interval)
           changeQuizVisibility(quiz.id);
         }
         setTime((prevTime) => ({
@@ -40,7 +41,6 @@ export default function PublicRooms({ quizList }) {
 
   const timeLeft = (quiz) => {
     const [day, month, year] = quiz.activeState.split(" ")[0].split(".");
-
     const formattedDateStr = `${month}/${day}/${year}`;
     const targetDate = new Date(formattedDateStr);
 

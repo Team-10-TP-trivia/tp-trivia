@@ -82,7 +82,7 @@ const Profile = () => {
       </Box>
       <div>
         <p>Notifications</p>
-        {notifications &&
+        {(userData.role === "teacher" && notifications) &&
           notifications.map((notification) => {
             return (
               <div key={notification.groupId}>

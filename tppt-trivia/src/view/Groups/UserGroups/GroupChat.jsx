@@ -137,7 +137,7 @@ export default function GroupChat({ group }) {
                           type="text"
                           name="content"
                           value={
-                            editedMessage.content
+                            editedMessage.content ? editedMessage.content : singleMessage.message
                           }
                           onChange={handleInputChange}
                         />

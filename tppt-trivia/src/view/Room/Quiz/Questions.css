@@ -1,0 +1,8 @@
+.answered{
+    background-color: #4CAF50;
+    color: white;
+}
+.not-answered{
+    background-color: #f68077;
+    color: white;
+}

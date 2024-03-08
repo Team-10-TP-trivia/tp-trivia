@@ -37,7 +37,7 @@ export default function SearchUsers({ group }) {
   const sendInvitation = async (username, group) => {
     await sendUserInvitation(username, group);
   };
-console.log(sentUserInvitation)
+
   return (
     <div>
       <input
