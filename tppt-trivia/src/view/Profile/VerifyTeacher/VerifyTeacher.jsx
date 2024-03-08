@@ -32,7 +32,6 @@ export default function VerifyTeacher({ userData }) {
 
     return (
         <div>
-            {user.pendingVerification === true && <h2>Pending approval</h2>}
             {user.pendingVerification === false && (
                 <>
                     <h2>Verify that you are a teacher</h2>

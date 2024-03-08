@@ -22,6 +22,15 @@ export default function Quiz() {
     });
   }, [quizId]);
 
+  const saveAnswers = () => {
+    const answers = document.querySelectorAll('input[type="radio"]');
+    answers.forEach((answer) => {
+      if(answer.checked){
+        console.log(answer.value);
+      }
+    });
+  }
+
   return (
     <div>
       {quiz ? (
@@ -37,7 +46,7 @@ export default function Quiz() {
                     return Object.values(answer).map((ans, i) => {
                       return (
                         <div key={i}>
-                          <input type="radio" id={ans.id} name={question.id} value={ans.id}/>
+                          <input type="radio" id={ans.id} name={question.id} value={ans.text}/>
                           <label htmlFor={ans.id}>{ans.text}</label>
                         </div>
                       );
@@ -59,6 +68,7 @@ export default function Quiz() {
           }
         })}
         <p>Participants: {participants ? Object.keys(participants).length : 0}</p>
+        <button onClick={saveAnswers}>Save answers</button>
         </div>
       ) : (
         <p>No quiz available</p>

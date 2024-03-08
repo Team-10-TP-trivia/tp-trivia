@@ -53,3 +53,28 @@ export const getAllUsers = async () => {
     throw error;
   }
 };
+
+export const sendUserInvitation = async (username, group) => {
+  const updateUserInvitations = {};
+  updateUserInvitations[`users/${username}/groupInvitations/${group.groupId}`] = {
+    groupId: group.groupIds,
+    groupName: group.groupName,
+    creator: group.creatorUsername,
+    status: "pending",
+  };
+
+  await update(ref(db), updateUserInvitations);
+};
+
+export const userAcceptRequest = async (groupName, username, user) => {
+  const updateGroupUsers = {};
+  updateGroupUsers[`groups/${groupName}/users/${username}`] = user;
+  updateGroupUsers[`users/${username}/groupInvitations/${username}`] = null;
+  await update(ref(db), updateGroupUsers);
+}
+
+export const userRejectRequest = async (groupName, username) => {
+  const updateGroupRequests = {};
+  updateGroupRequests[`users/${username}/groupInvitations/${groupName}`] = null;
+  await update(ref(db), updateGroupRequests);
+}
