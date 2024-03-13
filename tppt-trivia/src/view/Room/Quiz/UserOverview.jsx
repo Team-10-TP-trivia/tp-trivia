@@ -8,6 +8,9 @@ export default function UserOverview() {
   const location = useLocation();
   const quiz = location.state.quiz;
   const quizId = location.state.quizId;
+  const answers = location.state.answers;
+  const selectedAnswers = location.state.selectedAnswers;
+  const quizQuestions = location.state.quizQuestions;
   const [userQuizResults, setUserQuizResults] = useState([]);
 
   useEffect(() => {
@@ -29,8 +32,35 @@ export default function UserOverview() {
       <h1>Your results for quiz {quiz.title}</h1>
       {userQuizResults && (
         <div>
-          <p>Right answers: {userQuizResults.rightAnswers} out of {userQuizResults.questionLength}</p>
-          <p>Points: {userQuizResults.points} out of {userQuizResults.totalPoints}</p>
+          <p>
+            Right answers: {userQuizResults.rightAnswers} out of{" "}
+            {userQuizResults.questionLength}
+          </p>
+          <p>
+            Points: {userQuizResults.points} out of{" "}
+            {userQuizResults.totalPoints}
+          </p>
+        </div>
+      )}
+      {answers && (
+        <div>
+          <h2>Your answers:</h2>
+          {answers.map((answer, index) => {
+            const question = quizQuestions[index];
+            const selectedAnswer = selectedAnswers[index];
+            const isCorrect = selectedAnswer.split("-")[1] === "true";
+            return (
+              <div key={index}>
+                <p>Question: {question.question}</p>
+                <p style={{ color: isCorrect ? "green" : "red" }}>
+                  Answer: {answer[index].text} {isCorrect ? "✅" : "❌"}
+                </p>
+                {isCorrect ? null : (
+                  <p>Right answer is: {answer.find((a) => a.isCorrect).text}</p>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

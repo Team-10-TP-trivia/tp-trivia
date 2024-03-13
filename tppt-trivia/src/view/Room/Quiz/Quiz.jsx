@@ -65,6 +65,7 @@ export default function Quiz() {
   //         if (newTime.minute === 0 && newTime.second === 0) {
   //           clearInterval(interval);
   //           // To show overview - right answers from user and score
+              //navigate(`${userData.username}/overview/`, { state: { quiz , quizId} })
   //         }
   //         return newTime;
   //       });
@@ -78,14 +79,17 @@ export default function Quiz() {
     let rightAnswers = 0;
     let wrongAnswers = 0;
     selectedAnswers.map((selAns) => {
-      if (selAns.split("-").includes("true")) {
+      const splitAns = selAns.split("-");
+      if (splitAns.includes("true")) {
         rightAnswers++;
-      }else if(selAns.split("-").includes("false")){
+      }else if(splitAns.includes("false")){
         wrongAnswers++;
       }
     });
     takenQuiz(userData.username, quizId, quizQuestions.length, rightAnswers, wrongAnswers)
-    navigate(`${userData.username}/overview/`, { state: { quiz , quizId} })
+    if(quizQuestions.length === selectedAnswers.length){
+    navigate(`${userData.username}/overview/`, { state: { quiz , quizId, answers, selectedAnswers, quizQuestions} })
+    }
   };
 
   return (
