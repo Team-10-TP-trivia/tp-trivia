@@ -43,6 +43,7 @@ export default function PublicRooms({ quizList }) {
     const [day, month, year] = quiz.activeState.split(" ")[0].split(".");
     const formattedDateStr = `${month}/${day}/${year}`;
     const targetDate = new Date(formattedDateStr);
+    targetDate.setHours(23, 59, 59, 999);
 
     const differenceMs = targetDate - new Date();
 
