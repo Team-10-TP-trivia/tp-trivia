@@ -47,3 +47,21 @@ export const changeQuizVisibility = (quizId) => {
   updateQuiz[`/quizes/${quizId}/isActive`] = false;
   return update(ref(db), updateQuiz);
 }
+
+export const takenQuiz = (username, quizId, questionLength, rightAnswers, wrongAnswers) => {
+  return set(ref(db, `/users/${username}/takenQuizzes/${quizId}`), {
+    questionLength,
+    rightAnswers,
+    wrongAnswers
+  });
+}
+
+export const getUserQuiz = async(username, quizId) => {
+  const snapshot = await get(query(ref(db, `/users/${username}/takenQuizzes/${quizId}`)))
+  
+  if(!snapshot.exists()){
+    return [];
+  }
+  
+  return snapshot.val();
+}

@@ -9,50 +9,59 @@ export default function Questions({
   setSelectedAnswers,
 }) {
   const [visibleQuestionIndex, setVisibleQuestionIndex] = useState(0);
-  const [answeredQuestions, setAnsweredQuestions] = useState(new Array(quizQuestions.length).fill(false));
+  const [answeredQuestions, setAnsweredQuestions] = useState(
+    Array.from(quizQuestions.length).fill(false)
+  );
+  const [selectedAnswerId, setSelectedAnswerId] = useState(
+    Array(quizQuestions.length).fill(-1)
+  );
 
   const handleAnswerChange = (e) => {
-  const newAnswers = [...selectedAnswers];
-  newAnswers[visibleQuestionIndex] = e.target.value;
-  setSelectedAnswers(newAnswers);
+    const newAnswersId = [...selectedAnswerId];
+    newAnswersId[visibleQuestionIndex] = +e.target.id;
+    setSelectedAnswerId(newAnswersId);
+    const newAnswers = [...selectedAnswers];
+    newAnswers[visibleQuestionIndex] = e.target.value;
+    setSelectedAnswers(newAnswers);
 
-  const newAnsweredQuestions = [...answeredQuestions];
-  newAnsweredQuestions[visibleQuestionIndex] = true;
-  setAnsweredQuestions(newAnsweredQuestions);
-};
+    const newAnsweredQuestions = [...answeredQuestions];
+    newAnsweredQuestions[visibleQuestionIndex] = true;
+    setAnsweredQuestions(newAnsweredQuestions);
+  };
 
   const handleNextQuestion = () => {
     const nextIndex = visibleQuestionIndex + 1;
     const newIndex = nextIndex >= quizQuestions.length ? 0 : nextIndex;
     setVisibleQuestionIndex(newIndex);
-    setSelectedAnswers((prevAnswers) => {
-        const newAnswers = [...prevAnswers];
-        if (newAnswers[visibleQuestionIndex] === "") {
-            newAnswers[visibleQuestionIndex] = "";
-        }
-        return newAnswers;
+    setSelectedAnswerId((prevAnswers) => {
+      const newAnswers = [...prevAnswers];
+      if (newAnswers[visibleQuestionIndex] === "") {
+        newAnswers[visibleQuestionIndex] = "";
+      }
+      return newAnswers;
     });
-};
+  };
 
-const handlePreviousQuestion = () => {
+  const handlePreviousQuestion = () => {
     const nextIndex = visibleQuestionIndex - 1;
     const newIndex = nextIndex < 0 ? quizQuestions.length - 1 : nextIndex;
     setVisibleQuestionIndex(newIndex);
-    setSelectedAnswers((prevAnswers) => {
-        const newAnswers = [...prevAnswers];
-        if (newAnswers[visibleQuestionIndex] === "") {
-            newAnswers[visibleQuestionIndex] = "";
-        }
-        return newAnswers;
+    setSelectedAnswerId((prevAnswers) => {
+      const newAnswers = [...prevAnswers];
+      if (newAnswers[visibleQuestionIndex] === "") {
+        newAnswers[visibleQuestionIndex] = "";
+      }
+      return newAnswers;
     });
-};
+  };
 
   return (
     <div>
       {quizQuestions.map((question, index) => (
         <div key={question.id}>
-          <button onClick={() => setVisibleQuestionIndex(index)}
-          className={answeredQuestions[index] ? 'answered' : 'not-answered'}
+          <button
+            onClick={() => setVisibleQuestionIndex(index)}
+            className={answeredQuestions[index] ? "answered" : "not-answered"}
           >
             {index + 1}
           </button>
@@ -70,23 +79,27 @@ const handlePreviousQuestion = () => {
               alt="question"
             />
           )}
-          {answers[visibleQuestionIndex].map((ans) =>{
+          {answers[visibleQuestionIndex].map((ans) => {
             return (
-                <div key={ans.id}>
-                  <input
-                    type="radio"
-                    id={ans.id}
-                    name={quizQuestions[visibleQuestionIndex].id}
-                    value={ans.text}
-                    checked={selectedAnswers[visibleQuestionIndex] === ans.text}
-                    onChange={handleAnswerChange}
-                  />
-                  <label htmlFor={ans.id}>{ans.text}</label>
-                </div>
-              )
-          } )}
-          <button onClick={handlePreviousQuestion}>Previous Question</button>
-          <button onClick={handleNextQuestion}>Next Question</button>
+              <div key={ans.id}>
+                <input
+                  type="radio"
+                  id={ans.id}
+                  name={quizQuestions[visibleQuestionIndex].id}
+                  value={ans.text + "-" + ans.isCorrect.toString()}
+                  checked={selectedAnswerId[visibleQuestionIndex] === ans.id}
+                  onChange={handleAnswerChange}
+                />
+                <label htmlFor={ans.id}>{ans.text}</label>
+              </div>
+            );
+          })}
+          {quizQuestions.length > 1 && (
+            <button onClick={handlePreviousQuestion}>Previous Question</button>
+          )}
+          {quizQuestions.length > 1 && (
+            <button onClick={handleNextQuestion}>Next Question</button>
+          )}
         </div>
       )}
     </div>
