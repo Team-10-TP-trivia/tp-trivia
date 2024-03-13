@@ -71,6 +71,21 @@ const Sidebar = ({
       </div>
 
       <div className="sidebar-item">
+        <label htmlFor="category">Category</label>
+        <select
+          id="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          {categories.map((category) => (
+            <option id="option1" value={category} key={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="sidebar-item">
         <label htmlFor="points">Points</label>
         <input 
         type="number"
@@ -90,20 +105,7 @@ const Sidebar = ({
         />
       </div>
       
-      <div className="sidebar-item">
-        <label htmlFor="category">Category</label>
-        <select
-          id="category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        >
-          {categories.map((category) => (
-            <option id="option1" value={category} key={category}>
-              {category}
-            </option>
-          ))}
-        </select>
-      </div>
+      
 
       <div className="title-sidebar">
         <label htmlFor="title">Title</label>
