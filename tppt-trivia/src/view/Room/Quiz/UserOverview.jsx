@@ -12,6 +12,7 @@ export default function UserOverview() {
   const selectedAnswers = location.state.selectedAnswers;
   const quizQuestions = location.state.quizQuestions;
   const [userQuizResults, setUserQuizResults] = useState([]);
+  const [ percentage , setPercentage ] = useState(0);
 
   useEffect(() => {
     if (!quizId || !userData) return;
@@ -19,6 +20,7 @@ export default function UserOverview() {
       try {
         const snapshot = await getUserQuiz(userData.username, quizId);
         setUserQuizResults(snapshot);
+        setPercentage((snapshot.receivedPoints / snapshot.quizPoints) * 100);
       } catch (error) {
         console.error("Error fetching user results:", error);
       }
@@ -34,7 +36,7 @@ export default function UserOverview() {
         <div>
           <p>
             Right answers: {userQuizResults.rightAnswers} out of{" "}
-            {userQuizResults.questionLength}
+            {userQuizResults.questionLength} - {percentage}% right answers
           </p>
           <p>
             Points: {userQuizResults.receivedPoints} out of{" "}
