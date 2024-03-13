@@ -12,6 +12,7 @@ export default function UserOverview() {
   const selectedAnswers = location.state.selectedAnswers;
   const quizQuestions = location.state.quizQuestions;
   const [userQuizResults, setUserQuizResults] = useState([]);
+  const [ percentage , setPercentage ] = useState(0);
 
   useEffect(() => {
     if (!quizId || !userData) return;
@@ -19,6 +20,7 @@ export default function UserOverview() {
       try {
         const snapshot = await getUserQuiz(userData.username, quizId);
         setUserQuizResults(snapshot);
+        setPercentage((snapshot.receivedPoints / snapshot.quizPoints) * 100);
       } catch (error) {
         console.error("Error fetching user results:", error);
       }
@@ -34,33 +36,44 @@ export default function UserOverview() {
         <div>
           <p>
             Right answers: {userQuizResults.rightAnswers} out of{" "}
-            {userQuizResults.questionLength}
+            {userQuizResults.questionLength} - {percentage}% right answers
           </p>
           <p>
-            Points: {userQuizResults.points} out of{" "}
-            {userQuizResults.totalPoints}
+            Points: {userQuizResults.receivedPoints} out of{" "}
+            {userQuizResults.quizPoints}
           </p>
         </div>
       )}
       {answers && (
         <div>
           <h2>Your answers:</h2>
-          {answers.map((answer, index) => {
-            const question = quizQuestions[index];
-            const selectedAnswer = selectedAnswers[index];
-            const isCorrect = selectedAnswer.split("-")[1] === "true";
-            return (
-              <div key={index}>
-                <p>Question: {question.question}</p>
-                <p style={{ color: isCorrect ? "green" : "red" }}>
-                  Answer: {answer[index].text} {isCorrect ? "✅" : "❌"}
-                </p>
-                {isCorrect ? null : (
-                  <p>Right answer is: {answer.find((a) => a.isCorrect).text}</p>
-                )}
-              </div>
-            );
-          })}
+          {selectedAnswers &&
+            answers.map((answer, index) => {
+              const question = quizQuestions[index];
+              const selectedAnswer = selectedAnswers[index];
+              if (!selectedAnswer) {
+                return (
+                  <div key={index}>
+                    <p>Question: {question.question}</p>
+                    <p>No answer selected</p>
+                  </div>
+                );
+              }
+              const isCorrect = selectedAnswer.split("-")[1] === "true";
+              return (
+                <div key={index}>
+                  <p>Question: {question.question}</p>
+                  <p style={{ color: isCorrect ? "green" : "red" }}>
+                    Answer: {answer[index].text} {isCorrect ? "✅" : "❌"}
+                  </p>
+                  {isCorrect ? null : (
+                    <p>
+                      Right answer is: {answer.find((a) => a.isCorrect).text}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
         </div>
       )}
     </div>

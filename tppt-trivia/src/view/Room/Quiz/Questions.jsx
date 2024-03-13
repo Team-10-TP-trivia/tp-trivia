@@ -73,6 +73,7 @@ export default function Questions({
             Question {visibleQuestionIndex + 1}:{" "}
             {quizQuestions[visibleQuestionIndex].question}
           </p>
+          <p>Points: {quizQuestions[visibleQuestionIndex].points}</p>
           {quizQuestions[visibleQuestionIndex].image && (
             <img
               src={quizQuestions[visibleQuestionIndex].image}
@@ -86,11 +87,12 @@ export default function Questions({
                   type="radio"
                   id={ans.id}
                   name={quizQuestions[visibleQuestionIndex].id}
-                  value={ans.text + "-" + ans.isCorrect.toString()}
+                  value={ans.text + "-" + ans.isCorrect.toString() + "-" + quizQuestions[visibleQuestionIndex].points}
                   checked={selectedAnswerId[visibleQuestionIndex] === ans.id}
                   onChange={handleAnswerChange}
                 />
                 <label htmlFor={ans.id}>{ans.text}</label>
+                <p>{ans.points}</p>
               </div>
             );
           })}

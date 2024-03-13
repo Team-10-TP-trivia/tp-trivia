@@ -15,10 +15,10 @@ export default function Header() {
           <HeaderSlider />
           
           {user ? <Link to={user ? '/create-trivia' : '/login'} className='header-container-buttons'>
-            <p>➕</p>Create trivia</Link> : ''}
+            <p>➕</p>Create quiz</Link> : ''}
   
           <Link to={user ? '/join-room': '/login'} className='header-container-buttons'><p>🎮</p>
-          Join room</Link>
+          Join quiz</Link>
       </div>
       </>
     }
@@ -31,10 +31,10 @@ export default function Header() {
         <HeaderSlider />
         
         {userData.role === 'teacher' || userData.role === 'admin' ? <Link to={user ? '/create-trivia' : '/login'} className='header-container-buttons'>
-          <p>➕</p>Create trivia</Link> : ''}
+          <p>➕</p>Create quiz</Link> : ''}
 
         <Link to={user ? '/join-room': '/login'} className='header-container-buttons'><p>🎮</p>
-        Join room</Link>
+        Join quiz</Link>
     </div>
     </>
   )

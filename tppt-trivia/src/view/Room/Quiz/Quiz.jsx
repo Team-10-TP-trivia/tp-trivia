@@ -14,11 +14,12 @@ export default function Quiz() {
   const [answers, setAnswers] = useState([]);
   const [participants, setParticipants] = useState(null);
   const [time, setTime] = useState({});
-  //const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedAnswers, setSelectedAnswers] = useState(
     Array(quizQuestions.length).fill(-1)
   );
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [showUnansweredPopup, setShowUnansweredPopup] = useState(false);
+  const [quizPoints, setQuizPoints] = useState(0);
 
   useEffect(() => {
     if (!quizId) return;
@@ -28,6 +29,7 @@ export default function Quiz() {
         const snapshot = await getQuizById(quizId);
         setQuiz(snapshot);
         setQuizQuestions(snapshot.questions);
+        setQuizPoints(snapshot.questions.reduce((acc, curr) => acc + curr.points, 0));
         setAnswers(
           snapshot.questions.map((questionId) => {
             return Object.values(questionId.answers);
@@ -78,18 +80,27 @@ export default function Quiz() {
   const saveAnswers = () => {
     let rightAnswers = 0;
     let wrongAnswers = 0;
+    let userPoints = 0;
     selectedAnswers.map((selAns) => {
       const splitAns = selAns.split("-");
       if (splitAns.includes("true")) {
+        userPoints += +splitAns[2];
         rightAnswers++;
-      }else if(splitAns.includes("false")){
+      } else if (splitAns.includes("false")) {
         wrongAnswers++;
       }
     });
-    takenQuiz(userData.username, quizId, quizQuestions.length, rightAnswers, wrongAnswers)
-    if(quizQuestions.length === selectedAnswers.length){
-    navigate(`${userData.username}/overview/`, { state: { quiz , quizId, answers, selectedAnswers, quizQuestions} })
+
+    takenQuiz(userData.username, quizId, quizQuestions.length, rightAnswers, wrongAnswers, quizPoints, userPoints);
+    if (selectedAnswers.length < quizQuestions.length) {
+      setShowUnansweredPopup(true);
+    } else {
+      moveToNextPage();
     }
+  };
+
+  const moveToNextPage = () => {
+    navigate(`${userData.username}/overview/`, { state: { quiz, quizId, answers, selectedAnswers, quizQuestions } });
   };
 
   return (
@@ -127,6 +138,13 @@ export default function Quiz() {
           <p>
             Participants: {participants ? Object.keys(participants).length : 0}
           </p>
+          {showUnansweredPopup && (
+            <div>
+              <p>You have unanswered questions. Do you want to proceed?</p>
+              <button onClick={() => setShowUnansweredPopup(false)}>Cancel</button>
+              <button onClick={() => moveToNextPage()}>Proceed</button>
+            </div>
+          )}
           <button onClick={() => saveAnswers()}>Save answers</button>
         </div>
       ) : (

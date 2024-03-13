@@ -48,9 +48,11 @@ export const changeQuizVisibility = (quizId) => {
   return update(ref(db), updateQuiz);
 }
 
-export const takenQuiz = (username, quizId, questionLength, rightAnswers, wrongAnswers) => {
+export const takenQuiz = (username, quizId, questionLength, rightAnswers, wrongAnswers, quizPoints, receivedPoints) => {
   return set(ref(db, `/users/${username}/takenQuizzes/${quizId}`), {
     questionLength,
+    quizPoints,
+    receivedPoints,
     rightAnswers,
     wrongAnswers
   });
