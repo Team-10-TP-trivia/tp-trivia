@@ -37,30 +37,41 @@ export default function UserOverview() {
             {userQuizResults.questionLength}
           </p>
           <p>
-            Points: {userQuizResults.points} out of{" "}
-            {userQuizResults.totalPoints}
+            Points: {userQuizResults.receivedPoints} out of{" "}
+            {userQuizResults.quizPoints}
           </p>
         </div>
       )}
       {answers && (
         <div>
           <h2>Your answers:</h2>
-          {answers.map((answer, index) => {
-            const question = quizQuestions[index];
-            const selectedAnswer = selectedAnswers[index];
-            const isCorrect = selectedAnswer.split("-")[1] === "true";
-            return (
-              <div key={index}>
-                <p>Question: {question.question}</p>
-                <p style={{ color: isCorrect ? "green" : "red" }}>
-                  Answer: {answer[index].text} {isCorrect ? "✅" : "❌"}
-                </p>
-                {isCorrect ? null : (
-                  <p>Right answer is: {answer.find((a) => a.isCorrect).text}</p>
-                )}
-              </div>
-            );
-          })}
+          {selectedAnswers &&
+            answers.map((answer, index) => {
+              const question = quizQuestions[index];
+              const selectedAnswer = selectedAnswers[index];
+              if (!selectedAnswer) {
+                return (
+                  <div key={index}>
+                    <p>Question: {question.question}</p>
+                    <p>No answer selected</p>
+                  </div>
+                );
+              }
+              const isCorrect = selectedAnswer.split("-")[1] === "true";
+              return (
+                <div key={index}>
+                  <p>Question: {question.question}</p>
+                  <p style={{ color: isCorrect ? "green" : "red" }}>
+                    Answer: {answer[index].text} {isCorrect ? "✅" : "❌"}
+                  </p>
+                  {isCorrect ? null : (
+                    <p>
+                      Right answer is: {answer.find((a) => a.isCorrect).text}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
         </div>
       )}
     </div>
