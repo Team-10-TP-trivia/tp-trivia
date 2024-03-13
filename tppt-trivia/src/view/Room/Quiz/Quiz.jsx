@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
-import { getQuizById } from "../../../services/QuizService/Quizzes";
+import { useContext, useEffect, useState } from "react";
+import { getQuizById, takenQuiz } from "../../../services/QuizService/Quizzes";
 import { useParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Questions from "./Questions";
+import { AppContext } from "../../../context/appContext"
+import { useNavigate } from "react-router-dom";
 
 export default function Quiz() {
+  const { userData } = useContext(AppContext);
   const { quizId } = useParams();
   const [quiz, setQuiz] = useState(null);
   const [quizQuestions, setQuizQuestions] = useState([]);
@@ -12,7 +15,10 @@ export default function Quiz() {
   const [participants, setParticipants] = useState(null);
   const [time, setTime] = useState({});
   //const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedAnswers, setSelectedAnswers] = useState([]);
+  const [selectedAnswers, setSelectedAnswers] = useState(
+    Array(quizQuestions.length).fill(-1)
+  );
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (!quizId) return;
@@ -45,46 +51,60 @@ export default function Quiz() {
     fetchQuiz();
   }, [quizId]);
 
-  useEffect(() => {
-    if (quiz) {
-      const interval = setInterval(() => {
-        setTime((prevTime) => {
-          const newTime = { ...prevTime };
-          if (newTime.second === 0) {
-            newTime.minute -= 1;
-            newTime.second = 59;
-          } else {
-            newTime.second -= 1;
-          }
-          if (newTime.minute === 0 && newTime.second === 0) {
-            clearInterval(interval);
-            // To show overview - right answers from user and score
-          }
-          return newTime;
-        });
-      }, 1000);
+  // useEffect(() => {
+  //   if (quiz) {
+  //     const interval = setInterval(() => {
+  //       setTime((prevTime) => {
+  //         const newTime = { ...prevTime };
+  //         if (newTime.second === 0) {
+  //           newTime.minute -= 1;
+  //           newTime.second = 59;
+  //         } else {
+  //           newTime.second -= 1;
+  //         }
+  //         if (newTime.minute === 0 && newTime.second === 0) {
+  //           clearInterval(interval);
+  //           // To show overview - right answers from user and score
+  //         }
+  //         return newTime;
+  //       });
+  //     }, 1000);
 
-      return () => clearInterval(interval);
-    }
-  }, [quiz]);
+  //     return () => clearInterval(interval);
+  //   }
+  // }, [quiz]);
 
   const saveAnswers = () => {
-    const checkedAnswers = document.querySelectorAll(
-      'input[type="radio"]:checked'
-    );
-    checkedAnswers.forEach((answer) => {
-      console.log(answer.value);
+    let rightAnswers = 0;
+    let wrongAnswers = 0;
+    selectedAnswers.map((selAns) => {
+      if (selAns.split("-").includes("true")) {
+        rightAnswers++;
+      }else if(selAns.split("-").includes("false")){
+        wrongAnswers++;
+      }
     });
+    takenQuiz(userData.username, quizId, quizQuestions.length, rightAnswers, wrongAnswers)
+    navigate(`${userData.username}/overview/`, { state: { quiz , quizId} })
   };
-  
+
   return (
     <div>
       {quiz ? (
         <div>
           <h1>Quiz Title: {quiz.title}</h1>
           <h2>Quiz description: {quiz.description}</h2>
-          <h2>Time left: {time.minute < 10 ? '0' : ''}{time.minute}:{time.second < 10 ? '0' : ''}{time.second}</h2>
-          <Questions quizQuestions={quizQuestions} answers={answers} selectedAnswers={selectedAnswers} setSelectedAnswers={setSelectedAnswers}/>
+          <h2>
+            Time left: {time.minute < 10 ? "0" : ""}
+            {time.minute}:{time.second < 10 ? "0" : ""}
+            {time.second}
+          </h2>
+          <Questions
+            quizQuestions={quizQuestions}
+            answers={answers}
+            selectedAnswers={selectedAnswers}
+            setSelectedAnswers={setSelectedAnswers}
+          />
           {participants &&
             Object.values(participants).map((participant) => {
               if (participant.active === true) {
@@ -100,8 +120,10 @@ export default function Quiz() {
                 );
               }
             })}
-          <p>Participants: {participants ? Object.keys(participants).length : 0}</p>
-          <button onClick={saveAnswers}>Save answers</button>
+          <p>
+            Participants: {participants ? Object.keys(participants).length : 0}
+          </p>
+          <button onClick={() => saveAnswers()}>Save answers</button>
         </div>
       ) : (
         <p>No quiz available</p>
