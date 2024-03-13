@@ -21,6 +21,7 @@ export default function CreateTrivia() {
       ],
       selectedUnsplash: null,
       selectedGif: null,
+      points: 1,
     },
   ]);
 
@@ -33,6 +34,7 @@ export default function CreateTrivia() {
   const [selectedUnsplash, setSelectedUnsplash] = useState(null); 
   const [timeLimit, setTimeLimit] = useState('10 minutes');
   const [activeState, setActiveState] = useState(new Date());
+ 
 
   const handleSelectUnsplash = (unsplashUrl) => {
     setSelectedUnsplash(unsplashUrl); 
@@ -73,6 +75,7 @@ export default function CreateTrivia() {
       ],
       selectedUnsplash: null,
       selectedGif: null,
+      points: 1,
     };
     setSlides([...slides, newSlide]);
     setTitle("");
@@ -176,6 +179,14 @@ export default function CreateTrivia() {
       }
       return slide;
     });
+    setSlides(updatedSlides);
+  };
+
+
+  const handlePointsChange = (newPoints, slideId = activeSlideId) => {
+    const updatedSlides = slides.map((slide) =>
+      slide.id === slideId ? { ...slide, points: newPoints } : slide
+    );
     setSlides(updatedSlides);
   };
 
@@ -319,6 +330,8 @@ export default function CreateTrivia() {
         setCategory={setCategory}
         questionType={questionType}
         setQuestionType={updateQuestionType}
+        points={getActiveSlide().points}
+        setPoints={handlePointsChange}
       />
     </div>
   );

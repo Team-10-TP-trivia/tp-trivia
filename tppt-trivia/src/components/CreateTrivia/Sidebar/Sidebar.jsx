@@ -20,6 +20,8 @@ const Sidebar = ({
   setQuestionType,
   activeState,
   setActiveState,
+  points,
+  setPoints,
 }) => {
   const navigate = useNavigate();
 
@@ -66,6 +68,15 @@ const Sidebar = ({
           <option id="option5" value="50 minutes">50 minutes</option>
           <option id="option6" value="60 minutes">60 minutes</option>
         </select>
+      </div>
+
+      <div className="sidebar-item">
+        <label htmlFor="points">Points</label>
+        <input 
+        type="number"
+        id="points"
+        value={points}
+        onChange={(e) => setPoints(parseInt(e.target.value) || 1)} />
       </div>
 
       <div className="datepicker-container">
@@ -168,6 +179,8 @@ Sidebar.propTypes = {
   setQuestionType: PropTypes.func.isRequired,
   activeState: PropTypes.instanceOf(Date).isRequired,
   setActiveState: PropTypes.func.isRequired,
+  points: PropTypes.number.isRequired,
+  setPoints: PropTypes.func.isRequired,
 };
 
 export default Sidebar;
