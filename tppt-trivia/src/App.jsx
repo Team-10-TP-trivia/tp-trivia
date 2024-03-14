@@ -26,6 +26,7 @@ import GeneralKnowledge from './view/Categories/GeneralKnowledge/GeneralKnowledg
 import OpenUserGroup from './view/Groups/UserGroups/OpenUserGroup';
 import Quiz from './view/Room/Quiz/Quiz';
 import UserOverview from './view/Room/Quiz/UserOverview';
+import { PrivateQuizPinCode } from './view/Room/PrivateRoom/PrivateQuizPinCode';
 
 function App() {
   const [context, setContext] = useState({
@@ -71,6 +72,7 @@ function App() {
             <Route path='/general-knowledge' element={<GeneralKnowledge />} />
             <Route path='/profile/group/:groupId' element={<OpenUserGroup />} />
             <Route path='/quiz/:quizId' element={<Quiz />} />
+            <Route path='/quiz/:quizId/enter-code' element={<PrivateQuizPinCode />} />
             <Route path='/quiz/:quizId/:username/overview' element={<UserOverview />} />
           </Routes>
         </Layout>          

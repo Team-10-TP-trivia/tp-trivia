@@ -34,9 +34,11 @@ export default function PublicRooms({ quizList }) {
 
   const joinQuiz = (quizId) => {
     navigate(`/quiz/${quizId}`);
-    quizzes.forEach((quiz) => {
-      updateQuizParticipants(quiz.id,{...userData});
-    });
+    if(userData.role === "student"){
+      quizzes.forEach((quiz) => {
+        updateQuizParticipants(quiz.id,{...userData});
+      });
+    }
   };
 
   const timeLeft = (quiz) => {
@@ -63,8 +65,8 @@ export default function PublicRooms({ quizList }) {
 
   return (
     <div>
-      <h1>Public Rooms</h1>
-      {quizzes.length > 0 ? (
+      <h1>Public Quizzes</h1>
+      {userData.role === "student" && quizzes.length > 0 && (
         quizzes.map((quiz) => {
           return quiz.isActive === true ? (
             <div key={quiz.id}>
@@ -100,9 +102,30 @@ export default function PublicRooms({ quizList }) {
             </div>
           );
         })
-      ) : (
-        <p>No quizzes available</p>
       )}
+      {userData.role === "teacher" &&
+        quizzes.length > 0 &&
+        quizzes.map((quiz) => {
+          return (
+            <div key={quiz.id}>
+              <p>Quiz Title: {quiz.title}</p>
+              <p>Quiz description: {quiz.description}</p>
+              {time[quiz.id] && (
+                <p>
+                  Time left: {time[quiz.id].day} days {time[quiz.id].hour} hours{" "}
+                  {time[quiz.id].minute} minutes {time[quiz.id].second} seconds
+                </p>
+              )}
+              <button
+                onClick={() => {
+                  joinQuiz(quiz.id);
+                }}
+              >
+                See Quiz
+              </button>
+            </div>
+          );
+        })}
     </div>
   );
 }

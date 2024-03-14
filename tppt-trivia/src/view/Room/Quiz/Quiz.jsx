@@ -5,6 +5,7 @@ import Avatar from "@mui/material/Avatar";
 import Questions from "./Questions";
 import { AppContext } from "../../../context/appContext"
 import { useNavigate } from "react-router-dom";
+import TeacherOverview from "./TeacherOverview";
 
 export default function Quiz() {
   const { userData } = useContext(AppContext);
@@ -28,6 +29,7 @@ export default function Quiz() {
       try {
         const snapshot = await getQuizById(quizId);
         setQuiz(snapshot);
+        if(!snapshot.questions) return;
         setQuizQuestions(snapshot.questions);
         setQuizPoints(snapshot.questions.reduce((acc, curr) => acc + curr.points, 0));
         setAnswers(
@@ -35,7 +37,7 @@ export default function Quiz() {
             return Object.values(questionId.answers);
           })
         );
-        setParticipants(snapshot.participants);
+        if(snapshot.participants) setParticipants(snapshot.participants);
 
         // Calculate initial time left once quiz data is fetched
         const minutesLeft = parseFloat(snapshot.timeLimit.split(" ")[0]);
@@ -103,9 +105,11 @@ export default function Quiz() {
     navigate(`${userData.username}/overview/`, { state: { quiz, quizId, answers, selectedAnswers, quizQuestions } });
   };
 
+  if(!userData || !quiz) return null;
+
   return (
     <div>
-      {quiz ? (
+      {userData.role === 'student' && quiz && (
         <div>
           <h1>Quiz Title: {quiz.title}</h1>
           <h2>Quiz description: {quiz.description}</h2>
@@ -135,9 +139,6 @@ export default function Quiz() {
                 );
               }
             })}
-          <p>
-            Participants: {participants ? Object.keys(participants).length : 0}
-          </p>
           {showUnansweredPopup && (
             <div>
               <p>You have unanswered questions. Do you want to proceed?</p>
@@ -147,8 +148,11 @@ export default function Quiz() {
           )}
           <button onClick={() => saveAnswers()}>Save answers</button>
         </div>
-      ) : (
-        <p>No quiz available</p>
+      )}
+      {userData.role === 'teacher' && quiz && (
+        <div>
+        <TeacherOverview quiz={quiz} quizId={quizId} participants={participants}/>
+      </div>
       )}
     </div>
   );
