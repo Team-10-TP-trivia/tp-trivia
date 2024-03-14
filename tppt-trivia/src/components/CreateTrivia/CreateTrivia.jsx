@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar/Sidebar";
 import { saveQuiz } from "../../services/QuizService/SaveQuiz";
 import { AppContext } from "../../context/appContext";
 import Modal from "../ModalComponent/Modal";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateTrivia() {
   const { userData } = useContext(AppContext);
@@ -33,7 +34,9 @@ export default function CreateTrivia() {
   const [selectedGif, setSelectedGif] = useState(null); 
   const [selectedUnsplash, setSelectedUnsplash] = useState(null); 
   const [timeLimit, setTimeLimit] = useState('10 minutes');
-  const [activeState, setActiveState] = useState(new Date());
+  const [activeState, setActiveState] = useState("");
+
+  const navigate = useNavigate();
  
 
   const handleSelectUnsplash = (unsplashUrl) => {
@@ -191,6 +194,22 @@ export default function CreateTrivia() {
   };
 
   const handleSaveQuiz = async () => {
+
+    if(!title.trim() || !description.trim()){
+      alert('Please fill in the title and the description.');
+      return
+    }
+
+    for(const slide of slides){
+      if(!slide.question.trim() || slide.answers.some(answer => !answer.text.trim())){
+        alert('Please fill in all the questions and answers');
+        return
+      }
+      if(!slide.answers.some(answer => answer.isCorrect)){
+        alert('Please select correct answer for each question.');
+        return
+      }
+    }
     const isActive = new Date () <= new Date(activeState);
     const quizData = {
       creatorId: userData.uid,
@@ -210,6 +229,7 @@ export default function CreateTrivia() {
 
     try {
       await saveQuiz(quizData);
+      navigate('/join-room');
     } catch (error) {
       console.error("Error saving quiz:", error);
     }
