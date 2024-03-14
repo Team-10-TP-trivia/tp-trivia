@@ -29,6 +29,15 @@ export const getAllUsers = async () => {
       }
 }
 
+export const findStudents = async (search) => {
+    const users = await getAllUsers();
+    const searchTerms = search.toLowerCase().split(" ");
+    return users.filter((user) => {
+        const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
+        return user.role === "student" && searchTerms.every(term => fullName.includes(term));
+    });
+}
+
 export const sendVerificationToAdmins = async (username, mail, firstName, lastName, school) => {
     const users = await getAllUsers();
     const admins = users.filter((user) => user.role === "admin");

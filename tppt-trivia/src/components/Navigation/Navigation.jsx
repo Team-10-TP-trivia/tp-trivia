@@ -4,7 +4,8 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { AppContext } from "../../context/appContext";
 import { logoutUser } from "../../services/Authentication/auth-service";
-import './Navigation.css'
+import { Avatar } from "@mui/material";
+import "./Navigation.css";
 
 /**
  * Component for the navigation bar of the webpage.
@@ -15,21 +16,21 @@ import './Navigation.css'
 export default function Navigation() {
   const { user, userData, setContext } = useContext(AppContext);
   const [admin, setAdmin] = useState(false);
-  const [ teacher, setTeacher ] = useState(false);
+  const [teacher, setTeacher] = useState(false);
 
   /**
    * Checks if the user is an admin when the component mounts or when userData changes.
    */
   useEffect(() => {
-    if (userData && userData.role === 'admin') {
+    if (userData && userData.role === "admin") {
       setAdmin(true);
-    }else{
+    } else {
       setAdmin(false);
     }
 
-    if (userData && userData.role === 'teacher') {
+    if (userData && userData.role === "teacher") {
       setTeacher(true);
-    }else{
+    } else {
       setTeacher(false);
     }
   }, [userData]);
@@ -44,23 +45,16 @@ export default function Navigation() {
     setContext({ user: null, userData: null });
   };
 
-
   return (
     <div className="navigation-container">
-      <nav className="navigation">
+      <nav
+        className={user ? "navigation-with-user" : "navigation-without-user"}
+      >
         <NavLink className="navigation-menu" to="/home">
           Home
         </NavLink>
         {user ? (
           <>
-            {/* <NavLink className="navigation-menu" to="/create-post">
-              Create Post
-            </NavLink>
-
-            <NavLink className="navigation-menu" to="/all-posts">
-              All Posts
-            </NavLink> */}
-
             {admin && (
               <NavLink className="navigation-menu" to="/admin">
                 Admin&apos;s panel
@@ -70,7 +64,6 @@ export default function Navigation() {
               <NavLink className="navigation-menu" to="/groups">
                 Groups
               </NavLink>
-            
             )}
 
             <NavLink className="navigation-menu" onClick={logOut} to="/">
@@ -78,9 +71,18 @@ export default function Navigation() {
             </NavLink>
 
             <NavLink
-              to="/profile" 
-              id="profile-link">
-                {`${userData?.username}'s Profile`}</NavLink>
+              to="/profile"
+              id="profile-link"
+              className="navigation-menu"
+            >
+              <Avatar
+                src={user.photoURL}
+                alt="User Avatar"
+                className="profile-avatar"
+                sx={{ width: 25, height: 25 }}
+              />
+              <span>{`${userData?.username}'s Profile`}</span>
+            </NavLink>
           </>
         ) : (
           <>
