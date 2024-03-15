@@ -1,7 +1,7 @@
 import { get, query, ref, set, update } from "firebase/database";
 import { db } from "../../config/firebase-config";
 
-export const takeAllQuizzes = async () => {
+export const takeAllQuizzes = async (search) => {
   const snapshot = await get(query(ref(db, "quizes")));
 
   if (!snapshot.exists()) {
@@ -12,6 +12,15 @@ export const takeAllQuizzes = async () => {
     id: key,
     ...snapshot.val()[key],
   }));
+
+  if (search) {
+    const filteredQuizzes = quizzes.filter((quiz) => {
+      const { title, category } = quiz;
+      return title.includes(search) || category.includes(search);
+    });
+
+    return filteredQuizzes;
+  }
 
   return quizzes;
 };

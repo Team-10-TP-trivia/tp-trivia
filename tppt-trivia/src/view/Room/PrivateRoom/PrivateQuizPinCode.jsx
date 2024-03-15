@@ -40,7 +40,6 @@ export const PrivateQuizPinCode = () => {
         inputRefs.current[index + 1].focus();
       }
 
-      // Check if the pin code is complete
       const enteredCode = newPinCode.join("");
       if (enteredCode.length === quiz.privateCode.length) {
         if (enteredCode === quiz.privateCode) {
@@ -50,13 +49,14 @@ export const PrivateQuizPinCode = () => {
               updateQuizParticipants(quiz.id, { ...userData });
             });
           }
-          setErrorMessage(""); // Clear error message when correct pin code entered
+          setErrorMessage(""); 
         } else {
           setErrorMessage("Incorrect pin code");
           setPinCode('');
+          inputRefs.current[0].focus();
         }
       } else {
-        // Clear error message when starting to enter a new pin code
+        
         setErrorMessage("");
       }
 
