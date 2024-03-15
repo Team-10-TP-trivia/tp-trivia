@@ -39,7 +39,7 @@ export default function UserGroups() {
       }
       return null;
     })}
-    {groups.length === 0 && <p>No groups still available</p>}
+    {(userData.role === "teacher" && groups.length === 0) && <p>No groups still available</p>}
   </div>  
   );
 }

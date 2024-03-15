@@ -67,3 +67,9 @@ export const getUserQuiz = async(username, quizId) => {
   
   return snapshot.val();
 }
+
+export const userRejectQuiz = (username, quiz) => {
+  const updateQuiz = {};
+  updateQuiz[`/users/${username}/quizInvitations/${quiz.title}`] = null;
+  return update(ref(db), updateQuiz);
+}

@@ -9,14 +9,14 @@ export default function VerifyTeacher({ userData }) {
     const [user, setUser] = useState(userData);
 
     useEffect(() => {
-        if(userData && userData.username){
-            getUserByHandle(userData.username).then((snapshot) => {
-                if (snapshot.exists()) {
-                    setUser(snapshot.val());
-                }
-            });
-        }
-    }, [userData]);
+  if (userData && userData.username) {
+    getUserByHandle(userData.username, (userData) => {
+      if (userData) {
+        setUser(userData);
+      }
+    });
+  }
+}, [userData]);
     
     const verifyTeacher = async () => {
         if(!schoolValue || schoolValue.length < 5) return alert("Please enter a school name");

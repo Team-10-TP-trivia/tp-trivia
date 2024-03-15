@@ -1,13 +1,15 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import { findStudents, getAllUsers } from "../../../services/AdminServices/admin-services";
+import { getAllUsers } from "../../../services/AdminServices/admin-services";
 import { useSearchParams } from "react-router-dom";
 import "./TeacherOverview.css";
+import { findStudents, sendQuizInvitation } from "../../../services/TeacherServices/teacher-services";
 export default function TeacherOverview({ quiz, quizId, participants }) {
   const [users, setUsers] = useState([]);
   const [ students, setStudents ] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
+  const [ invitationSent, setInvitationSent ] = useState(false);
 
   const setSearch = (value) => {
     setSearchParams({ search: value });
@@ -21,6 +23,16 @@ export default function TeacherOverview({ quiz, quizId, participants }) {
       setStudents(snapshot);
     });
   }, [search]);
+
+  const sendInvite = (studentName) => {
+      setInvitationSent(true);
+
+    sendQuizInvitation(studentName, quiz, quizId);
+
+    setTimeout(() => {
+      setInvitationSent(false);
+    }, 2000);
+  };
 
   return (
     <div id="teacher-overview">
@@ -41,10 +53,11 @@ export default function TeacherOverview({ quiz, quizId, participants }) {
             <p>First name: {student.firstName}</p>
             <p>Last name: {student.lastName}</p>
             <p>Email: {student.email}</p>
-            <button>Send Invite for quiz</button>
+            <button onClick={() => sendInvite(student.username)}>Send Invite for quiz</button>
           </div>
         );
       })}
+      {invitationSent && <p>Invitation sent!</p>}
       </div>
       <div id="students-results">
       <h2>Participants: {participants ? Object.keys(participants).length : 0}</h2>
