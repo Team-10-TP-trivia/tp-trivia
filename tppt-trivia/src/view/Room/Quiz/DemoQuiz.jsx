@@ -1,13 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { getQuizById, takenQuiz } from "../../../services/QuizService/Quizzes";
+import { getQuizById } from "../../../services/QuizService/Quizzes";
 import { useParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Questions from "./Questions";
 import { AppContext } from "../../../context/appContext"
 import { useNavigate } from "react-router-dom";
-import TeacherOverview from "./TeacherOverview";
 
-export default function Quiz() {
+export default function DemoQuiz() {
   const { userData } = useContext(AppContext);
   const { quizId } = useParams();
   const [quiz, setQuiz] = useState(null);
@@ -79,10 +78,10 @@ export default function Quiz() {
     }
   }, [quiz, userData, navigate, quizId, quizQuestions.length]);
 
+  let rightAnswers = 0;
+  let wrongAnswers = 0;
+  let userPoints = 0;
   const saveAnswers = () => {
-    let rightAnswers = 0;
-    let wrongAnswers = 0;
-    let userPoints = 0;
     selectedAnswers.map((selAns) => {
       const splitAns = selAns.split("-");
       if (splitAns.includes("true")) {
@@ -93,7 +92,6 @@ export default function Quiz() {
       }
     });
 
-    takenQuiz(userData.username, quizId, quizQuestions.length, rightAnswers, wrongAnswers, quizPoints, userPoints);
     if (selectedAnswers.length < quizQuestions.length) {
       setShowUnansweredPopup(true);
     } else {
@@ -102,14 +100,12 @@ export default function Quiz() {
   };
 
   const moveToNextPage = () => {
-    navigate(`${userData.username}/overview/`, { state: { quiz, quizId, answers, selectedAnswers, quizQuestions } });
+    navigate(`unknownuser/overview/`, { state: { quiz, quizId, answers, selectedAnswers, quizQuestions, rightAnswers, userPoints } });
   };
-
-  if(!userData || !quiz) return null;
 
   return (
     <div>
-      {userData.role === 'student' && quiz && (
+      {quiz && (
         <div>
           <h1>Quiz Title: {quiz.title}</h1>
           <h2>Quiz description: {quiz.description}</h2>
@@ -148,11 +144,6 @@ export default function Quiz() {
           )}
           <button onClick={() => saveAnswers()}>Save answers</button>
         </div>
-      )}
-      {userData.role === 'teacher' && quiz && (
-        <div>
-        <TeacherOverview quiz={quiz} quizId={quizId} participants={participants}/>
-      </div>
       )}
     </div>
   );

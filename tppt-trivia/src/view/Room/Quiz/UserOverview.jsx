@@ -11,6 +11,8 @@ export default function UserOverview() {
   const answers = location.state.answers;
   const selectedAnswers = location.state.selectedAnswers;
   const quizQuestions = location.state.quizQuestions;
+  const demoQuizPoints = location.state.userPoints;
+  const demoQuizRightAnswers = location.state.rightAnswers;
   const [userQuizResults, setUserQuizResults] = useState([]);
   const [ percentage , setPercentage ] = useState(0);
 
@@ -28,6 +30,55 @@ export default function UserOverview() {
 
     fetchUserResults();
   }, [userData, quizId]);
+
+  if(!userData) {
+    return <div>
+    <h1>Your results for quiz {quiz.title}</h1>
+    {userQuizResults && (
+      <div>
+        <p>
+          Right answers: {demoQuizRightAnswers} out of{" "}
+          {quizQuestions.length}
+        </p>
+        <p>
+          Points: {demoQuizPoints}
+        </p>
+      </div>
+    )}
+    {answers && (
+      <div>
+        <h2>Your answers:</h2>
+        {selectedAnswers &&
+          answers.map((answer, index) => {
+            const question = quizQuestions[index];
+            const selectedAnswer = selectedAnswers[index];
+            if (!selectedAnswer) {
+              return (
+                <div key={index}>
+                  <p>Question: {question.question}</p>
+                  <p>No answer selected</p>
+                </div>
+              );
+            }
+            const isCorrect = selectedAnswer.split("-")[1] === "true";
+            return (
+              <div key={index}>
+                <p>Question: {question.question}</p>
+                <p style={{ color: isCorrect ? "green" : "red" }}>
+                  Answer: {answer[index].text} {isCorrect ? "✅" : "❌"}
+                </p>
+                {isCorrect ? null : (
+                  <p>
+                    Right answer is: {answer.find((a) => a.isCorrect).text}
+                  </p>
+                )}
+              </div>
+            );
+          })}
+      </div>
+    )}
+  </div>
+  }
 
   return (
     <div>
