@@ -11,6 +11,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import UserGroups from "../Groups/UserGroups/UserGroups";
 import { Avatar, Box } from "@mui/material";
+import { userRejectQuiz } from "../../services/QuizService/Quizzes";
+import { userAcceptedQuiz } from "../../services/TeacherServices/teacher-services";
 
 const Profile = () => {
   const { userData } = useContext(AppContext);
@@ -18,14 +20,18 @@ const Profile = () => {
   const [photoURL, setPhotoURL] = useState(null);
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
+  const [studentNotifications, setStudentNotifications] = useState([]);
 
   useEffect(() => {
     if (userData && userData.username) {
-      getUserByHandle(userData.username).then((snapshot) => {
-        if (snapshot.exists()) {
-          setPhotoURL(snapshot.val().photoURL);
-          if (snapshot.val().groupInvitations) {
-            setNotifications(Object.values(snapshot.val().groupInvitations));
+      getUserByHandle(userData.username, (userData) => {
+        if (userData) {
+          setPhotoURL(userData.photoURL);
+          if (userData.groupInvitations) {
+            setNotifications(Object.values(userData.groupInvitations));
+          }
+          if (userData.quizInvitations) {
+            setStudentNotifications(userData.quizInvitations);
           }
         }
       });
@@ -60,6 +66,15 @@ const Profile = () => {
     userRejectRequest(groupName, userData.username);
   };
 
+  const handleAcceptQuiz = (quiz) => {
+    userAcceptedQuiz(userData.username, quiz.quizId);
+    navigate(`/quiz/${quiz.quizId}`);
+  };
+
+  const handleRejectQuiz = (quiz) => {
+    userRejectQuiz(userData.username, quiz);
+  };
+  
   return (
     <Box display="flex" justifyContent={"space-around"}>
       <Box>
@@ -81,18 +96,53 @@ const Profile = () => {
         <button onClick={handleSubmit}>Upload Avatar</button>
       </Box>
       <div>
-        <p>Notifications</p>
-        {(userData.role === "teacher" && notifications) &&
-          notifications.map((notification) => {
-            return (
-              <div key={notification.groupId}>
-                <p>Group Name: {notification.groupName}</p>
-                <p>Group Creator: {notification.creator}</p>
-                <button onClick={() => {handleJoinGroup(notification.groupName)}}>Join group</button>
-                <button onClick={() => {handleRejectGroup(notification.groupName)}}>Reject</button>
-              </div>
-            );
-          })}
+        <p>Notifications: </p>
+        {userData.role === "student" &&
+          (studentNotifications && Object.keys(studentNotifications).length > 0 ? (
+            Object.values(studentNotifications).map((notification) => {
+              if(notification.seen === false)
+              return (
+                <div key={notification.title}>
+                  <p>Quiz Title: {notification.title}</p>
+                  <p>Quiz Creator: {notification.username}</p>
+                  <button onClick={() => handleAcceptQuiz(notification)}>Accept</button>
+                  <button onClick={() => handleRejectQuiz(notification)}>
+                    Reject
+                  </button>
+                </div>
+              );
+            })
+          ) : (
+            <p>No notifications</p>
+          ))}
+        {userData.role === "teacher" &&
+          (notifications && notifications.length > 0 ? (
+            Object.values(notifications).map((notification) => {
+              console.log(notification)
+              return (
+                <div key={notification.groupId}>
+                  <p>Group Name: {notification.groupName}</p>
+                  <p>Group Creator: {notification.creator}</p>
+                  <button
+                    onClick={() => {
+                      handleJoinGroup(notification.groupName);
+                    }}
+                  >
+                    Join group
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleRejectGroup(notification.groupName);
+                    }}
+                  >
+                    Reject
+                  </button>
+                </div>
+              );
+            })
+          ) : (
+            <p>No notifications</p>
+          ))}
       </div>
       <div className="avatar-upload-section">
         {userData.role === "teacher" && <VerifyTeacher userData={userData} />}

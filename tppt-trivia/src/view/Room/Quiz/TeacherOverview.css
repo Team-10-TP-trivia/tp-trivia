@@ -1,0 +1,29 @@
+#teacher-overview{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+}
+
+#find-students{
+    width: 49%;
+    margin-right: 20px;
+}
+
+#students-results{
+    width: 49%;
+}
+
+.found-student{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 20px;
+    margin-top: 10px;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(141, 141, 244);
+    border-radius: 10px;
+}

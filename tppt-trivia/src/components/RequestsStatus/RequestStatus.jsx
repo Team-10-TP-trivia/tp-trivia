@@ -10,13 +10,15 @@ export default function RequestStatus() {
     const [ showApprovedMessage, setShowApprovedMessage ] = useState(false);
 
     useEffect(() => {
-        if(!userData) return;
-        if(userData.role === "teacher"){
-            getUserByHandle(userData.username).then(snapshot => {
-                setUser(snapshot.val());
-            });
-        }
-    }, [userData]);
+  if (!userData) return;
+  if (userData.role === "teacher") {
+    getUserByHandle(userData.username, (userData) => {
+      if (userData) {
+        setUser(userData);
+      }
+    });
+  }
+}, [userData]);
 
     useEffect(() => {
         if(!userData || !user) return;

@@ -27,7 +27,6 @@ export default function AdminQuizzes() {
         deleteQuizById(quiz.id);
         setQuizList(quizList.filter((prevQuiz) => prevQuiz.id !== quiz.id));
     }
-    console.log(quizList.length);
 
     return (
         <div>

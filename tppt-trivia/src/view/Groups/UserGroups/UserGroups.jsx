@@ -9,9 +9,10 @@ export default function UserGroups() {
     const navigate = useNavigate();
 
     useEffect(() => {
+      if(userData.role !== "teacher") return;
         const unsubscribe = getAllGroups(setGroups);
         return () => unsubscribe();
-    }, []);
+    }, [userData.role]);
 
     if(!userData) return null;
 
@@ -22,11 +23,11 @@ export default function UserGroups() {
     if(!groups) {
         return <div>Loading...</div>
     }
-
+    
   return (
     <div>
-    <h1>{userData.firstName} {userData.lastName} groups:</h1>
-    {groups && Object.values(groups).map((group, index) => {
+    {userData.role === "teacher" && <h1>{userData.firstName} {userData.lastName} groups:</h1>}
+    {userData.role === "teacher" && groups && Object.values(groups).map((group, index) => {
       if (group.userId === userData.uid || (group.users && Object.keys(group.users).includes(userData.username))) {
         return (
           <div key={index}>
@@ -38,7 +39,7 @@ export default function UserGroups() {
       }
       return null;
     })}
-    {!groups && <p>No groups still available</p>} 
+    {(userData.role === "teacher" && groups.length === 0) && <p>No groups still available</p>}
   </div>  
   );
 }
