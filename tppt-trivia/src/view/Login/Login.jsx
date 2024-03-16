@@ -14,6 +14,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
+
 /**
  * Login component.
  *
@@ -35,8 +37,12 @@ const Login = () => {
 
   const defaultTheme = createTheme();
 
-  const navigateToSignUp = () => {
+  const navigateToStudentSignUp = () => {
     navigate("/student-registration");
+  };
+
+  const navigateToTeacherSignUp = () => {
+    navigate("/teacher-registration");
   };
 
   /**
@@ -160,35 +166,38 @@ const Login = () => {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign up
+              Sign in
             </Typography>
             <Box sx={{ mt: 3 }}>
-              <Grid item xs={12}>
-                <TextField
-                  value={form.email}
-                  onChange={updateForm("email")}
-                  onKeyDown={handleKeyPress}
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  value={form.password}
-                  onChange={updateForm("password")}
-                  onKeyDown={handleKeyPress}
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    value={form.email}
+                    onChange={updateForm("email")}
+                    onKeyDown={handleKeyPress}
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    autoFocus
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    value={form.password}
+                    onChange={updateForm("password")}
+                    onKeyDown={handleKeyPress}
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="new-password"
+                  />
+                </Grid>
               </Grid>
               <Button
                 type="submit"
@@ -198,11 +207,19 @@ const Login = () => {
                 sx={{ mt: 3, mb: 2 }}
               >
                 Sign In
+                <VpnKeyIcon />
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link onClick={navigateToSignUp} variant="body2">
-                    Don&apos;t have an account? Sign up
+                  <Typography variant="body2" color="textSecondary">
+                    Don&apos;t have an account?
+                  </Typography>
+                  <Link onClick={navigateToStudentSignUp} variant="body2">
+                    Sign up as student
+                  </Link>
+                  <br />
+                  <Link onClick={navigateToTeacherSignUp} variant="body2">
+                    Sign up as teacher
                   </Link>
                 </Grid>
               </Grid>

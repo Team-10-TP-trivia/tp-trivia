@@ -14,7 +14,7 @@ export default function Register() {
   return (
     <div className="register-container">
       <div className="register-header">
-        <h1>Register as:</h1>
+        <h1>Sing up as:</h1>
       </div>
       <div className="role-selection">
         <button onClick={() => handleRoleSelection('student')} className="role-button student">Student</button>
