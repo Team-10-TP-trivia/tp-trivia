@@ -76,7 +76,7 @@ export default function Navigation() {
               className="navigation-menu"
             >
               <Avatar
-                src={user.photoURL}
+                src={userData.photoURL}
                 alt="User Avatar"
                 className="profile-avatar"
                 sx={{ width: 25, height: 25 }}

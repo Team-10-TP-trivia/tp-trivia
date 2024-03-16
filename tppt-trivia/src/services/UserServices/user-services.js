@@ -1,13 +1,9 @@
-import { get, set, ref, query, equalTo, orderByChild, onValue } from 'firebase/database';
+import { get, set, ref, query, equalTo, orderByChild } from 'firebase/database';
 import { db } from '../../config/firebase-config';
 
 
-export const getUserByHandle = (username, callback) => {
-  const userRef = ref(db, `users/${username}`);
-  onValue(userRef, (snapshot) => {
-    const userData = snapshot.val();
-    callback(userData);
-  });
+export const getUserByHandle = (username) => {
+  return get(ref(db, `users/${username}`))
 };
 
 export const createUserHandle = (username,firstName,lastName, uid, email, phoneNumber, role) => {

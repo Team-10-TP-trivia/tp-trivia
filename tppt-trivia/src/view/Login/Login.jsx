@@ -3,7 +3,17 @@ import { AppContext } from "../../context/appContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/Authentication/auth-service";
 import { getUserData } from "../../services/UserServices/user-services";
-
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 /**
  * Login component.
  *
@@ -23,9 +33,15 @@ const Login = () => {
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
 
+  const defaultTheme = createTheme();
+
+  const navigateToSignUp = () => {
+    navigate("/student-registration");
+  };
+
   /**
    * Update form function.
-   * 
+   *
    * @function
    * @param {string} prop - The property to update.
    * @returns {Function} - The function to handle the event.
@@ -61,7 +77,7 @@ const Login = () => {
 
   /**
    * Handle login.
-   * 
+   *
    * @async
    * @function
    * @description This function handles the login process. It checks if the email and password fields are filled, and then logs in the user. If the login is successful, it navigates to the home page.
@@ -71,6 +87,9 @@ const Login = () => {
       setNoCredentials(
         "Enter your email and password to log in. If you don't have an account, sign up for one."
       );
+      setTimeout(() => {
+        setNoCredentials(false);
+      }, 3000);
       setInvalidEmail(false);
       setInvalidPassword(false);
       return;
@@ -95,13 +114,12 @@ const Login = () => {
     } catch (error) {
       if (error.message.includes("email")) {
         setInvalidEmail("Invalid email");
-        if(!form.password) setInvalidPassword("You should provide a password");
+        if (!form.password) setInvalidPassword("You should provide a password");
         setNoCredentials("");
-      }
-      else if (error.message.includes("password")) {
+      } else if (error.message.includes("password")) {
         setInvalidPassword("Invalid password");
         setNoCredentials("");
-      }else {
+      } else {
         setNoCredentials("Incorrect email or password. Please try again.");
       }
     }
@@ -109,7 +127,7 @@ const Login = () => {
 
   /**
    * Handle key press.
-   * 
+   *
    * @function
    * @param {Object} e - The event object.
    * @description This function handles the key press event. If the key pressed is "Enter", it triggers the login function.
@@ -127,53 +145,86 @@ const Login = () => {
           <p>{userLoggedIn}</p>
         </div>
       )}
-      <div className="login-page">
-        <div className="ring">
-          <i style={{ "--clr": "#359381" }}></i>
-          <i style={{ "--clr": "#813593" }}></i>
-          <i style={{ "--clr": "#0078ff" }}></i>
-          <div className="login">
-            <h2>Login</h2>
-            <div className="inputBoxes">
-              <input
-                type="text"
-                placeholder="Email"
-                value={form.email}
-                onChange={updateForm("email")}
-                onKeyDown={handleKeyPress}
-              />
-            </div>
-            <div className="inputBoxes">
-              <input
-                type="password"
-                placeholder="Password"
-                value={form.password}
-                onChange={updateForm("password")}
-                onKeyDown={handleKeyPress}
-              />
-            </div>
-            {invalidEmail && (
-              <div id="loading-page-error">
-                <p>{invalidEmail}</p>
-              </div>
-            )}
-            {invalidPassword && (
-              <div id="loading-page-error">
-                <p>{invalidPassword}</p>
-              </div>
-            )}
-            {noCredentials && (
-              <div id="loading-page-error">
-                <p>{noCredentials}</p>
-              </div>
-            )}
-            <div className="inputBx">
-              <input type="submit" value="Login" onClick={login} />
-            </div>
-            <div className="links"></div>
-          </div>
+      <ThemeProvider theme={defaultTheme}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign up
+            </Typography>
+            <Box sx={{ mt: 3 }}>
+              <Grid item xs={12}>
+                <TextField
+                  value={form.email}
+                  onChange={updateForm("email")}
+                  onKeyDown={handleKeyPress}
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  value={form.password}
+                  onChange={updateForm("password")}
+                  onKeyDown={handleKeyPress}
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                onClick={login}
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </Button>
+              <Grid container justifyContent="flex-end">
+                <Grid item>
+                  <Link onClick={navigateToSignUp} variant="body2">
+                    Don&apos;t have an account? Sign up
+                  </Link>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+        </Container>
+      </ThemeProvider>
+      {invalidEmail && (
+        <div id="loading-page-error">
+          <p>{invalidEmail}</p>
         </div>
-      </div>
+      )}
+      {invalidPassword && (
+        <div id="loading-page-error">
+          <p>{invalidPassword}</p>
+        </div>
+      )}
+      {noCredentials && (
+        <div id="loading-page-error">
+          <p>{noCredentials}</p>
+        </div>
+      )}
     </>
   );
 };

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../../context/appContext";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { deleteQuizById } from "../../../services/QuizService/Quizzes";
 
 export default function UserQuizzes({ quizList }) {
   const { userData } = useContext(AppContext);
@@ -15,7 +16,9 @@ export default function UserQuizzes({ quizList }) {
   const editQuiz = (quiz) => {
     navigate(`/edit-quiz/${quiz.id}`, {state: {quiz}});
   }
-
+  const deleteQuiz = (quiz) => {
+    deleteQuizById(quiz.id);
+  }
   if(!userData) return (<p>Loading...</p>);
   
   return (
@@ -29,6 +32,7 @@ export default function UserQuizzes({ quizList }) {
               <p>Quiz Description: {quiz.description}</p>
               <p>Quiz creator: {quiz.username}</p>
               <button onClick={() => {editQuiz(quiz)}}>Edit quiz</button>
+              <button onClick={() => {deleteQuiz(quiz)}}>Delete quiz</button>
             </div>
           );
         }
