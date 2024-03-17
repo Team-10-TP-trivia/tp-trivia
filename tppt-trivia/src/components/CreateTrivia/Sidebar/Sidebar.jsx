@@ -99,8 +99,8 @@ const Sidebar = ({
         <ReactDatePicker
         selected={activeState}
         id="activeState"
-        onChange={() => {
-          const endOfDay = new Date();
+        onChange={(date) => {
+          const endOfDay = new Date(date);
           endOfDay.setDate(endOfDay.getDate());
           endOfDay.setHours(23, 59, 59, 999);
           setActiveState(endOfDay)

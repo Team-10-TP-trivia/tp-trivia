@@ -34,7 +34,7 @@ export default function CreateTrivia() {
   const [selectedGif, setSelectedGif] = useState(null); 
   const [selectedUnsplash, setSelectedUnsplash] = useState(null); 
   const [timeLimit, setTimeLimit] = useState('10 minutes');
-  const [activeState, setActiveState] = useState(new Date);
+  const [activeState, setActiveState] = useState("");
 
   const navigate = useNavigate();
  
