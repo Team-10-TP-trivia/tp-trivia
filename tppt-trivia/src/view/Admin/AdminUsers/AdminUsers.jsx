@@ -1,6 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../../context/appContext";
-import { getAllUsers } from "../../../services/AdminServices/admin-services";
+import {
+  blockUser,
+  getAllUsers,
+  unblockUser,
+} from "../../../services/AdminServices/admin-services";
 
 export default function AdminUsers() {
   const { userData } = useContext(AppContext);
@@ -8,9 +12,8 @@ export default function AdminUsers() {
 
   useEffect(() => {
     if (userData && userData.role === "admin") {
-      getAllUsers().then((snapshot) => {
-        setUsers(snapshot);
-      });
+      const unsubscribe = getAllUsers(setUsers);
+      return () => unsubscribe();
     }
   }, [userData]);
 
@@ -18,16 +21,32 @@ export default function AdminUsers() {
     return <div>Loading...</div>;
   }
 
+  const blockUserByAdmin = (user) => {
+    if (user.blocked === false) {
+      blockUser(user);
+    } else if (user.blocked === true) {
+      unblockUser(user);
+    }
+  };
+
   return (
     <div id="admin-users-container">
-        <h2>Users:</h2>
+      <h2>Users:</h2>
       {users.map((user, index) => {
         return (
           <div key={index}>
             <div>Username: {user.username}</div>
             <div>Email: {user.email}</div>
             <div>Role: {user.role}</div>
-            <button>Block user</button><br/><br/>
+            <button
+              onClick={() => {
+                blockUserByAdmin(user);
+              }}
+            >
+              {user.blocked ? "Unblock" : "Block"}
+            </button>
+            <br />
+            <br />
           </div>
         );
       })}

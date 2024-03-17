@@ -90,11 +90,11 @@ export default function TeacherDetails() {
   return (
     <>
       <ThemeProvider theme={defaultTheme}>
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="s" sx={{ width: "50vw"}}>
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: 1,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -108,7 +108,7 @@ export default function TeacherDetails() {
             </Typography>
             <Box sx={{ mt: 3 }}>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} >
                   <TextField
                     autoComplete="given-name"
                     name="firstName"

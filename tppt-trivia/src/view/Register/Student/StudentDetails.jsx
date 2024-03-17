@@ -63,16 +63,16 @@ export default function StudentDetails() {
       );
     }
     try {
-      const user = getUserByHandle(form.username);
+      const user = await getUserByHandle(form.username);
       if (user.exists()) {
         setUserExists(true);
         return console.log(
           `User with handle ${form.username} already exists. Please choose another username.`
         );
       }
-      const credentials = registerUser(form.email, form.password);
+      const credentials = await registerUser(form.email, form.password);
       navigate("/");
-      createUserHandle(
+      await createUserHandle(
         form.username,
         form.firstName,
         form.lastName,
@@ -83,6 +83,7 @@ export default function StudentDetails() {
       );
     } catch (error) {
       setEmailExists(true);
+      console.log("OT TUK IDVA")
       console.log(error.message);
     }
   };

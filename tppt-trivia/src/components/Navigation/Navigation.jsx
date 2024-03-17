@@ -17,6 +17,7 @@ export default function Navigation() {
   const { user, userData, setContext } = useContext(AppContext);
   const [admin, setAdmin] = useState(false);
   const [teacher, setTeacher] = useState(false);
+  const [ blockedUser, setBlockedUser ] = useState(false);
 
   /**
    * Checks if the user is an admin when the component mounts or when userData changes.
@@ -33,6 +34,10 @@ export default function Navigation() {
     } else {
       setTeacher(false);
     }
+
+    if (userData && userData.blocked) {
+      setBlockedUser(true);
+    }
   }, [userData]);
 
   /**
@@ -40,8 +45,8 @@ export default function Navigation() {
    *
    * @async
    */
-  const logOut = async () => {
-    await logoutUser();
+  const logOut = () => {
+    logoutUser();
     setContext({ user: null, userData: null });
   };
 
@@ -50,51 +55,59 @@ export default function Navigation() {
       <nav
         className={user ? "navigation-with-user" : "navigation-without-user"}
       >
+        
+        {blockedUser ? (
+          <div className="blocked-user-message">
+            <p>Your account has been blocked. Please contact the administrator.</p>
+          </div>
+        ) : (
+          user ? (
+            <>
+              {admin && (
+                <NavLink className="navigation-menu" to="/admin">
+                  Admin&apos;s panel
+                </NavLink>
+              )}
+              {teacher && (
+                <NavLink className="navigation-menu" to="/groups">
+                  Groups
+                </NavLink>
+              )}
+  
+              <NavLink className="navigation-menu" onClick={logOut} to="/">
+                Log Out
+              </NavLink>
+  
+              <NavLink
+                to="/profile"
+                id="profile-link"
+                className="navigation-menu"
+              >
+                <Avatar
+                  src={userData.photoURL}
+                  alt="User Avatar"
+                  className="profile-avatar"
+                  sx={{ width: 25, height: 25 }}
+                />
+                <span>{`${userData?.username}'s Profile`}</span>
+              </NavLink>
+            </>
+          ) : (
+            <>
+              <NavLink className="navigation-menu" to="/login">
+                Login
+              </NavLink>
+  
+              <NavLink className="navigation-menu" to="/register">
+                Register
+              </NavLink>
+            </>
+          )
+        )}
         <NavLink className="navigation-menu" to="/home">
           Home
         </NavLink>
-        {user ? (
-          <>
-            {admin && (
-              <NavLink className="navigation-menu" to="/admin">
-                Admin&apos;s panel
-              </NavLink>
-            )}
-            {teacher && (
-              <NavLink className="navigation-menu" to="/groups">
-                Groups
-              </NavLink>
-            )}
-
-            <NavLink className="navigation-menu" onClick={logOut} to="/">
-              Log Out
-            </NavLink>
-
-            <NavLink
-              to="/profile"
-              id="profile-link"
-              className="navigation-menu"
-            >
-              <Avatar
-                src={userData.photoURL}
-                alt="User Avatar"
-                className="profile-avatar"
-                sx={{ width: 25, height: 25 }}
-              />
-              <span>{`${userData?.username}'s Profile`}</span>
-            </NavLink>
-          </>
-        ) : (
-          <>
-            <NavLink className="navigation-menu" to="/login">
-              Login
-            </NavLink>
-
-            <NavLink className="navigation-menu" to="/register">
-              Register
-            </NavLink>
-          </>
-        )}
+        
       </nav>
     </div>
   );

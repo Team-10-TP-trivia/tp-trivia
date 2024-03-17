@@ -6,7 +6,12 @@ export const registerUser = (email, password) => {
 };
 
 export const loginUser = (email, password) => {
-  return signInWithEmailAndPassword(auth, email, password);
+  try{
+    const log = signInWithEmailAndPassword(auth, email, password);
+    return log;
+  }catch(error){
+    console.error('Error logging in:', error);
+  }
 };
 
 export const logoutUser = () => {

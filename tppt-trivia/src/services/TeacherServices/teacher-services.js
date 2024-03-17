@@ -1,9 +1,27 @@
 import { get, ref, set } from "firebase/database";
-import { getAllUsers } from "../AdminServices/admin-services";
 import { db } from "../../config/firebase-config";
 
+const allStudents = async () => {
+  try {
+      const snapshot = await get(ref(db, "users"));
+      if (!snapshot.exists()) {
+        return [];
+      }
+      const users = Object.keys(snapshot.val()).map((key) => ({
+        id: key,
+        ...snapshot.val()[key],
+      }));
+      return users;
+    }
+    catch (error) {
+      console.error("Error fetching users:", error);
+      throw error;
+    }
+};
+
+
 export const findStudents = async (search) => {
-  const users = await getAllUsers();
+  const users = await allStudents();
   const searchTerms = search.toLowerCase().split(" ");
   return users.filter((user) => {
     const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();

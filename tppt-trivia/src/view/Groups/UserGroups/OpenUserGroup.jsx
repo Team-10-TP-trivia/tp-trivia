@@ -15,12 +15,14 @@ import {
 } from "@mui/material";
 import MapsUgcIcon from '@mui/icons-material/MapsUgc';
 import GroupAdminView from "./GroupAdminView";
+import { useNavigate } from "react-router-dom";
 
 export default function OpenUserGroup() {
   const [group, setGroup] = useState(null);
   const { userData } = useContext(AppContext);
   const { groupId } = useParams();
   const [openPopup, setOpenPopup] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const unsubscribe = getGroupByIdOnChange(groupId, setGroup);
@@ -41,6 +43,11 @@ export default function OpenUserGroup() {
       setGroup(snapshot);
     });
   };
+
+
+  const openQuizzes = () => {
+    navigate(`/profile/group/${group.groupName}/groupQuizzes`, { state: { users: group.users } })
+  }
 
   if (!userData) {
     return <div>Loading...</div>;
@@ -102,6 +109,8 @@ export default function OpenUserGroup() {
         </DialogActions>
           <GroupChat group={group}/>
       </Dialog>
+      <h3>Open quizzes created by group participants</h3>
+      <button onClick={openQuizzes}>See quizzes</button>
     </div>
   );
 }

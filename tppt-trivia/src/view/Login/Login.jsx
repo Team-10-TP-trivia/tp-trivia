@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import LockOpenIcon from '@mui/icons-material/LockOpen';
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 /**
  * Login component.
@@ -100,9 +100,21 @@ const Login = () => {
       setInvalidPassword(false);
       return;
     }
-
+    if (form.email && !form.password) {
+      setInvalidPassword("You should provide a password");
+      setNoCredentials("");
+      setInvalidEmail(false);
+      return;
+    }
+    if (!form.email && form.password) {
+      setInvalidEmail("You should provide an email");
+      setNoCredentials("");
+      setInvalidPassword(false);
+      return;
+    }
     try {
       const credentials = await loginUser(form.email, form.password);
+
       if (credentials.user) {
         await getUserData(credentials.user.uid).then((snapshot) => {
           setContext({
@@ -110,24 +122,18 @@ const Login = () => {
             userData: snapshot.val()[Object.keys(snapshot.val())[0]],
           });
         });
-      } else {
-        setInvalidEmail("Invalid email");
-        setInvalidPassword("Invalid password");
       }
       setNoCredentials("");
       setInvalidEmail(false);
       setInvalidPassword(false);
     } catch (error) {
-      if (error.message.includes("email")) {
-        setInvalidEmail("Invalid email");
-        if (!form.password) setInvalidPassword("You should provide a password");
-        setNoCredentials("");
-      } else if (error.message.includes("password")) {
-        setInvalidPassword("Invalid password");
-        setNoCredentials("");
-      } else {
-        setNoCredentials("Incorrect email or password. Please try again.");
-      }
+      setInvalidEmail(true);
+      setInvalidPassword(true);
+
+      setTimeout(() => {
+        setInvalidEmail(false);
+        setInvalidPassword(false);
+      }, 1500);
     }
   };
 
@@ -182,6 +188,7 @@ const Login = () => {
                     name="email"
                     autoComplete="email"
                     autoFocus
+                    error={invalidEmail || noCredentials ? true : false}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -196,6 +203,7 @@ const Login = () => {
                     type="password"
                     id="password"
                     autoComplete="new-password"
+                    error={invalidPassword || noCredentials ? true : false}
                   />
                 </Grid>
               </Grid>
@@ -227,7 +235,7 @@ const Login = () => {
           </Box>
         </Container>
       </ThemeProvider>
-      {invalidEmail && (
+      {/* {invalidEmail && (
         <div id="loading-page-error">
           <p>{invalidEmail}</p>
         </div>
@@ -241,7 +249,7 @@ const Login = () => {
         <div id="loading-page-error">
           <p>{noCredentials}</p>
         </div>
-      )}
+      )} */}
     </>
   );
 };

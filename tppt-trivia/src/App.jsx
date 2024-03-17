@@ -28,6 +28,7 @@ import Quiz from './view/Room/Quiz/Quiz';
 import UserOverview from './view/Room/Quiz/UserOverview';
 import { PrivateQuizPinCode } from './view/Room/PrivateRoom/PrivateQuizPinCode';
 import DemoQuiz from './view/Room/Quiz/DemoQuiz';
+import GroupParticipantsQuizzes from './view/Groups/GroupParticipantsQuizzes/GroupParticipantsQuizzes';
 
 function App() {
   const [context, setContext] = useState({
@@ -72,6 +73,7 @@ function App() {
             <Route path='/math' element={<Math />} />
             <Route path='/general-knowledge' element={<GeneralKnowledge />} />
             <Route path='/profile/group/:groupId' element={<OpenUserGroup />} />
+            <Route path='/profile/group/:groupId/groupQuizzes' element={<GroupParticipantsQuizzes />} />
             <Route path='/quiz/:quizId' element={<Quiz />} />
             <Route path='/quiz/demo/:quizId' element={<DemoQuiz />} />
             <Route path='/quiz/:quizId/enter-code' element={<PrivateQuizPinCode />} />
