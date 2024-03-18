@@ -1,23 +1,33 @@
 #header-container{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     gap: 2vw;
     align-items: center;
     padding: 10px 20px;
-    background-color: #e55151;
+    background-color: #91fd5e;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
+    margin: 5px;
+    border-radius: 10px;
+    height: 10vh;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 .header-container-buttons{
-    background-color: bisque;
-    border-radius: 20px;
+    background-color: rgb(170, 245, 112);
+    border-radius: 5px;
     text-decoration: none;
     padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-width: 80px;
+    min-width: 100px;
+    height: 15px;
+}
+.header-container-buttons:hover{
+    background-color: rgb(240, 248, 135);
+    transform: scale(1.1);
+    transition: 0.5s;
 }
 .header-container-buttons p{
     margin: 0;

@@ -15,8 +15,8 @@ import RequestStatus from '../components/RequestsStatus/RequestStatus';
 const Layout = props =>  {
   return (
     <div>
-      <Header />
       <Navigation />
+      <Header />
       {props.children}
       <RequestStatus />
     </div>

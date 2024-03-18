@@ -19,7 +19,7 @@ export default function DemoQuizzes() {
     });
   }, []);
 
-  //   console.log(demoQuizzes)
+  console.log(demoQuizzes)
 
   const openQuiz = (quizId) => {
     navigate(`/quiz/demo/${quizId}`);
@@ -28,7 +28,7 @@ export default function DemoQuizzes() {
   return (
     !userData && (
       <section className="demo-quiz-container">
-        <h2>Try Our Demo Quiz</h2>
+        <h2>Try Our Demo Quizzes</h2>
         <div>
           {demoQuizzes.map((quiz) => (
             <div

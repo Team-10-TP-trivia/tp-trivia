@@ -23,7 +23,8 @@ export const createGroup = async (
   firstName,
   lastName,
   groupName,
-  groupDescription
+  groupDescription,
+  user
 ) => {
   const groupRef = ref(db, `groups/${groupName}`);
 
@@ -44,6 +45,9 @@ export const createGroup = async (
         creatorUsername,
         groupName,
         groupDescription,
+        users: {
+          [creatorUsername]: user,
+        }
       });
     }
   } catch (error) {
@@ -180,4 +184,9 @@ export const deleteUserMessage =  (groupId, username, messageId) => {
   const deleteUserMessage = {};
   deleteUserMessage[`groups/${groupId}/messages/${username}/${messageId}`] = null;
   return update(ref(db), deleteUserMessage);
+}
+
+export const deleteGroupByGroupName = async (groupName) => {
+  const groupRef = ref(db, `groups/${groupName}`);
+  return set(groupRef, null);
 }

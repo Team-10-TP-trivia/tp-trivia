@@ -44,7 +44,6 @@ export default function OpenUserGroup() {
     });
   };
 
-
   const openQuizzes = () => {
     navigate(`/profile/group/${group.groupName}/groupQuizzes`, { state: { users: group.users } })
   }

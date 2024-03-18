@@ -12,7 +12,7 @@ export default function CreateGroup() {
     const handleCreateGroup = () => {
         if(!userData) return;
         if(!groupName || !groupDescription) return alert("Please fill in all fields");
-        createGroup(userData.uid,userData.username,userData.firstName,userData.lastName, groupName, groupDescription);
+        createGroup(userData.uid,userData.username,userData.firstName,userData.lastName, groupName, groupDescription, userData);
         navigate(-1)
     }
 

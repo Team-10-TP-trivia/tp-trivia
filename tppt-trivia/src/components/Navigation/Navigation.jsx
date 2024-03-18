@@ -55,7 +55,9 @@ export default function Navigation() {
       <nav
         className={user ? "navigation-with-user" : "navigation-without-user"}
       >
-        
+        <NavLink className={user ? "navigation-with-user" : "navigation-without-user"} to="/home">
+          Home
+        </NavLink>
         {blockedUser ? (
           <div className="blocked-user-message">
             <p>Your account has been blocked. Please contact the administrator.</p>
@@ -64,24 +66,24 @@ export default function Navigation() {
           user ? (
             <>
               {admin && (
-                <NavLink className="navigation-menu" to="/admin">
+                <NavLink className={user ? "navigation-with-user" : "navigation-without-user"} to="/admin">
                   Admin&apos;s panel
                 </NavLink>
               )}
               {teacher && (
-                <NavLink className="navigation-menu" to="/groups">
+                <NavLink className={user ? "navigation-with-user" : "navigation-without-user"} to="/groups">
                   Groups
                 </NavLink>
               )}
   
-              <NavLink className="navigation-menu" onClick={logOut} to="/">
+              <NavLink className={user ? "navigation-with-user" : "navigation-without-user"} onClick={logOut} to="/">
                 Log Out
               </NavLink>
   
               <NavLink
                 to="/profile"
                 id="profile-link"
-                className="navigation-menu"
+                className={user ? "navigation-with-user" : "navigation-without-user"}
               >
                 <Avatar
                   src={userData.photoURL}
@@ -94,20 +96,16 @@ export default function Navigation() {
             </>
           ) : (
             <>
-              <NavLink className="navigation-menu" to="/login">
+              <NavLink className={user ? "navigation-with-user" : "navigation-without-user"} to="/login">
                 Login
               </NavLink>
   
-              <NavLink className="navigation-menu" to="/register">
+              <NavLink className={user ? "navigation-with-user" : "navigation-without-user"} to="/register">
                 Register
               </NavLink>
             </>
           )
         )}
-        <NavLink className="navigation-menu" to="/home">
-          Home
-        </NavLink>
-        
       </nav>
     </div>
   );

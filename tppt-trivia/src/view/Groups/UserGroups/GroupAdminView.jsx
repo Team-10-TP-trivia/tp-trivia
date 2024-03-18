@@ -1,12 +1,15 @@
 import PropTypes from "prop-types";
 import {
   approveUserRequest,
+  deleteGroupByGroupName,
   getGroupById,
   rejectUserRequest,
 } from "../../../services/Groups/Groups-services";
 import SearchUsers from "./SearchUsers";
+import { useNavigate } from "react-router-dom";
 
 export default function GroupAdminView({ group, setGroup }) {
+  const navigate = useNavigate()
 
   const approveRequest = async (groupId, userName, user) => {
     await approveUserRequest(groupId, userName, user);
@@ -21,10 +24,13 @@ export default function GroupAdminView({ group, setGroup }) {
       setGroup(snapshot);
     });
   };
-
+  const deleteGroup = () => {
+    deleteGroupByGroupName(group.groupName);
+    navigate(-1)
+  };
   return (
     <div>
-        <SearchUsers group={group}/>
+      <SearchUsers group={group} />
       <h2>Users waiting to join the group:</h2>
       {group.requests ? (
         Object.values(group.requests).map((user) => {
@@ -53,6 +59,7 @@ export default function GroupAdminView({ group, setGroup }) {
       ) : (
         <h3>No request!</h3>
       )}
+      <button onClick={() => {deleteGroup()}}>Delete Group</button>
     </div>
   );
 }
