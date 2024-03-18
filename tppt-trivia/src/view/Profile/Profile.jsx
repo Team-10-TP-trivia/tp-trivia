@@ -15,28 +15,23 @@ import { styled } from "@mui/system";
 import { userRejectQuiz } from "../../services/QuizService/Quizzes";
 import { userAcceptedQuiz } from "../../services/TeacherServices/teacher-services";
 import Typography from "@mui/material/Typography";
-import {
-  Input,
-  InputLabel,
-  FormControl,
-  IconButton,
-} from "@mui/material";
+import { Input, InputLabel, FormControl, IconButton } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-const StyledInput = styled('input')({
-  display: 'none',
-  width: '100%',
+const StyledInput = styled("input")({
+  display: "none",
+  width: "100%",
 });
 
-const StyledLabel = styled('label')({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  width: '100%',
+const StyledLabel = styled("label")({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  width: "100%",
 });
 
 const StyledIconButton = styled(IconButton)({
-  margin: '8px',
+  margin: "8px",
 });
 
 const Profile = () => {
@@ -176,28 +171,28 @@ const Profile = () => {
           )}
         </Box>
         <StyledLabel htmlFor="contained-button-file2">
-        <StyledInput
-          accept="image/*"
-          id="contained-button-file2"
-          multiple
-          type="file"
-          onChange={handleFileChange}
-          onClick={(e) => e.stopPropagation()}
-        />
-        <FormControl fullWidth>
-          <InputLabel htmlFor="contained-button-file2">Upload</InputLabel>
-          <Input
+          <StyledInput
+            accept="image/*"
             id="contained-button-file2"
-            value={photo ? photo.name : ""}
-            readOnly
-            endAdornment={
-              <StyledIconButton aria-label="upload picture" component="span">
-                <CloudUploadIcon />
-              </StyledIconButton>
-            }
+            multiple
+            type="file"
+            onChange={handleFileChange}
+            onClick={(e) => e.stopPropagation()}
           />
-        </FormControl>
-      </StyledLabel>
+          <FormControl fullWidth>
+            <InputLabel htmlFor="contained-button-file2">Upload</InputLabel>
+            <Input
+              id="contained-button-file2"
+              value={photo ? photo.name : ""}
+              readOnly
+              endAdornment={
+                <StyledIconButton aria-label="upload picture" component="span">
+                  <CloudUploadIcon />
+                </StyledIconButton>
+              }
+            />
+          </FormControl>
+        </StyledLabel>
         <Box display="flex" flexDirection={"column"} alignItems={"center"}>
           {selectPhotoError && (
             <Box
@@ -230,22 +225,25 @@ const Profile = () => {
           </Buttons>
         </Box>
       </Box>
-      <Box
-        display="flex"
-        flexDirection={"column"}
-        alignItems={"center"}
-        sx={{
-          padding: "10px",
-          borderRadius: "5px",
-          backgroundColor: "white",
-          boxShadow: "8px 10px 5px 0 rgba(0,0,0,0.3)",
-          height: "fit-content",
-          minHeight: "300px",
-          width: "20%",
-        }}
-      >
-        {userData.role === "teacher" && <VerifyTeacher userData={userData} />}
-      </Box>
+      {userData.role === "teacher" && (
+        <Box
+          display="flex"
+          flexDirection={"column"}
+          alignItems={"center"}
+          sx={{
+            padding: "10px",
+            borderRadius: "5px",
+            backgroundColor: "white",
+            boxShadow: "8px 10px 5px 0 rgba(0,0,0,0.3)",
+            height: "fit-content",
+            minHeight: "300px",
+            width: "20%",
+          }}
+        >
+          <VerifyTeacher userData={userData} />
+        </Box>
+      )}
+
       <Box
         display="flex"
         flexDirection={"column"}

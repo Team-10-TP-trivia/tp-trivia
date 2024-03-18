@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { getAllGroups, sendJoinGroupRequest } from "../../../services/Groups/Groups-services";
 import { AppContext } from "../../../context/appContext";
 import SearchGroups from "./SeacrhGroups";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 export default function AllGroups() {
   const [groups, setGroups] = useState(null);
@@ -19,9 +21,9 @@ export default function AllGroups() {
   if (!userData) return (<p>Loading...</p>);
 
   return (
-    <div>
+    <Box>
       <SearchGroups setGroups={setGroups}/>
-      <h1>All groups:</h1>
+      <Typography variant="h4">All groups:</Typography>
       {groups ? Object.values(groups).map((group, index) => {
         const hasUsers = group.users && Object.keys(group.users).length > 0;
         const isRequestSent = group.requests && group.requests[userData.username] && group.requests[userData.username].approved === "pending";
@@ -41,6 +43,6 @@ export default function AllGroups() {
           </div>
         );
       }) : <p>No groups still available</p>}
-    </div>
+    </Box>
   );
 }
