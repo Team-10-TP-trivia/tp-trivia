@@ -18,6 +18,7 @@
   width: 600px;
   max-height: 500px;
   overflow-y: scroll;
+  padding: 20px 5px;
 }
 
 .message-list {
@@ -46,6 +47,7 @@
     margin-left: 60px;
     align-items: center;
     width: 100%;
+    margin-top: -10px;
 }
 .message-options{
     position: absolute;

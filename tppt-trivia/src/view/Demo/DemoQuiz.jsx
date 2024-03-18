@@ -19,8 +19,6 @@ export default function DemoQuizzes() {
     });
   }, []);
 
-  console.log(demoQuizzes)
-
   const openQuiz = (quizId) => {
     navigate(`/quiz/demo/${quizId}`);
   };

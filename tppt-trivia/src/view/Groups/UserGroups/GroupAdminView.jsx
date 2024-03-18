@@ -7,6 +7,9 @@ import {
 } from "../../../services/Groups/Groups-services";
 import SearchUsers from "./SearchUsers";
 import { useNavigate } from "react-router-dom";
+import { Box } from "@mui/material";
+import { styled } from "@mui/system";
+import Typography from "@mui/material/Typography";
 
 export default function GroupAdminView({ group, setGroup }) {
   const navigate = useNavigate()
@@ -29,9 +32,11 @@ export default function GroupAdminView({ group, setGroup }) {
     navigate(-1)
   };
   return (
-    <div>
+    <Box display={"flex"} flexDirection={"column"} sx={{
+      height: "fit-content",
+    }}>
       <SearchUsers group={group} />
-      <h2>Users waiting to join the group:</h2>
+      <Typography variant={"h5"}>Users waiting to join the group:</Typography>
       {group.requests ? (
         Object.values(group.requests).map((user) => {
           return (
@@ -39,28 +44,30 @@ export default function GroupAdminView({ group, setGroup }) {
               <p>Username: {user.username}</p>
               <p>First name: {user.firstName}</p>
               <p>Last name: {user.lastName}</p>
-              <button
+              <Button
                 onClick={() => {
                   approveRequest(group.groupId, user.username, user);
                 }}
               >
                 Approve
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => {
                   rejectRequest(group.groupId, user.username);
                 }}
               >
                 Reject
-              </button>
+              </Button>
             </div>
           );
         })
       ) : (
         <h3>No request!</h3>
       )}
-      <button onClick={() => {deleteGroup()}}>Delete Group</button>
-    </div>
+      <Box display={"flex"} justifyContent={"center"}>
+      <Button onClick={() => {deleteGroup()}}>Delete Group</Button>
+      </Box>
+    </Box>
   );
 }
 
@@ -68,3 +75,60 @@ GroupAdminView.propTypes = {
   group: PropTypes.object,
   setGroup: PropTypes.func,
 };
+
+const blue = {
+  200: "#99CCFF",
+  300: "#66B2FF",
+  400: "#3399FF",
+  500: "#007FFF",
+  600: "#0072E5",
+  700: "#0066CC",
+};
+
+const Button = styled("button")(
+  ({ theme }) => `
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  background-color: #FF9F45;
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+  transition: all 150ms ease;
+  cursor: pointer;
+  border: 1px solid #e57914;
+  box-shadow: 0 2px 1px ${
+    theme.palette.mode === "dark"
+      ? "rgba(0, 0, 0, 0.5)"
+      : "rgba(45, 45, 60, 0.2)"
+  }, inset 0 1.5px 1px #e57914, inset 0 -2px 1px #e57914;
+
+  &:hover {
+    background-color: #91fd5e;
+    color: black;
+  }
+
+  &:active {
+    background-color: #91fd5e;
+    color: black;
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 4px ${
+      theme.palette.mode === "dark" ? blue[300] : blue[200]
+    };
+    outline: none;
+  }
+
+  &.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+    &:hover {
+      background-color: ${blue[500]};
+    }
+  }
+`
+);

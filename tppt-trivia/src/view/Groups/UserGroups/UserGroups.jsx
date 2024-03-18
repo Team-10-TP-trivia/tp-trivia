@@ -4,6 +4,7 @@ import { getAllGroups } from "../../../services/Groups/Groups-services";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import GroupsIcon from "@mui/icons-material/Groups";
+import Typography from "@mui/material/Typography";
 
 export default function UserGroups() {
   const { userData } = useContext(AppContext);
@@ -32,11 +33,17 @@ export default function UserGroups() {
   }
 
   return (
-    <Box>
-      <Box display={"flex"} alignItems={"center"} onClick={() => showUserGroups()} sx={{cursor: "pointer"}}>
-        <GroupsIcon />
-        {userData.role === "teacher" && <span style={{marginLeft: "5px"}}>Show groups</span>}
-      </Box>
+    <Box
+      display={"flex"}
+      flexDirection={"column"}
+      alignItems={"center"}
+      onClick={() => showUserGroups()}
+      sx={{ cursor: "pointer", gap: "5px"}}
+    >
+      <GroupsIcon />
+      {userData.role === "teacher" && (
+        <span style={{ marginLeft: "5px" }}>Show groups</span>
+      )}
       {showGroups &&
         userData.role === "teacher" &&
         groups &&
@@ -47,20 +54,20 @@ export default function UserGroups() {
               Object.keys(group.users).includes(userData.username))
           ) {
             return (
-              <div
+              <Box
                 key={index}
                 onClick={() => openGroup(group.groupName)}
                 style={{ cursor: "pointer" }}
               >
-                <h2>Group Name: {group.groupName}</h2>
-                <p>Group Description: {group.groupDescription}</p>
-              </div>
+                <Typography variant="h6">Group Name: {group.groupName}</Typography>
+                <Typography variant="p">Group Description: {group.groupDescription}</Typography>
+              </Box>
             );
           }
           return null;
         })}
       {userData.role === "teacher" && groups.length === 0 && (
-        <p>No groups still available</p>
+        <Typography variant="p">No groups still available</Typography>
       )}
     </Box>
   );

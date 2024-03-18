@@ -13,21 +13,6 @@ import {
 import { db } from "../../config/firebase-config";
 
 export const getAllUsers = async (setUsers) => {
-  // try {
-  //     const snapshot = await get(ref(db, "users"));
-  //     if (!snapshot.exists()) {
-  //       return [];
-  //     }
-  //     const users = Object.keys(snapshot.val()).map((key) => ({
-  //       id: key,
-  //       ...snapshot.val()[key],
-  //     }));
-  //     return users;
-  //   }
-  //   catch (error) {
-  //     console.error("Error fetching users:", error);
-  //     throw error;
-  //   }
 
   const usersRef = ref(db, "users");
 
@@ -45,14 +30,42 @@ export const getAllUsers = async (setUsers) => {
   return () => off(usersRef, callback);
 };
 
+const takeAllUsers = async () => {
+  try {
+      const snapshot = await get(ref(db, "users"));
+      if (!snapshot.exists()) {
+        return [];
+      }
+      const users = Object.keys(snapshot.val()).map((key) => ({
+        id: key,
+        ...snapshot.val()[key],
+      }));
+      return users;
+    }
+    catch (error) {
+      console.error("Error fetching users:", error);
+      throw error;
+    }
+}
+
+// export const updateAdminDetails = async (username, userInfo) => {
+//   const users = await takeAllUsers();
+//   const admins = users.filter((user) => user.role === "admin");
+//   for (const admin of admins) {
+//     const userRef = ref(db, `users/${admin}/pendingVerifications/${username}`);
+//     await update(userRef, userInfo);
+//   }
+// };
+
 export const sendVerificationToAdmins = async (
   username,
   mail,
   firstName,
   lastName,
-  school
+  school,
+  photoURL
 ) => {
-  const users = await getAllUsers();
+  const users = await takeAllUsers();
   const admins = users.filter((user) => user.role === "admin");
 
   try {
@@ -66,6 +79,7 @@ export const sendVerificationToAdmins = async (
         firstName,
         lastName,
         school,
+        photoURL: photoURL || "", // Set default value if photoURL is falsy
         approved: false,
       };
       await update(userRef, {

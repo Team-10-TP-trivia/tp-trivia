@@ -30,10 +30,16 @@ export const uploadProfilePicture = async (userId, file) => {
   const snapshot = await uploadBytes(storageRef, file);
   return getDownloadURL(snapshot.ref);
 };
-
 export const updateUserDetails = async (username, userInfo) => {
   const userRef = ref(db, `users/${username}`);
   await update(userRef, userInfo);
+};
+
+export const uploadVerificationFile = async (userId, file) => {
+  if (!file) return;
+  const storageRef = sRef(storage, `verifications/${userId}/${file.name}`);
+  const snapshot = await uploadBytes(storageRef, file);
+  return getDownloadURL(snapshot.ref);
 };
 
 export const getAllUsers = async () => {
