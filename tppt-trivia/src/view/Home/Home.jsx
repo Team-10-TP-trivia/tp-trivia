@@ -3,10 +3,12 @@ import DemoQuizzes from '../Demo/DemoQuiz';
 import './Home.css'; 
 import { getAllUsers } from '../../services/AdminServices/admin-services';
 import { FaCrown } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   const [ users, setUsers ] = useState([]);
   const [ userGlobalScores, setUserGlobalScores ] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const f = async () => {
@@ -47,7 +49,7 @@ export default function Home() {
             platform. Join our community of hundreds of learners using
             TPPT Trivia practice tests and Expert Solutions to improve their grades and reach their goals.
           </p>
-          <button className="sign-up-btn">Sign up now</button>
+          <button className="sign-up-btn" onClick={() => navigate('/register')}>Sign up now</button>
         </div>
       </section>
 

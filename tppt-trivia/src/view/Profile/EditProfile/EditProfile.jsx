@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../../context/appContext";
 import { useNavigate } from "react-router-dom";
 import { updateUserDetails } from "../../../services/UserServices/user-post-services";
-
+import "./EditProfile.css";
 /**
  * Component for editing a user's profile.
  *
@@ -54,15 +54,17 @@ const EditProfile = () => {
   }
 
   return (
-    <div className="edit-profile-container">
-      <h1>Edit Profile</h1>
-      <input name="firstName" value={userInfo.firstName} onChange={handleInputChange} placeholder="First Name" />
-      <input name="lastName" value={userInfo.lastName} onChange={handleInputChange} placeholder="Last Name" />
-      <input name="email" value={userInfo.email} onChange={handleInputChange} placeholder="Email" />
-      {updateError && <p>Failed to update profile.</p>}
-      {updateSuccess && <p>Profile updated successfully!</p>}
-      <button onClick={saveChanges}>Save Changes</button>
-      <button onClick={goBack}>Back</button>
+    <div className="edit-profile-all">
+      <div className="edit-profile-container">
+        <h1>Edit Profile</h1>
+          <input name="firstName" value={userInfo.firstName} onChange={handleInputChange} placeholder="First Name" />
+          <input name="lastName" value={userInfo.lastName} onChange={handleInputChange} placeholder="Last Name" />
+          <input name="email" value={userInfo.email} onChange={handleInputChange} placeholder="Email" />
+          {updateError && <p>Failed to update profile.</p>}
+          {updateSuccess && <p>Profile updated successfully!</p>}
+        <button onClick={saveChanges}>Save Changes</button>
+        <button onClick={goBack}>Back</button>
+      </div>
     </div>
   );
 };

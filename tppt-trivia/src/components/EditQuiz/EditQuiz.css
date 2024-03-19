@@ -1,0 +1,12 @@
+.edit-quiz-layout {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    padding: 30px;
+    background: linear-gradient(145deg, #ece9e6, #ffffff);
+    min-height: 68vh;
+  }
+
+.edit-quiz-layout div {
+    
+}
+  
