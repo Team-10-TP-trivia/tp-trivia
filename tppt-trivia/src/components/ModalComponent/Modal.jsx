@@ -19,7 +19,7 @@ export default function Modal({ onSelectGif, onSelectUnsplash }) {
   return (
     <div className="main-modal-component">
       <button onClick={toggleModal} className="btn-modal">
-        Settings
+        Media Selection
       </button>
 
       {modal && (
@@ -41,14 +41,6 @@ export default function Modal({ onSelectGif, onSelectUnsplash }) {
               >
                 GIFs
               </button>
-              <button
-                onClick={() => changeTab("Videos")}
-                className={`tab-button ${
-                  activeTab === "Videos" ? "active" : ""
-                }`}
-              >
-                Videos
-              </button>
             </div>
             <div className="main-content-modal">
               {activeTab === "Images" && (
@@ -63,7 +55,6 @@ export default function Modal({ onSelectGif, onSelectUnsplash }) {
                   setModal={setModal}
                 />
               )}
-              {activeTab === "Videos" && <div>YouTube content here</div>}
             </div>
           </div>
         </div>

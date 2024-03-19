@@ -1,60 +1,47 @@
-body.active-modal {
-    overflow-y: hidden;
-}
-
-.btn-modal {
-    padding: 10px 20px;
-    display: block;
-    margin: 100px auto 0;
-    font-size: 18px;
-}
-
-.modal, .overlay {
-    width: 100vw;
-    height: 100vh;
+.overlay {
+    background: rgba(49, 49, 49, 0.8);
+    position: fixed;
+    z-index: 2;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    position: fixed;
 }
 
-.overlay {
-    background: rgba(49,49,49,0.8);
-}
-.modal-content {
-    display: flex;
+.modal {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    line-height: 1.4;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    position: relative;
     background: #f1f1f1;
     padding: 14px 28px;
     border-radius: 3px;
-    width: 80%; 
-    height: 80vh; 
-    max-width: 1200px; 
+    width: 80%;
+    height: 80vh;
+    max-width: 1200px;
+    overflow-y: auto;
+    z-index: 4; 
 }
+
 
 .close-modal {
     position: absolute;
     top: 10px;
     right: 10px;
     padding: 5px 7px;
+    cursor: pointer;
+    z-index: 5; 
 }
 
-.sidebar-modal {
-    min-height: 90vh;
-    background-color: white;
-    display: flex;
-    flex-direction: column; 
-}
-
-.tab-button {
-    margin-bottom: 8px;
-}
-
-.modal-content {
-    overflow-y: auto; 
+body.active-modal .element-that-needs-to-be-below {
+    z-index: 1; 
 }

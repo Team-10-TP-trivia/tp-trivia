@@ -34,7 +34,7 @@ export default function CreateTrivia() {
   const [selectedGif, setSelectedGif] = useState(null); 
   const [selectedUnsplash, setSelectedUnsplash] = useState(null); 
   const [timeLimit, setTimeLimit] = useState('10 minutes');
-  const [activeState, setActiveState] = useState("");
+  const [activeState, setActiveState] = useState(new Date());
 
   const navigate = useNavigate();
  
@@ -281,6 +281,7 @@ export default function CreateTrivia() {
       </div>
 
       <div className="main-content">
+        <h3>Question</h3>
         <input
           type="text"
           value={getActiveSlide().question}
@@ -288,6 +289,8 @@ export default function CreateTrivia() {
           placeholder="Start typing your question"
           className="question-input"
         />
+
+        <h3>Media</h3>
 
         <div>
           <Modal onSelectGif={handleSelectGif} onSelectUnsplash={handleSelectUnsplash} />
@@ -312,6 +315,7 @@ export default function CreateTrivia() {
         </div>
 
         <div className="answers-container">
+          <h3>Answers</h3>
           {getActiveSlide().answers.map((answer, index) => (
             <div key={index} className="answer-option">
               <input

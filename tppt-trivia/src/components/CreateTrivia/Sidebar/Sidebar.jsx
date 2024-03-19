@@ -99,6 +99,7 @@ const Sidebar = ({
         <ReactDatePicker
         selected={activeState}
         id="activeState"
+        placeholderText="Set Date"
         onChange={(date) => {
           const endOfDay = new Date(date);
           endOfDay.setDate(endOfDay.getDate());
@@ -118,6 +119,7 @@ const Sidebar = ({
           type="text"
           id="title"
           value={title}
+          placeholder="Provide Title"
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
@@ -128,12 +130,9 @@ const Sidebar = ({
           type="text"
           value={description}
           id="description"
+          placeholder="Provide Description"
           onChange={(e) => setDescription(e.target.value)}
         />
-      </div>
-
-      <div className="cover-image-selection">
-        <button >Select Cover Image</button>
       </div>
 
       <div className="sidebar-item">

@@ -55,53 +55,66 @@ export default function Questions({
     });
   };
 
+  const getMediaUrl = (question) => {
+    if (question.selectedGif) {
+      return question.selectedGif;
+    } else if (question.selectedUnsplash) {
+      return question.selectedUnsplash;
+    }
+  };
+
   return (
-    <div>
-      {quizQuestions.map((question, index) => (
-        <div key={question.id}>
+    <div className="questions-container">
+      <div className="question-buttons">
+        {quizQuestions.map((question, index) => (
           <button
+            key={question.id}
             onClick={() => setVisibleQuestionIndex(index)}
-            className={answeredQuestions[index] ? "answered" : "not-answered"}
+            className={`${
+              answeredQuestions[index] ? 'answered' : 'not-answered'
+            }`}
           >
             {index + 1}
           </button>
-        </div>
-      ))}
+        ))}
+      </div>
       {visibleQuestionIndex !== null && (
-        <div>
+        <div className="question-content">
           <p>
             Question {visibleQuestionIndex + 1}:{" "}
             {quizQuestions[visibleQuestionIndex].question}
           </p>
           <p>Points: {quizQuestions[visibleQuestionIndex].points}</p>
-          {quizQuestions[visibleQuestionIndex].image && (
+          {getMediaUrl(quizQuestions[visibleQuestionIndex]) && (
             <img
-              src={quizQuestions[visibleQuestionIndex].image}
-              alt="question"
+              src={getMediaUrl(quizQuestions[visibleQuestionIndex])}
+              alt="Question media"
+              className="question-image"
             />
           )}
-          {answers[visibleQuestionIndex].map((ans) => {
-            return (
+          <div className="question-answer-options">
+            {answers[visibleQuestionIndex].map((ans) => (
               <div key={ans.id}>
                 <input
                   type="radio"
                   id={ans.id}
                   name={quizQuestions[visibleQuestionIndex].id}
-                  value={ans.text + "-" + ans.isCorrect.toString() + "-" + quizQuestions[visibleQuestionIndex].points}
+                  value={`${ans.text}-${ans.isCorrect}-${quizQuestions[visibleQuestionIndex].points}`}
                   checked={selectedAnswerId[visibleQuestionIndex] === ans.id}
                   onChange={handleAnswerChange}
                 />
                 <label htmlFor={ans.id}>{ans.text}</label>
-                <p>{ans.points}</p>
               </div>
-            );
-          })}
-          {quizQuestions.length > 1 && (
-            <button onClick={handlePreviousQuestion}>Previous Question</button>
-          )}
-          {quizQuestions.length > 1 && (
-            <button onClick={handleNextQuestion}>Next Question</button>
-          )}
+            ))}
+          </div>
+          <div className="navigation-buttons">
+            {quizQuestions.length > 1 && (
+              <button onClick={handlePreviousQuestion}>Previous Question</button>
+            )}
+            {quizQuestions.length > 1 && (
+              <button onClick={handleNextQuestion}>Next Question</button>
+            )}
+          </div>
         </div>
       )}
     </div>
