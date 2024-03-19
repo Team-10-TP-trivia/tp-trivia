@@ -151,7 +151,14 @@ const Login = () => {
   };
 
   return (
-    <>
+    <Box sx={{
+      width: "100%",
+      backgroundColor: "#f0f0f0",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "70vh",
+    }}>
       {userLoggedIn && (
         <div id="successful-login">
           <p>{userLoggedIn}</p>
@@ -235,22 +242,7 @@ const Login = () => {
           </Box>
         </Container>
       </ThemeProvider>
-      {/* {invalidEmail && (
-        <div id="loading-page-error">
-          <p>{invalidEmail}</p>
-        </div>
-      )}
-      {invalidPassword && (
-        <div id="loading-page-error">
-          <p>{invalidPassword}</p>
-        </div>
-      )}
-      {noCredentials && (
-        <div id="loading-page-error">
-          <p>{noCredentials}</p>
-        </div>
-      )} */}
-    </>
+    </Box>
   );
 };
 

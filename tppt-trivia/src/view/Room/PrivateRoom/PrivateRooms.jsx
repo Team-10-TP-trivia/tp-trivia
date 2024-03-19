@@ -2,9 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../../context/appContext";
-import {
-  changeQuizVisibility,
-} from "../../../services/QuizService/Quizzes";
+import { changeQuizVisibility } from "../../../services/QuizService/Quizzes";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 export default function PrivateRooms({ quizList }) {
   const { userData } = useContext(AppContext);
@@ -35,12 +35,9 @@ export default function PrivateRooms({ quizList }) {
   }, [quizzes]);
 
   const joinPrivateQuizStudent = (quizId) => {
-    navigate(`/quiz/${quizId}/enter-code`, { state: { quizId, userData, quizzes } });
-    // if(userData.role === "student"){
-    //   quizzes.forEach((quiz) => {
-    //     updateQuizParticipants(quiz.id,{...userData});
-    //   });
-    // }
+    navigate(`/quiz/${quizId}/enter-code`, {
+      state: { quizId, userData, quizzes },
+    });
   };
 
   const joinPrivateQuizTeacher = (quizId) => {
@@ -70,69 +67,110 @@ export default function PrivateRooms({ quizList }) {
   };
 
   return (
-    <div>
-      <h1>Private Quizzes</h1>
-      {userData.role === "student" &&
-        quizzes.length > 0 &&
-        quizzes.map((quiz) => {
-          return quiz.isActive === true ? (
-            <div key={quiz.id}>
-              <p>Quiz Title: {quiz.title}</p>
-              <p>Quiz description: {quiz.description}</p>
-              {time[quiz.id] && (
-                <p>
-                  Time left: {time[quiz.id].day} days {time[quiz.id].hour} hours{" "}
-                  {time[quiz.id].minute} minutes {time[quiz.id].second} seconds
-                </p>
-              )}
-              <button
-                onClick={() => {
-                  joinPrivateQuizStudent(quiz.id);
+    <Box display={"flex"} flexDirection={"column"}>
+      <Typography variant="h4">Private Quizzes</Typography>
+      {userData.role === "student" && quizzes.length > 0 && (
+        <Box>
+          {quizzes.map((quiz) => {
+            return quiz.isActive === true ? (
+              <Box
+                key={quiz.id}
+                sx={{
+                  border: "1px solid black",
+                  borderRadius: "10px",
+                  padding: "10px",
+                  marginLeft: "10px",
+                  minWidth: "300px",
                 }}
               >
-                Join Quiz
-              </button>
-            </div>
-          ) : (
-            <div key={quiz.id}>
-              <p>Quiz Title: {quiz.title}</p>
-              <p>Quiz description: {quiz.description}</p>
-
-              <button
-                disabled={true}
-                onClick={() => {
-                  joinPrivateQuizStudent(quiz.id);
+                <Typography variant="h6">Quiz Title: {quiz.title}</Typography>
+                <Typography variant="h6">
+                  Quiz description: {quiz.description}
+                </Typography>
+                <Typography variant="h6">
+                  Questions: {quiz.questions.length}
+                </Typography>
+                {time[quiz.id] && (
+                  <Typography variant="h5">
+                    Time left: {time[quiz.id].day} days {time[quiz.id].hour}{" "}
+                    hours {time[quiz.id].minute} minutes {time[quiz.id].second}{" "}
+                    seconds
+                  </Typography>
+                )}
+                <button
+                  onClick={() => {
+                    joinPrivateQuizStudent(quiz.id);
+                  }}
+                >
+                  Join Quiz
+                </button>
+              </Box>
+            ) : (
+              <Box key={quiz.id} display={"flex"}>
+                <Typography variant="h6">Quiz Title: {quiz.title}</Typography>
+                <Typography variant="h6">
+                  Quiz description: {quiz.description}
+                </Typography>
+                <Typography variant="h6">
+                  Questions: {quiz.questions.length}
+                </Typography>
+                <Typography variant="h6">
+                  Questions: {quiz.questions.length}
+                </Typography>
+                <button
+                  disabled={true}
+                  onClick={() => {
+                    joinPrivateQuizStudent(quiz.id);
+                  }}
+                >
+                  Join Quiz
+                </button>
+              </Box>
+            );
+          })}
+        </Box>
+      )}
+      {userData.role === "teacher" && quizzes.length > 0 && (
+        <Box display={"flex"}>
+          {quizzes.map((quiz) => {
+            return (
+              <Box
+                key={quiz.id}
+                sx={{
+                  border: "1px solid black",
+                  borderRadius: "10px",
+                  padding: "10px",
+                  marginLeft: "10px",
+                  minWidth: "300px",
                 }}
               >
-                Join Quiz
-              </button>
-            </div>
-          );
-        })}
-      {userData.role === "teacher" &&
-        quizzes.length > 0 &&
-        quizzes.map((quiz) => {
-          return (
-            <div key={quiz.id}>
-              <p>Quiz Title: {quiz.title}</p>
-              <p>Quiz description: {quiz.description}</p>
-              {time[quiz.id] && (
-                <p>
-                  Time left: {time[quiz.id].day} days {time[quiz.id].hour} hours{" "}
-                  {time[quiz.id].minute} minutes {time[quiz.id].second} seconds
-                </p>
-              )}
-              <button
-                onClick={() => {
-                  joinPrivateQuizTeacher(quiz.id);
-                }}
-              >
-                See Quiz
-              </button>
-            </div>
-          );
-        })}
-    </div>
+                <Typography variant="h6">Quiz Title: {quiz.title}</Typography>
+                <Typography variant="h6">
+                  Quiz description: {quiz.description}
+                </Typography>
+                <Typography variant="h6">
+                  Questions: {quiz.questions.length}
+                </Typography>
+                {time[quiz.id] && (
+                  <Typography variant="h6">
+                    Time left: {time[quiz.id].day} days {time[quiz.id].hour}{" "}
+                    hours {time[quiz.id].minute} minutes {time[quiz.id].second}{" "}
+                    seconds
+                  </Typography>
+                )}
+                <button
+                  onClick={() => {
+                    joinPrivateQuizTeacher(quiz.id);
+                  }}
+                >
+                  See Quiz
+                </button>
+              </Box>
+            );
+          })}
+        </Box>
+      )}
+    </Box>
   );
 }
 PrivateRooms.propTypes = {

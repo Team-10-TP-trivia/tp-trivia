@@ -12,7 +12,12 @@ export default function Register() {
   };
 
   return (
-    <div className="register-container">
+    <div className="register-container" style={{
+      height: "50vh",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+    }}>
       <div className="register-header">
         <h1>Sing up as:</h1>
       </div>

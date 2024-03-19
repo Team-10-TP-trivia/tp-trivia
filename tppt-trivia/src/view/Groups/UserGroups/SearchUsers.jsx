@@ -48,12 +48,11 @@ export default function SearchUsers({ group }) {
       <Typography variant="h6">Search for users</Typography>
       <ThemeProvider theme={customTheme(outerTheme)}>
         <TextField
-          label="Search for users"
+          label="Search users"
           variant="filled"
           type="text"
           id="school"
           name="school"
-          placeholder="Find people by username"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />

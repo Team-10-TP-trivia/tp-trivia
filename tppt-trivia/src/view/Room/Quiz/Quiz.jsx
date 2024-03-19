@@ -150,9 +150,7 @@ export default function Quiz() {
         </div>
       )}
       {userData.role === 'teacher' && quiz && (
-        <div>
         <TeacherOverview quiz={quiz} quizId={quizId} participants={participants}/>
-      </div>
       )}
     </div>
   );

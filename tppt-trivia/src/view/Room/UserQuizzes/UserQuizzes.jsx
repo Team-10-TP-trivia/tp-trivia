@@ -3,6 +3,8 @@ import { AppContext } from "../../../context/appContext";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { deleteQuizById } from "../../../services/QuizService/Quizzes";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 export default function UserQuizzes({ quizList }) {
   const { userData } = useContext(AppContext);
@@ -20,25 +22,27 @@ export default function UserQuizzes({ quizList }) {
     deleteQuizById(quiz.id);
   }
   if(!userData) return (<p>Loading...</p>);
-  
+
   return (
-    <div>
+    <Box>
       {userData.role === "teacher" && <h1>User Quizzes</h1>}
       {userQuizzes && userQuizzes.map((quiz) => {
         if (quiz.username === userData.username) {
+          console.log(quiz)
           return (
-            <div key={quiz.id}>
+            <Box key={quiz.id}>
+              <Typography variant="h5">Quiz Name: {quiz.title}</Typography>
               <h2>Quiz Name: {quiz.description}</h2>
               <p>Quiz Description: {quiz.description}</p>
               <p>Quiz creator: {quiz.username}</p>
               <button onClick={() => {editQuiz(quiz)}}>Edit quiz</button>
               <button onClick={() => {deleteQuiz(quiz)}}>Delete quiz</button>
-            </div>
+            </Box>
           );
         }
         return null;
       })}
-    </div>
+    </Box>
   );
 }
 

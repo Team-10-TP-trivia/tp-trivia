@@ -33,7 +33,15 @@ export default function JoinRoom() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         type="text"
-        placeholder="Search quiz by title/category"
+        placeholder="Search quiz by title/or category"
+        style={{
+          width: "50%",
+          padding: "10px",
+          marginBottom: "20px",
+          borderRadius: "5px",
+          border: "1px solid #ccc",
+          alignItems: "center",
+        }}
       />
       <PublicRooms quizList={quizList} />
       <PrivateRooms quizList={quizList} />
