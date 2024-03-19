@@ -28,10 +28,7 @@ export default function JoinRoom() {
   }
 
   return (
-    <div style={{
-      height: "fit-content",
-      minHeight: "60vh",
-    }}>
+    <>
       <input
         value={search}
         onChange={(e) => setSearch(e.target.value)}
@@ -46,11 +43,20 @@ export default function JoinRoom() {
           alignItems: "center",
         }}
       />
-      <PublicRooms quizList={quizList} />
-      <PrivateRooms quizList={quizList} />
-      {(userData.role === "teacher" || userData.role === "admin") && (
-        <UserQuizzes quizList={quizList} />
-      )}
-    </div>
+      <div
+        style={{
+          height: "fit-content",
+          minHeight: "80vh",
+          display: "flex",
+          justifyContent: "space-around",
+        }}
+      >
+        <PublicRooms quizList={quizList} />
+        <PrivateRooms quizList={quizList} />
+        {(userData.role === "teacher" || userData.role === "admin") && (
+          <UserQuizzes quizList={quizList} />
+        )}
+      </div>
+    </>
   );
 }

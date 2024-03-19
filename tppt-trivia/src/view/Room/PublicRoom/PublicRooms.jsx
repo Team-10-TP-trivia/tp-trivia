@@ -69,10 +69,13 @@ export default function PublicRooms({ quizList }) {
   };
 
   return (
-    <Box display={"flex"} flexDirection={"column"}>
+    <Box display={"flex"} sx={{
+      flexDirection: "column",
+    }}
+    gap={"20px"}>
       <Typography variant="h4">Public Quizzes</Typography>
       {userData.role === "student" && quizzes.length > 0 && (
-        <Box display={"flex"}>
+        <Box display={"flex"} gap={"20px"}>
           {quizzes.map((quiz) => {
             return quiz.isActive === true ? (
               <Box
@@ -83,6 +86,7 @@ export default function PublicRooms({ quizList }) {
                   padding: "10px",
                   marginLeft: "10px",
                   minWidth: "300px",
+                  marginTop: "10px",
                 }}
               >
                 <Typography variant="h6">Quiz Title: {quiz.title}</Typography>
@@ -130,7 +134,9 @@ export default function PublicRooms({ quizList }) {
         </Box>
       )}
       {userData.role === "teacher" && quizzes.length > 0 && (
-        <Box display={"flex"}>
+        <Box display={"flex"} sx={{
+          flexDirection: "column",
+        }}>
           {quizzes.map((quiz) => {
             return (
               <Box
@@ -141,6 +147,7 @@ export default function PublicRooms({ quizList }) {
                   padding: "10px",
                   marginLeft: "10px",
                   minWidth: "300px",
+                  marginTop: "10px",
                 }}
               >
                 <Typography variant="h6">Quiz Title: {quiz.title}</Typography>
