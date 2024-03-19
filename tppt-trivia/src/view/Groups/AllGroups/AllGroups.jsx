@@ -7,10 +7,12 @@ import { AppContext } from "../../../context/appContext";
 import SearchGroups from "./SeacrhGroups";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
 
 export default function AllGroups() {
   const [groups, setGroups] = useState(null);
   const { userData } = useContext(AppContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = getAllGroups(setGroups);
@@ -30,6 +32,7 @@ export default function AllGroups() {
       <Box display={"flex"} sx={{minHeight: "80vh", height: "fit-content"}}>
         {groups ? (
           Object.values(groups).map((group, index) => {
+            console.log(group)
             const hasUsers = group.users && group.users[userData.username];
             const isRequestSent =
               group.requests &&
@@ -49,7 +52,12 @@ export default function AllGroups() {
                 transform: "scale(1.05)",
                 backgroundColor: "rgba(0,0,0,0.1)",
               },
-            }} 
+            }}
+            onClick={() =>{
+              if(hasUsers){
+                navigate(`/group/${group.groupName}`)
+              }
+            } }
               display={"flex"} 
               flexDirection={"column"} 
               alignItems={"center"}>
@@ -57,7 +65,9 @@ export default function AllGroups() {
                 <Typography variant="p" sx={{fontSize:"20px"}}>Group Description: {group.groupDescription}</Typography>
                 <Typography variant="p" sx={{fontSize:"20px"}}>Group creator: {group.firstName} {group.lastName}</Typography>
                 {hasUsers ? (
+                  <>
                   <Typography variant="p" sx={{color: "green", fontSize:"20px"}}>You are already in this group.</Typography>
+                  </>
                 ) : isRequestSent ? (
                   <Typography variant="p" sx={{color: "#e8b312", fontSize:"20px"}}>Waiting for approval</Typography>
                 ) : (

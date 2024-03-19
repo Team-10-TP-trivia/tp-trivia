@@ -73,7 +73,9 @@ function App() {
             <Route path='/math' element={<Math />} />
             <Route path='/general-knowledge' element={<GeneralKnowledge />} />
             <Route path='/profile/group/:groupId' element={<OpenUserGroup />} />
+            <Route path='/group/:groupId' element={<OpenUserGroup />} />
             <Route path='/profile/group/:groupId/groupQuizzes' element={<GroupParticipantsQuizzes />} />
+            <Route path='/group/:groupId/groupQuizzes' element={<GroupParticipantsQuizzes />} />
             <Route path='/quiz/:quizId' element={<Quiz />} />
             <Route path='/quiz/demo/:quizId' element={<DemoQuiz />} />
             <Route path='/quiz/:quizId/enter-code' element={<PrivateQuizPinCode />} />

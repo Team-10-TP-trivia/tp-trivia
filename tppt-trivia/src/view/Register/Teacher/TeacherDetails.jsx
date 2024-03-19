@@ -63,14 +63,14 @@ export default function TeacherDetails() {
       );
     }
     try {
-      const user = getUserByHandle(form.username);
+      const user = await getUserByHandle(form.username);
       if (user.exists()) {
         setUserExists(true);
         return console.log(
           `User with handle ${form.username} already exists. Please choose another username.`
         );
       }
-      const credentials = registerUser(form.email, form.password);
+      const credentials = await registerUser(form.email, form.password);
       navigate("/");
       await createUserHandle(
         form.username,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { takeAllQuizzes } from "../../../services/QuizService/Quizzes";
+import { takeAllQuizzesByGroupUsers } from "../../../services/QuizService/Quizzes";
 import { useNavigate } from "react-router-dom";
 
 export default function GroupParticipantsQuizzes() {
@@ -11,7 +11,7 @@ export default function GroupParticipantsQuizzes() {
 
   useEffect(() => {
     Object.values(users).map((user) => {
-      takeAllQuizzes(null, user.uid).then((quizzes) => {
+      takeAllQuizzesByGroupUsers(user.uid).then((quizzes) => {
         setQuizzes(quizzes);
       });
     });
@@ -20,7 +20,7 @@ export default function GroupParticipantsQuizzes() {
   const editQuiz = (quiz) => {
     navigate(`/edit-quiz/${quiz.id}`, {state: {quiz}});
   };
-
+console.log(quizzes)
   return (
     <div>
       <h1>Quizzes created by group participants:</h1>
@@ -31,6 +31,7 @@ export default function GroupParticipantsQuizzes() {
             <p>Category: {quiz.category}</p>
             <p>Created on: {quiz.createdOn}</p>
             <p>Time limit: {quiz.timeLimit}</p>
+            <p>Time limit: {quiz.username}</p>
             <button onClick={() => editQuiz(quiz)}>Edit quiz</button>
         </div>
         )
