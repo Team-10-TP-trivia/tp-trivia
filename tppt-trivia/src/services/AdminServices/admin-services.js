@@ -12,7 +12,7 @@ import {
 } from "firebase/database";
 import { db } from "../../config/firebase-config";
 
-export const getAllUsers = async (setUsers) => {
+export const getAllUsers = (setUsers) => {
 
   const usersRef = ref(db, "users");
 

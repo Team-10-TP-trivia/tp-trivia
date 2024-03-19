@@ -20,6 +20,7 @@ export const createUserHandle = (username,firstName,lastName, uid, email, phoneN
     isAdmin: false,
     verified : false,
     pendingVerification: false,
+    blocked: false,
   });
 };
 

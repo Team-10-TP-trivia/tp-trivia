@@ -9,6 +9,8 @@ import {
 export default function AdminRequests() {
   const { userData } = useContext(AppContext);
   const [usersRequests, setUsersRequests] = useState([]);
+  const [ documents, setDocuments ] = useState(false);
+
   useEffect(() => {
     if (userData && userData.role === "admin") {
       getAllPendingVerifications(userData.username).then((snapshot) => {
@@ -33,18 +35,24 @@ export default function AdminRequests() {
     await denyTeacherVerification(userData.username, teacherUsername);
   }
 
+  const seeDocuments = () => {
+    setDocuments(!documents);
+  }
+
   return (
     <div>
       <h2>Users requests:</h2>
-      {usersRequests.approved === false && usersRequests.length > 0 ? (
+      {usersRequests.length > 0 ? (
         usersRequests.map((user, index) => {
+          if(user.approved === false)
           return (
             <div key={index}>
               <div>First Name: {user.firstName}</div>
               <div>Last Name: {user.lastName}</div>
               <div>Email: {user.mail}</div>
               <div>School: {user.school}</div>
-              <button>See documents</button>
+              {documents && <div>Documents: {user.documents}</div>}
+              <button onClick={() => seeDocuments()}>See documents</button>
               <br />
               <br />
               <button onClick={() => approveRequest(user.username)}>
@@ -57,7 +65,7 @@ export default function AdminRequests() {
       ) : (
         <div>
           <h2>Approved users:</h2>
-          {usersRequests.map((user, index) => {
+          {usersRequests.approved === true && usersRequests.map((user, index) => {
             return (
               <div key={index}>
                 <div>First Name: {user.firstName}</div>

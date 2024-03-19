@@ -32,7 +32,12 @@ export default function UserOverview() {
   }, [userData, quizId]);
 
   if(!userData) {
-    return <div>
+    return <div style={{
+      justifyContent: "center",
+      alignItems: "center",
+      height: "60vh",
+      minHeight: "fit-content",
+    }}>
     <h1>Your results for quiz {quiz.title}</h1>
     {userQuizResults && (
       <div>

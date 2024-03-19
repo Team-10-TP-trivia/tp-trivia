@@ -76,7 +76,22 @@ const Login = () => {
      */
     if (userData) {
       setUserLoggedIn(
-        `Welcome back, ${userData.firstName} ${userData.lastName}`
+        <Box sx={{
+          position: "absolute",
+          top: "23vh",
+          left: "40vw",
+          width: "fit-content",
+          height: "50px",
+          backgroundColor: "#91fd5e",
+          color: "white",
+          padding: "10px",
+          textAlign: "center",
+          borderRadius: "5px",
+          border: "1px solid black",
+          fontSize: "20px",
+        }}>
+          <b>Welcome back, {userData.firstName} {userData.lastName}</b>
+        </Box>
       );
     }
   }, [userData]);
@@ -161,7 +176,7 @@ const Login = () => {
     }}>
       {userLoggedIn && (
         <div id="successful-login">
-          <p>{userLoggedIn}</p>
+          {userLoggedIn}
         </div>
       )}
       <ThemeProvider theme={defaultTheme}>

@@ -28,7 +28,10 @@ export default function JoinRoom() {
   }
 
   return (
-    <div>
+    <div style={{
+      height: "fit-content",
+      minHeight: "60vh",
+    }}>
       <input
         value={search}
         onChange={(e) => setSearch(e.target.value)}

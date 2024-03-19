@@ -11,11 +11,11 @@ export default function AdminUsers() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    if (userData && userData.role === "admin") {
+    if(users.length === 0){
       const unsubscribe = getAllUsers(setUsers);
       return () => unsubscribe();
     }
-  }, [userData]);
+  }, [users]);
 
   if (!userData) {
     return <div>Loading...</div>;
