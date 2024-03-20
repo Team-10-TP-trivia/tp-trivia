@@ -111,8 +111,8 @@ export default function VerifyTeacher({ userData }) {
           </Box>
         </Box>
       )}
-      {user.pendingVerification ===
-        false(
+      {user.pendingVerification = "waiting" && 
+        (
           <>
             <Typography variant="h6">Verify that you are a teacher</Typography>
             <label htmlFor="school">Enter a school where you teach</label>
@@ -215,8 +215,11 @@ export default function VerifyTeacher({ userData }) {
           <Button onClick={verifyTeacher}>Send verification</Button>
         </>
       )}
+      {user.pendingVerification === "pending" && (
+        <Typography variant="h6">Waiting verification</Typography>
+      )}
       {user.pendingVerification === "approved" && (
-        <Typography variant="h6">Your were approved</Typography>
+        <Typography variant="h6">You were approved as verified teacher</Typography>
       )}
     </div>
   );

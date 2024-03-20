@@ -80,12 +80,18 @@ export const sendVerificationToAdmins = async (
         lastName,
         school,
         photoURL: photoURL || "", // Set default value if photoURL is falsy
-        approved: false,
+        approved: "pending",
       };
       await update(userRef, {
         pendingVerifications,
       });
     }
+
+    const teacherRef = ref(db, `users/${username}`);
+    await update(teacherRef, {
+      verified: false,
+      pendingVerification: "pending",
+    });
   } catch (error) {
     console.error("Error updating admin accounts:", error);
     throw error;
@@ -131,6 +137,7 @@ export const denyTeacherVerification = async (
 
     const teacherRef = ref(db, `users/${teacherUsername}`);
     await update(teacherRef, {
+      verified: false,
       pendingVerification: "denied",
     });
   } catch (error) {

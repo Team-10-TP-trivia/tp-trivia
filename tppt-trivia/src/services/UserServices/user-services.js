@@ -19,7 +19,7 @@ export const createUserHandle = (username,firstName,lastName, uid, email, phoneN
     createdOn: new Date().valueOf(),
     isAdmin: false,
     verified : false,
-    pendingVerification: false,
+    pendingVerification: "waiting",
     blocked: false,
   });
 };

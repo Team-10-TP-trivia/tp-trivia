@@ -48,24 +48,35 @@ export default function AdminRequests() {
       <h2>Users requests:</h2>
       {usersRequests.length > 0 ? (
         usersRequests.map((user, index) => {
-          console.log(user.photoURL)
-          if(user.approved === false)
-          return (
-            <div key={index}>
-              <div>First Name: {user.firstName}</div>
-              <div>Last Name: {user.lastName}</div>
-              <div>Email: {user.mail}</div>
-              <div>School: {user.school}</div>
-              {documents && <img src={user.photoURL} alt="documents" />}
-              <button onClick={() => seeDocuments()}>See documents</button>
-              <br />
-              <br />
-              <button onClick={() => approveRequest(user.username)}>
-                Approve
-              </button>
-              <button onClick={() => denyRequest(userData.username, user.username)}>Deny</button>
-            </div>
-          );
+          if(user.approved === "pending"){
+            return (
+              <div key={index}>
+                <div>First Name: {user.firstName}</div>
+                <div>Last Name: {user.lastName}</div>
+                <div>Email: {user.mail}</div>
+                <div>School: {user.school}</div>
+                {documents && <img src={user.photoURL} alt="documents" />}
+                <button onClick={() => seeDocuments()}>See documents</button>
+                <br />
+                <br />
+                <button onClick={() => approveRequest(user.username)}>
+                  Approve
+                </button>
+                <button onClick={() => denyRequest(userData.username, user.username)}>Deny</button>
+              </div>
+            );
+          }
+          if(user.approved === false){
+            return (
+              <div key={index}>
+                <h2>Denied users:</h2>
+                <div>First Name: {user.firstName}</div>
+                <div>Last Name: {user.lastName}</div>
+                <div>Email: {user.mail}</div>
+                <div>School: {user.school}</div>
+              </div>
+            );
+          }
         })
       ) : (
         <div>
