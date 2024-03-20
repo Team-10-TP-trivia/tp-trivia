@@ -74,7 +74,7 @@ export default function VerifyTeacher({ userData }) {
       );
       setSchoolValue("");
       await updateSentRequest(userData.username);
-      setUser({ ...user, pendingVerification: true });
+      setUser({ ...user, pendingVerification: "pending" });
     } catch (e) {
       console.log(e);
     }
@@ -111,7 +111,7 @@ export default function VerifyTeacher({ userData }) {
           </Box>
         </Box>
       )}
-      {user.pendingVerification = "waiting" && 
+      {user.pendingVerification === "waiting" && 
         (
           <>
             <Typography variant="h6">Verify that you are a teacher</Typography>
@@ -165,8 +165,8 @@ export default function VerifyTeacher({ userData }) {
         )}
       {user.pendingVerification === "denied" && (
         <>
-          <Typography variant="h6">Your verification were denied</Typography>
-          <Typography variant="h6">Verify that you are a teacher</Typography>
+          <Typography variant="h6">Your verification was denied</Typography>
+          <Typography variant="h6">Send verification again</Typography>
           <label htmlFor="school">Enter a school where you teach</label>
           <br />
           <ThemeProvider theme={customTheme(outerTheme)}>

@@ -14,7 +14,7 @@ import { getDownloadURL, ref as sRef, uploadBytes } from "firebase/storage";
 
 export const updateSentRequest = async (username) => {
   const updateTeacherRef = {};
-  updateTeacherRef[`users/${username}/pendingVerification`] = true;
+  updateTeacherRef[`users/${username}/pendingVerification`] = "pending";
   return update(ref(db), updateTeacherRef);
 };
 
