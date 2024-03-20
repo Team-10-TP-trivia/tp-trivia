@@ -111,8 +111,61 @@ export default function VerifyTeacher({ userData }) {
           </Box>
         </Box>
       )}
-      {user.pendingVerification === false || user.pendingVerification === "denied" && (
+      {user.pendingVerification ===
+        false(
+          <>
+            <Typography variant="h6">Verify that you are a teacher</Typography>
+            <label htmlFor="school">Enter a school where you teach</label>
+            <br />
+            <ThemeProvider theme={customTheme(outerTheme)}>
+              <TextField
+                label="School name"
+                variant="filled"
+                type="text"
+                id="school"
+                name="school"
+                placeholder="School name"
+                value={schoolValue}
+                onChange={handleSchoolChange}
+              />
+            </ThemeProvider>
+            <br />
+            <label htmlFor="certificate">
+              Provide certificate for education{" "}
+            </label>
+            <br />
+            <StyledLabel htmlFor="contained-button-file1">
+              <StyledInput
+                accept="image/*"
+                id="contained-button-file1"
+                multiple
+                type="file"
+                onChange={handleFileChange}
+                onClick={(e) => e.stopPropagation()}
+              />
+              <FormControl fullWidth>
+                <InputLabel htmlFor="contained-button-file1">Upload</InputLabel>
+                <Input
+                  id="contained-button-file1"
+                  value={photo ? photo.name : ""}
+                  readOnly
+                  endAdornment={
+                    <StyledIconButton
+                      aria-label="upload picture"
+                      component="span"
+                    >
+                      <CloudUploadIcon />
+                    </StyledIconButton>
+                  }
+                />
+              </FormControl>
+            </StyledLabel>
+            <Button onClick={verifyTeacher}>Send verification</Button>
+          </>
+        )}
+      {user.pendingVerification === "denied" && (
         <>
+          <Typography variant="h6">Your verification were denied</Typography>
           <Typography variant="h6">Verify that you are a teacher</Typography>
           <label htmlFor="school">Enter a school where you teach</label>
           <br />
@@ -162,7 +215,6 @@ export default function VerifyTeacher({ userData }) {
           <Button onClick={verifyTeacher}>Send verification</Button>
         </>
       )}
-
       {user.pendingVerification === "approved" && (
         <Typography variant="h6">Your were approved</Typography>
       )}
