@@ -134,7 +134,7 @@ export const denyTeacherVerification = async (
       pendingVerification: "denied",
     });
   } catch (error) {
-    console.error("Error denying teacher verification:", error);
+    console.error("Error denying teacher verification:", error); 
     throw error;
   }
 };

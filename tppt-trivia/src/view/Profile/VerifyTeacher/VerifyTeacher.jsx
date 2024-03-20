@@ -60,8 +60,8 @@ export default function VerifyTeacher({ userData }) {
       }
 
       const downloadUrl = await uploadVerificationFile(
-        photo,
-        userData.username
+        userData.username,
+        photo
       );
 
       await sendVerificationToAdmins(
@@ -111,7 +111,7 @@ export default function VerifyTeacher({ userData }) {
           </Box>
         </Box>
       )}
-      {user.pendingVerification === false && (
+      {user.pendingVerification === false || user.pendingVerification === "denied" && (
         <>
           <Typography variant="h6">Verify that you are a teacher</Typography>
           <label htmlFor="school">Enter a school where you teach</label>
@@ -163,8 +163,8 @@ export default function VerifyTeacher({ userData }) {
         </>
       )}
 
-      {user.pendingVerification === true && (
-        <Typography variant="h6">Your verification is pending</Typography>
+      {user.pendingVerification === "approved" && (
+        <Typography variant="h6">Your were approved</Typography>
       )}
     </div>
   );
