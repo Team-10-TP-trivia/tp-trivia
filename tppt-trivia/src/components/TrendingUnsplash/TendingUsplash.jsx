@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { fetchUnsplashPhotos } from "../../services/UnsplashAPI/UnsplashAPI";
 
-export default function TrendingUnsplash({ onSelectMedia, setModal }) {
+export default function TrendingUnsplash({ onSelectMedia, setModal, searchParams }) {
   const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
@@ -26,20 +26,25 @@ export default function TrendingUnsplash({ onSelectMedia, setModal }) {
     <div>
       <h3>Trending Unsplash Photos</h3>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-        {photos.map((photo) => (
-          <div
-            key={photo.id}
-            onClick={() => onSelectMedia(photo.urls.regular)}
-            style={{ cursor: "pointer" }}
-          >
-            <img
-              onClick={closeModal}
-              src={photo.urls.thumb}
-              alt={photo.description}
-              style={{ width: "100%", height: "auto" }}
-            />
-          </div>
-        ))}
+        {photos.map((photo) => {
+          if (photo.alt_description.toLowerCase().includes(searchParams.toLowerCase())) {
+            return (
+              <div
+                key={photo.id}
+                onClick={() => onSelectMedia(photo.urls.regular)}
+                style={{ cursor: "pointer" }}
+              >
+                <img
+                  onClick={closeModal}
+                  src={photo.urls.thumb}
+                  alt={photo.description}
+                  style={{ width: "100%", height: "auto" }}
+                />
+              </div>
+            );
+          
+          }
+        })}
       </div>
     </div>
   );
@@ -48,4 +53,5 @@ export default function TrendingUnsplash({ onSelectMedia, setModal }) {
 TrendingUnsplash.propTypes = {
   onSelectMedia: PropTypes.func.isRequired,
   setModal: PropTypes.func.isRequired,
+  searchParams: PropTypes.string.isRequired,
 };
