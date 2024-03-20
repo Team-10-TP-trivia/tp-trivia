@@ -73,9 +73,14 @@ export const sendUserInvitation = async (username, group) => {
 };
 
 export const userAcceptRequest = async (groupName, username, user) => {
+  const userRef = get(ref(db, `users/${username}/groupInvitations/${groupName}`));
+ 
   const updateGroupUsers = {};
   updateGroupUsers[`groups/${groupName}/users/${username}`] = user;
-  updateGroupUsers[`users/${username}/groupInvitations/${username}`] = null;
+  updateGroupUsers[`users/${username}/groupInvitations/${groupName}`] = {
+    ...userRef,
+    status: "accepted",
+  };
   await update(ref(db), updateGroupUsers);
 }
 

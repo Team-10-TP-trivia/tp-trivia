@@ -43,6 +43,8 @@ const Profile = () => {
   const [studentNotifications, setStudentNotifications] = useState([]);
   const [userError, setUserError] = useState(false);
   const [selectPhotoError, setSelectPhotoError] = useState(false);
+  const [acceptedNotification, setAcceptedNotification] = useState(false);
+  
 
   useEffect(() => {
     if (userData && userData.username) {
@@ -94,10 +96,12 @@ const Profile = () => {
 
   const handleJoinGroup = (groupName) => {
     userAcceptRequest(groupName, userData.username, userData);
+    navigate(`/group/${groupName}`);
   };
 
   const handleRejectGroup = (groupName) => {
     userRejectRequest(groupName, userData.username);
+    setAcceptedNotification(!acceptedNotification);
   };
 
   const handleAcceptQuiz = (quiz) => {
@@ -105,6 +109,7 @@ const Profile = () => {
     navigate(`/quiz/${quiz.quizId}`);
   };
 
+  
   const handleRejectQuiz = (quiz) => {
     userRejectQuiz(userData.username, quiz);
   };
@@ -287,30 +292,37 @@ const Profile = () => {
         {userData.role === "teacher" &&
           (notifications && notifications.length > 0 ? (
             Object.values(notifications).map((notification) => {
-              return (
-                <Box key={notification.groupId}>
-                  <Typography variant="p">
-                    Group Name: {notification.groupName}
-                  </Typography>
-                  <Typography variant="p">
-                    Group Creator: {notification.creator}
-                  </Typography>
-                  <Buttons
-                    onClick={() => {
-                      handleJoinGroup(notification.groupName);
-                    }}
-                  >
-                    Join group
-                  </Buttons>
-                  <Buttons
-                    onClick={() => {
-                      handleRejectGroup(notification.groupName);
-                    }}
-                  >
-                    Reject
-                  </Buttons>
-                </Box>
-              );
+              if(notification.status === "pending") {
+                return (
+                  <Box key={notification.groupId}>
+                    <Typography variant="p">
+                      Group Name: {notification.groupName} <br /> <br />
+                    </Typography>
+                    <Typography variant="p">
+                      Group Creator: {notification.creator} <br /> 
+                    </Typography>
+                    <Buttons
+                      onClick={() => {
+                        handleJoinGroup(notification.groupName)
+                      }}
+                    >
+                      Join group
+                    </Buttons>
+                    <Buttons
+                      onClick={() => {
+                        handleRejectGroup(notification.groupName);
+                      }}
+                    >
+                      Reject
+                    </Buttons>
+                  </Box>
+                );
+              }
+              if(notification.status !== "pending") {
+                return (
+                  <div key={'Empty'}>No new Notifications!</div>
+                )
+              }
             })
           ) : (
             <Typography variant="p">No notifications!</Typography>
@@ -355,7 +367,8 @@ const Buttons = styled("button")(
     background-color: #FF9F45;;
     padding: 5px;
     border-radius: 5px;
-    width: 50px;
+    width: fit-content;
+    min-width: 100px;
     color: white;
     transition: all 150ms ease;
     cursor: pointer;
