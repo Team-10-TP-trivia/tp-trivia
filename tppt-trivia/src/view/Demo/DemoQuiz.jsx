@@ -25,19 +25,50 @@ export default function DemoQuizzes() {
 
   return (
     !userData && (
-      <section className="demo-quiz-container">
-        <h2>Try Our Demo Quizzes</h2>
-        <div>
-          {demoQuizzes.map((quiz) => (
-            <div
+      <section className="demo-quiz-container" style={{
+        backgroundColor: "rgba(0, 0, 0, 0.3)",
+        borderRadius: "10px",
+        padding: "1rem",
+        margin: "1rem",
+        boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+      }}>
+        <h2 style={{
+          textAlign: "center",
+        }}>Try Our Demo Quizzes</h2>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-around",
+            flexWrap: "wrap",
+          }}
+        >
+          {demoQuizzes.map((quiz) => {
+            return <div
               key={quiz.id}
               className="quiz-item"
               onClick={() => openQuiz(quiz.id)}
+              style={{
+                backdropFilter: "blur(5px)",
+                borderRadius: "10px",
+                border: "1px solid rgba(255, 255, 255, 0.2)",
+                backgroundColor: "rgba(100, 150, 200, 1)",
+                padding: "1rem",
+                boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
+                alignItems: "center",
+                textAlign: "center",
+              }}
             >
+              <img src={quiz.imgUrl} alt="" style={{
+                width: "250px",
+                height: "fit-content",
+                minHeight: "150px",
+                objectFit: "contain",
+                borderRadius: "10px",
+              }}/>
               <p>{quiz.title}</p>
               <p>{quiz.description}</p>
             </div>
-          ))}
+          })}
         </div>
       </section>
     )
