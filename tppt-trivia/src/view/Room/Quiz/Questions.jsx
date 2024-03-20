@@ -21,7 +21,7 @@ export default function Questions({
     newAnswersId[visibleQuestionIndex] = +e.target.id;
     setSelectedAnswerId(newAnswersId);
     const newAnswers = [...selectedAnswers];
-    newAnswers[visibleQuestionIndex] = e.target.value;
+    newAnswers[visibleQuestionIndex] = e.target.value.trim();
     setSelectedAnswers(newAnswers);
 
     const newAnsweredQuestions = [...answeredQuestions];

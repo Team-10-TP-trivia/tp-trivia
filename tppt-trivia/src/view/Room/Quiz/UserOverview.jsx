@@ -22,7 +22,7 @@ export default function UserOverview() {
       try {
         const snapshot = await getUserQuiz(userData.username, quizId);
         setUserQuizResults(snapshot);
-        setPercentage((snapshot.receivedPoints / snapshot.quizPoints) * 100);
+        setPercentage(((snapshot.receivedPoints / snapshot.quizPoints) * 100).toFixed(2));
       } catch (error) {
         console.error("Error fetching user results:", error);
       }
@@ -70,7 +70,7 @@ export default function UserOverview() {
               <div key={index}>
                 <p>Question: {question.question}</p>
                 <p style={{ color: isCorrect ? "green" : "red" }}>
-                  Answer: {answer[index].text} {isCorrect ? "✅" : "❌"}
+                  Answer: {selectedAnswer.split("-")[0]} {isCorrect ? "✅" : "❌"}
                 </p>
                 {isCorrect ? null : (
                   <p>
@@ -120,7 +120,7 @@ export default function UserOverview() {
                 <div key={index}>
                   <p>Question: {question.question}</p>
                   <p style={{ color: isCorrect ? "green" : "red" }}>
-                    Answer: {answer[index].text} {isCorrect ? "✅" : "❌"}
+                    Your answer: {selectedAnswer.split("-")[0]} {isCorrect ? "✅" : "❌"}
                   </p>
                   {isCorrect ? null : (
                     <p>
