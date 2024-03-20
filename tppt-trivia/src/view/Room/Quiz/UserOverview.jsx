@@ -35,8 +35,8 @@ export default function UserOverview() {
     return <div style={{
       justifyContent: "center",
       alignItems: "center",
-      height: "60vh",
-      minHeight: "fit-content",
+      height: "fit-content",
+      minHeight: "60vh",
     }}>
     <h1>Your results for quiz {quiz.title}</h1>
     {userQuizResults && (

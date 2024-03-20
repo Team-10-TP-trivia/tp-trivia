@@ -31,6 +31,8 @@ export default function DemoQuizzes() {
         padding: "1rem",
         margin: "1rem",
         boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+        height: "fit-content",
+        minHeight: "1000px",
       }}>
         <h2 style={{
           textAlign: "center",
