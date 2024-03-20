@@ -106,7 +106,12 @@ const Profile = () => {
 
   const handleAcceptQuiz = (quiz) => {
     userAcceptedQuiz(userData.username, quiz.quizId);
-    navigate(`/quiz/${quiz.quizId}`);
+    if(quiz.visibility === "public"){
+      navigate(`/quiz/${quiz.quizId}`);
+    }
+    if(quiz.visibility === "private"){
+      navigate(`/quiz/${quiz.quizId}/enter-code`);
+    }
   };
 
   

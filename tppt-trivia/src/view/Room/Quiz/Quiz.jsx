@@ -3,7 +3,7 @@ import { getQuizById, takenQuiz } from "../../../services/QuizService/Quizzes";
 import { useParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Questions from "./Questions";
-import { AppContext } from "../../../context/appContext"
+import { AppContext } from "../../../context/appContext";
 import { useNavigate } from "react-router-dom";
 import TeacherOverview from "./TeacherOverview";
 
@@ -29,15 +29,17 @@ export default function Quiz() {
       try {
         const snapshot = await getQuizById(quizId);
         setQuiz(snapshot);
-        if(!snapshot.questions) return;
+        if (!snapshot.questions) return;
         setQuizQuestions(snapshot.questions);
-        setQuizPoints(snapshot.questions.reduce((acc, curr) => acc + curr.points, 0));
+        setQuizPoints(
+          snapshot.questions.reduce((acc, curr) => acc + curr.points, 0)
+        );
         setAnswers(
           snapshot.questions.map((questionId) => {
             return Object.values(questionId.answers);
           })
         );
-        if(snapshot.participants) setParticipants(snapshot.participants);
+        if (snapshot.participants) setParticipants(snapshot.participants);
 
         // Calculate initial time left once quiz data is fetched
         const minutesLeft = parseFloat(snapshot.timeLimit.split(" ")[0]);
@@ -69,7 +71,9 @@ export default function Quiz() {
           if (newTime.minute === 0 && newTime.second === 0) {
             clearInterval(interval);
             // To show overview - right answers from user and score
-              navigate(`${userData.username}/overview/`, { state: { quiz , quizId} })
+            navigate(`${userData.username}/overview/`, {
+              state: { quiz, quizId },
+            });
           }
           return newTime;
         });
@@ -84,17 +88,27 @@ export default function Quiz() {
     let wrongAnswers = 0;
     let userPoints = 0;
     selectedAnswers.map((selAns) => {
-      const splitAns = selAns.split("-");
-      if (splitAns.includes("true")) {
-        userPoints += +splitAns[2];
-        rightAnswers++;
-      } else if (splitAns.includes("false")) {
-        wrongAnswers++;
+      if (selAns !== undefined) {
+        const splitAns = selAns.split("-");
+        if (splitAns.includes("true")) {
+          userPoints += +splitAns[2];
+          rightAnswers++;
+        } else if (splitAns.includes("false")) {
+          wrongAnswers++;
+        }
       }
     });
 
-    takenQuiz(userData.username, quizId, quizQuestions.length, rightAnswers, wrongAnswers, quizPoints, userPoints);
-    if (selectedAnswers.length < quizQuestions.length) {
+    takenQuiz(
+      userData.username,
+      quizId,
+      quizQuestions.length,
+      rightAnswers,
+      wrongAnswers,
+      quizPoints,
+      userPoints
+    );
+    if (selectedAnswers.length <= quizQuestions.length) {
       setShowUnansweredPopup(true);
     } else {
       moveToNextPage();
@@ -102,14 +116,16 @@ export default function Quiz() {
   };
 
   const moveToNextPage = () => {
-    navigate(`${userData.username}/overview/`, { state: { quiz, quizId, answers, selectedAnswers, quizQuestions } });
+    navigate(`${userData.username}/overview/`, {
+      state: { quiz, quizId, answers, selectedAnswers, quizQuestions },
+    });
   };
 
-  if(!userData || !quiz) return null;
+  if (!userData || !quiz) return null;
 
   return (
     <div>
-      {userData.role === 'student' && quiz && (
+      {userData.role === "student" && quiz && (
         <div>
           <h1>Quiz Title: {quiz.title}</h1>
           <h2>Quiz description: {quiz.description}</h2>
@@ -142,15 +158,21 @@ export default function Quiz() {
           {showUnansweredPopup && (
             <div>
               <p>You have unanswered questions. Do you want to proceed?</p>
-              <button onClick={() => setShowUnansweredPopup(false)}>Cancel</button>
+              <button onClick={() => setShowUnansweredPopup(false)}>
+                Cancel
+              </button>
               <button onClick={() => moveToNextPage()}>Proceed</button>
             </div>
           )}
           <button onClick={() => saveAnswers()}>Save answers</button>
         </div>
       )}
-      {userData.role === 'teacher' && quiz && (
-        <TeacherOverview quiz={quiz} quizId={quizId} participants={participants}/>
+      {userData.role === "teacher" && quiz && (
+        <TeacherOverview
+          quiz={quiz}
+          quizId={quizId}
+          participants={participants}
+        />
       )}
     </div>
   );

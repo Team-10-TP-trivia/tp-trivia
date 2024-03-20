@@ -71,6 +71,7 @@ export default function PublicRooms({ quizList }) {
   return (
     <Box display={"flex"} sx={{
       flexDirection: "column",
+        width: "35%",
     }}
     gap={"20px"}>
       <Typography variant="h4">Public Quizzes</Typography>
@@ -146,7 +147,7 @@ export default function PublicRooms({ quizList }) {
                   borderRadius: "10px",
                   padding: "10px",
                   marginLeft: "10px",
-                  minWidth: "300px",
+                  maxWidth: "50vw",
                   marginTop: "10px",
                 }}
               >

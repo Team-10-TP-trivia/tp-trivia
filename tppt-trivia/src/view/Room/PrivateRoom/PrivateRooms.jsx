@@ -67,10 +67,12 @@ export default function PrivateRooms({ quizList }) {
   };
 
   return (
-    <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
+    <Box display={"flex"} flexDirection={"column"} gap={"20px"} sx={{
+      width: "33%",
+    }}>
       <Typography variant="h4">Private Quizzes</Typography>
       {userData.role === "student" && quizzes.length > 0 && (
-        <Box display={"flex"} gap={"20px"}>
+        <Box display={"flex"} gap={"20px"} >
           {quizzes.map((quiz) => {
             return quiz.isActive === true ? (
               <Box
@@ -80,7 +82,7 @@ export default function PrivateRooms({ quizList }) {
                   borderRadius: "10px",
                   padding: "10px",
                   marginLeft: "10px",
-                  minWidth: "300px",
+                  maxWidth: "500px",
                   marginTop: "10px",
                 }}
               >

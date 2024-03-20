@@ -33,10 +33,6 @@ export default function TeacherOverview({ quiz, quizId, participants }) {
       const unsubscribe = await getAllUsers(setUsers);
       return () => unsubscribe();
     };
-    // if(userData && userData.role === "teacher") {
-    // const unsubscribe = getAllUsers(setUsers);
-    // return () => unsubscribe();
-    // }
     f();
   }, [userData]);
 

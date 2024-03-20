@@ -3,7 +3,7 @@ import { getQuizById } from "../../../services/QuizService/Quizzes";
 import { useParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Questions from "./Questions";
-import { AppContext } from "../../../context/appContext"
+import { AppContext } from "../../../context/appContext";
 import { useNavigate } from "react-router-dom";
 
 export default function DemoQuiz() {
@@ -28,15 +28,17 @@ export default function DemoQuiz() {
       try {
         const snapshot = await getQuizById(quizId);
         setQuiz(snapshot);
-        if(!snapshot.questions) return;
+        if (!snapshot.questions) return;
         setQuizQuestions(snapshot.questions);
-        setQuizPoints(snapshot.questions.reduce((acc, curr) => acc + curr.points, 0));
+        setQuizPoints(
+          snapshot.questions.reduce((acc, curr) => acc + curr.points, 0)
+        );
         setAnswers(
           snapshot.questions.map((questionId) => {
             return Object.values(questionId.answers);
           })
         );
-        if(snapshot.participants) setParticipants(snapshot.participants);
+        if (snapshot.participants) setParticipants(snapshot.participants);
 
         // Calculate initial time left once quiz data is fetched
         const minutesLeft = parseFloat(snapshot.timeLimit.split(" ")[0]);
@@ -68,7 +70,9 @@ export default function DemoQuiz() {
           if (newTime.minute === 0 && newTime.second === 0) {
             clearInterval(interval);
             // To show overview - right answers from user and score
-              navigate(`${userData.username}/overview/`, { state: { quiz , quizId} })
+            navigate(`${userData.username}/overview/`, {
+              state: { quiz, quizId },
+            });
           }
           return newTime;
         });
@@ -83,13 +87,14 @@ export default function DemoQuiz() {
   let userPoints = 0;
   const saveAnswers = () => {
     selectedAnswers.map((selAns) => {
-      const splitAns = selAns.split("-");
-      if (splitAns.includes("true")) {
-        userPoints += +splitAns[2];
-        rightAnswers++;
-      } else if (splitAns.includes("false")) {
-        wrongAnswers++;
-      }
+        const splitAns = selAns.split("-");
+        if (splitAns.includes("true")) {
+          userPoints += +splitAns[2];
+          rightAnswers++;
+        } else if (splitAns.includes("false")) {
+          wrongAnswers++;
+        }
+      
     });
 
     if (selectedAnswers.length < quizQuestions.length) {
@@ -100,7 +105,17 @@ export default function DemoQuiz() {
   };
 
   const moveToNextPage = () => {
-    navigate(`unknownuser/overview/`, { state: { quiz, quizId, answers, selectedAnswers, quizQuestions, rightAnswers, userPoints } });
+    navigate(`unknownuser/overview/`, {
+      state: {
+        quiz,
+        quizId,
+        answers,
+        selectedAnswers,
+        quizQuestions,
+        rightAnswers,
+        userPoints,
+      },
+    });
   };
 
   return (
@@ -138,7 +153,9 @@ export default function DemoQuiz() {
           {showUnansweredPopup && (
             <div>
               <p>You have unanswered questions. Do you want to proceed?</p>
-              <button onClick={() => setShowUnansweredPopup(false)}>Cancel</button>
+              <button onClick={() => setShowUnansweredPopup(false)}>
+                Cancel
+              </button>
               <button onClick={() => moveToNextPage()}>Proceed</button>
             </div>
           )}
