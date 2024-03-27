@@ -35,7 +35,7 @@ export default function CreateTrivia() {
   const [selectedUnsplash, setSelectedUnsplash] = useState(null); 
   const [timeLimit, setTimeLimit] = useState('10 minutes');
   const [activeState, setActiveState] = useState(new Date());
-
+  const [nextSlideId, setNextSlideId] = useState(2);
   const navigate = useNavigate();
  
 
@@ -67,7 +67,7 @@ export default function CreateTrivia() {
   const addSlide = () => {
     const newId = slides.length + 1;
     const newSlide = {
-      id: newId,
+      id: nextSlideId,
       question: "",
       questionType: questionType,
       answers: [
@@ -81,6 +81,7 @@ export default function CreateTrivia() {
       points: 1,
     };
     setSlides([...slides, newSlide]);
+    setNextSlideId(nextSlideId + 1);
     setTitle("");
     setDescription("");
     setActiveSlideId(newId);
@@ -112,15 +113,15 @@ export default function CreateTrivia() {
   };
 
   const duplicateSlide = (slideId) => {
-    const newId = slides.length + 1;
     const slideToDuplicate = slides.find((slide) => slide.id === slideId);
     if (slideToDuplicate) {
       const newSlide = {
         ...slideToDuplicate,
-        id: newId,
+        id: nextSlideId,
         answers: [...slideToDuplicate.answers],
       };
       setSlides([...slides, newSlide]);
+      setNextSlideId(nextSlideId + 1);
     }
   };
 
