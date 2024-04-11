@@ -101,12 +101,11 @@ const Sidebar = ({
         id="activeState"
         placeholderText="Set Date"
         onChange={(date) => {
-          const endOfDay = new Date(date);
-          endOfDay.setDate(endOfDay.getDate());
-          endOfDay.setHours(23, 59, 59, 999);
-          setActiveState(endOfDay)
+          setActiveState(date)
         }}
-        dateFormat="MMMM d, yyyy"
+        type="datetime-local"
+        showTimeSelect
+        dateFormat="MMMM d, yyyy h:mm aa"
         minDate={new Date()}
         />
       </div>
