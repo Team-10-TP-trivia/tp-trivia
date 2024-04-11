@@ -16,7 +16,23 @@ export default function PublicRooms({ quizList }) {
   const [time, setTime] = useState({});
 
   useEffect(() => {
-    setQuizzes(quizList.filter((quiz) => quiz.visibility === "public"));
+    const publicQuizzesWithAmericanDateFormat = quizList
+    .filter((quiz) => quiz.visibility === "public")
+    .map((quiz) => {
+      let date = quiz.createdOn;
+      date = date.replace(' г.', '');
+      let parts = date.split(".");
+      let formattedDateStr = `${parts[2]}-${parts[1]}-${parts[0]}`;
+      let formattedDate = new Date(formattedDateStr);
+      return {
+        ...quiz,
+        createdOn: formattedDate,
+      };
+    });
+    const sortedQuizzes = publicQuizzesWithAmericanDateFormat.sort((a, b) => {
+      return b.createdOn - a.createdOn;
+    });
+    setQuizzes(sortedQuizzes);
   }, [quizList]);
 
   useEffect(() => {
@@ -154,6 +170,9 @@ export default function PublicRooms({ quizList }) {
                 <Typography variant="h6">Quiz Title: {quiz.title}</Typography>
                 <Typography variant="h6">
                   Quiz description: {quiz.description}
+                </Typography>
+                <Typography variant="h6">
+                  Created on: {quiz.createdOn.toLocaleDateString('en-GB', {day: 'numeric', month: 'long', year: 'numeric'})}
                 </Typography>
                 <Typography variant="h6">
                   Questions: {quiz.questions.length}
