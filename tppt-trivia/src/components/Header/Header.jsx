@@ -25,7 +25,7 @@ export default function Header() {
             )}
 
             <Link
-              to={user ? "/join-room" : "/login"}
+              to={user ? "/join-quiz" : "/login"}
               className="header-container-buttons"
             >
               <p>🎮</p>
@@ -74,7 +74,7 @@ export default function Header() {
             )}
 
             <Link
-              to={user ? "/join-room" : "/login"}
+              to={user ? "/join-quiz" : "/login"}
               className="header-container-buttons"
             >
               <p>🎮</p>

@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from "react";
-import PrivateRooms from "./PrivateRoom/PrivateRooms";
-import PublicRooms from "./PublicRoom/PublicRooms";
-import UserQuizzes from "./UserQuizzes/UserQuizzes";
 import { takeAllQuizzes } from "../../services/QuizService/Quizzes";
 import { AppContext } from "../../context/appContext";
 import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 export default function JoinRoom() {
   const { userData } = useContext(AppContext);
   const [quizList, setQuizList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
+  const navigate = useNavigate();
 
   const setSearch = (value) => {
     setSearchParams({ search: value });
@@ -25,6 +25,16 @@ export default function JoinRoom() {
 
   if (loading || !userData) {
     return <p>Loading...</p>;
+  }
+
+  const handleQuizType = (type) => {
+    if (type === "public") {
+      navigate("/join-public-quizzes", { state: { quizzes: quizList } });
+    } else if (type === "private") {
+      navigate("/join-private-quizzes", { state: { quizzes: quizList } });
+    }else {
+      navigate("/join-user-quizzes", { state: { quizzes: quizList } });
+    }
   }
 
   return (
@@ -43,6 +53,15 @@ export default function JoinRoom() {
           alignItems: "center",
         }}
       />
+      <div><button onClick={() => {
+        handleQuizType("public");
+      }}>Public quizzes</button></div>
+      <div><button onClick={() => {
+        handleQuizType("private");
+      }}>Private quizzes</button></div>
+      <div><button onClick={() => {
+        handleQuizType("user");
+      }}>Your quizzes</button></div>
       <div
         style={{
           height: "fit-content",
@@ -51,11 +70,6 @@ export default function JoinRoom() {
           justifyContent: "space-around",
         }}
       >
-        <PublicRooms quizList={quizList} />
-        <PrivateRooms quizList={quizList} />
-        {(userData.role === "teacher" || userData.role === "admin") && (
-          <UserQuizzes quizList={quizList} />
-        )}
       </div>
     </>
   );

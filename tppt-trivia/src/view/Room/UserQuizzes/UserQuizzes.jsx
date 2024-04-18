@@ -1,13 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../../context/appContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { deleteQuizById } from "../../../services/QuizService/Quizzes";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-export default function UserQuizzes({ quizList }) {
+export default function UserQuizzes() {
   const { userData } = useContext(AppContext);
+  const location = useLocation();
+  const quizList = location.state.quizzes;
   const [userQuizzes, setUserQuizzes] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
@@ -21,67 +23,96 @@ export default function UserQuizzes({ quizList }) {
   const deleteQuiz = (quiz) => {
     deleteQuizById(quiz.id);
   };
-  if (!userData) return <p>Loading...</p>;
+
+  if (!userData || !quizList) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <Box
+      display={"flex"}
       sx={{
-        display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        width: "500px",
+        width: "100%",
       }}
+      gap={"20px"}
     >
-      {userData.role === "teacher" && <Typography variant="h4">{userData.username[0].toUpperCase() + userData.username.slice(1)} Quizzes</Typography>}
-      {userQuizzes &&
-        userQuizzes.map((quiz) => {
-          if (quiz.username === userData.username) {
-            return (
-              <Box
-                key={quiz.id}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "400px",
-                  border: "1px solid black",
-                  padding: "10px",
-                  margin: "10px",
-                  borderRadius: "10px",
-                }}
-              >
-                <Typography variant="h6">Quiz Name: {quiz.title}</Typography>
-                <Typography variant="h6">
-                  Quiz Name: {quiz.description}
-                </Typography>
-                <Typography variant="h6">
-                  Questions: {quiz.visibility}
-                </Typography>
-                {quiz.visibility === "private" && (
-                  <Typography variant="h6">
-                    Quiz code: {quiz.privateCode}
+      {userData.role === "teacher" && (
+        <Typography variant="h4">
+          {userData.username[0].toUpperCase() + userData.username.slice(1)}{" "}
+          Quizzes
+        </Typography>
+      )}
+      <Box
+        sx={{
+          display: "flex",
+          gap: "20px",
+        }}
+      >
+        {userQuizzes &&
+          userQuizzes.map((quiz) => {
+            if (quiz.username === userData.username) {
+              return (
+                <Box
+                  key={quiz.id}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "400px",
+                    border: "1px solid black",
+                    padding: "10px",
+                    margin: "10px",
+                    borderRadius: "10px",
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      fontSize: "18px",
+                    }}
+                  >
+                    Quiz Title: {quiz.title}
                   </Typography>
-                )}
-                <Box>
-                  <button
-                    onClick={() => {
-                      editQuiz(quiz);
-                    }}
-                  >
-                    Edit quiz
-                  </button>
-                  <button
-                    onClick={() => {
-                      deleteQuiz(quiz);
-                    }}
-                  >
-                    Delete quiz
-                  </button>
+                  <Typography variant="h6">
+                    Questions: {quiz.questions.length}
+                  </Typography>
+                  <Typography variant="h6">
+                    Visibility: {quiz.visibility}
+                  </Typography>
+                  {quiz.visibility === "private" ? (
+                    <Typography variant="h6">
+                      Quiz code: {quiz.privateCode}
+                    </Typography>
+                  ) : (
+                    <Typography variant="h6">
+                      <br />
+                    </Typography>
+                  )}
+                  <Box>
+                    <button
+                      onClick={() => {
+                        editQuiz(quiz);
+                      }}
+                    >
+                      Edit quiz
+                    </button>
+                    <button
+                      onClick={() => {
+                        deleteQuiz(quiz);
+                      }}
+                    >
+                      Delete quiz
+                    </button>
+                  </Box>
                 </Box>
-              </Box>
-            );
-          }
-          return null;
-        })}
+              );
+            }
+            return null;
+          })}
+      </Box>
     </Box>
   );
 }

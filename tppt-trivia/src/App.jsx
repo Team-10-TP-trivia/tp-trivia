@@ -29,6 +29,9 @@ import UserOverview from './view/Room/Quiz/UserOverview';
 import { PrivateQuizPinCode } from './view/Room/PrivateRoom/PrivateQuizPinCode';
 import DemoQuiz from './view/Room/Quiz/DemoQuiz';
 import GroupParticipantsQuizzes from './view/Groups/GroupParticipantsQuizzes/GroupParticipantsQuizzes';
+import PublicRooms from './view/Room/PublicRoom/PublicRooms';
+import PrivateRooms from './view/Room/PrivateRoom/PrivateRooms';
+import UserQuizzes from './view/Room/UserQuizzes/UserQuizzes';
 
 function App() {
   const [context, setContext] = useState({
@@ -64,7 +67,10 @@ function App() {
             <Route path='/create-trivia' element={<CreateTrivia />} />
             <Route path='/admin' element={<AdminPanel />} />
             <Route path='/edit-profile' element={<EditProfile />} />
-            <Route path='/join-room' element={<JoinRoom />} />
+            <Route path='/join-quiz' element={<JoinRoom />} />
+            <Route path='/join-public-quizzes' element={<PublicRooms />} />
+            <Route path='/join-private-quizzes' element={<PrivateRooms />} />
+            <Route path='/join-user-quizzes' element={<UserQuizzes />} />
             <Route path='/groups' element={<Groups />} />
             <Route path='/groups/create-group/:userId' element={<CreateGroup />} />
             <Route path='/edit-quiz/:userId' element={<EditQuiz />} />

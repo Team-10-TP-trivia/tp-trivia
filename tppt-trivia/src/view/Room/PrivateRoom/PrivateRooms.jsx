@@ -1,13 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { AppContext } from "../../../context/appContext";
 import { changeQuizVisibility } from "../../../services/QuizService/Quizzes";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { BsSend } from "react-icons/bs";
 
-export default function PrivateRooms({ quizList }) {
+export default function PrivateRooms() {
   const { userData } = useContext(AppContext);
+  const location = useLocation();
+  const quizList = location.state.quizzes;
   const [quizzes, setQuizzes] = useState([]);
   const navigate = useNavigate();
   const [time, setTime] = useState({});
@@ -82,112 +85,179 @@ export default function PrivateRooms({ quizList }) {
     };
   };
 
+  if (!userData || !quizList) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <Box
       display={"flex"}
-      flexDirection={"column"}
-      gap={"20px"}
       sx={{
-        width: "33%",
+        flexDirection: "column",
+        width: "100%",
       }}
+      gap={"20px"}
     >
-      <Typography variant="h4">Private Quizzes</Typography>
+      <Typography variant="h4">Public Quizzes</Typography>
       {userData.role === "student" && quizzes.length > 0 && (
         <Box display={"flex"} gap={"20px"}>
           {quizzes.map((quiz) => {
-            return quiz.isActive === true ? (
-              <Box
-                key={quiz.id}
-                sx={{
-                  border: "1px solid black",
-                  borderRadius: "10px",
-                  padding: "10px",
-                  marginLeft: "10px",
-                  maxWidth: "500px",
-                  marginTop: "10px",
-                }}
-              >
-                <Typography variant="h6">Quiz Title: {quiz.title}</Typography>
-                <Typography variant="h6">
-                  Quiz description: {quiz.description}
-                </Typography>
-                <Typography variant="h6">
-                  Questions: {quiz.questions.length}
-                </Typography>
-                {time[quiz.id] && (
-                  <Typography variant="h5">
-                    Time left: {time[quiz.id].day} days {time[quiz.id].hour}{" "}
-                    hours {time[quiz.id].minute} minutes {time[quiz.id].second}{" "}
-                    seconds
+            return (
+              quiz.isActive === false && (
+                <Box
+                  key={quiz.id}
+                  sx={{
+                    border: "1px solid black",
+                    borderRadius: "10px",
+                    padding: "10px",
+                    marginLeft: "10px",
+                    minWidth: "300px",
+                    marginTop: "10px",
+                  }}
+                >
+                  <Typography variant="h6">Quiz Title: {quiz.title}</Typography>
+                  <Typography variant="h6">
+                    Quiz description: {quiz.description}
                   </Typography>
-                )}
-                <button
-                  onClick={() => {
-                    joinPrivateQuizStudent(quiz.id);
-                  }}
-                >
-                  Join Quiz
-                </button>
-              </Box>
-            ) : (
-              <Box key={quiz.id} display={"flex"}>
-                <Typography variant="h6">Quiz Title: {quiz.title}</Typography>
-                <Typography variant="h6">
-                  Quiz description: {quiz.description}
-                </Typography>
-                <Typography variant="h6">
-                  Questions: {quiz.questions.length}
-                </Typography>
-                <Typography variant="h6">
-                  Questions: {quiz.questions.length}
-                </Typography>
-                <button
-                  disabled={true}
-                  onClick={() => {
-                    joinPrivateQuizStudent(quiz.id);
-                  }}
-                >
-                  Join Quiz
-                </button>
-              </Box>
+                  <Typography variant="h6">
+                    Questions: {quiz.questions.length}
+                  </Typography>
+                  {time[quiz.id] && (
+                    <Typography variant="h5">
+                      Time left: {time[quiz.id].day} days {time[quiz.id].hour}{" "}
+                      hours {time[quiz.id].minute} minutes{" "}
+                      {time[quiz.id].second} seconds
+                    </Typography>
+                  )}
+                  <button
+                    onClick={() => {
+                      joinPrivateQuizStudent(quiz.id);
+                    }}
+                  >
+                    Join Quiz
+                  </button>
+                </Box>
+              )
             );
+            // : (
+            //   <Box key={quiz.id} display={"flex"}>
+            //     <Typography variant="h6">Quiz Title: {quiz.title}</Typography>
+            //     <Typography variant="h6">
+            //       Quiz description: {quiz.description}
+            //     </Typography>
+            //     <Typography variant="h6">
+            //       Questions: {quiz.questions.length}
+            //     </Typography>
+            //     <button
+            //       disabled={true}
+            //       onClick={() => {
+            //         joinQuiz(quiz.id);
+            //       }}
+            //     >
+            //       Join Quiz
+            //     </button>
+            //   </Box>
+            // );
           })}
         </Box>
       )}
       {userData.role === "teacher" && quizzes.length > 0 && (
-        <Box display={"flex"} flexDirection={"column"}>
+        <Box
+          display={"flex"}
+          sx={{
+            marginTop: "20px",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap: "90px",
+            justifyContent: "center",
+          }}
+        >
           {quizzes.map((quiz) => {
             return (
               <Box
                 key={quiz.id}
                 sx={{
+                  position: "relative",
                   border: "1px solid black",
                   borderRadius: "10px",
                   padding: "10px",
-                  marginLeft: "10px",
-                  minWidth: "300px",
-                  marginTop: "10px",
+                  width: "200px",
+                  minHeight: "100px",
+                  ":hover": {
+                    backgroundColor: "#d2f5bf",
+                  },
+                  "&:hover div": {
+                    display: "block",
+                  },
                 }}
               >
-                <Typography variant="h6">Quiz Title: {quiz.title}</Typography>
-                <Typography variant="h6">
-                  Quiz description: {quiz.description}
-                </Typography>
-                <Typography variant="h6">
-                  Created on:{" "}
-                  {quiz.createdOn.toLocaleDateString("en-GB", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </Typography>
-                <Typography variant="h6">
-                  Questions: {quiz.questions.length}
+                <Box
+                  sx={{
+                    display: "none",
+                    position: "absolute",
+                    backgroundColor: "white",
+                    padding: "10px",
+                    borderRadius: "10px",
+                    border: "1px solid black",
+                    bottom: "185px",
+                    minHeight: "50px",
+                    height: "fit-content",
+                    width: "fit-content",
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "16px",
+                    }}
+                  >
+                    {quiz.title}
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "16px",
+                    }}
+                  >
+                    Created on:{" "}
+                    {quiz.createdOn instanceof Date
+                      ? quiz.createdOn.toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })
+                      : ""}
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "16px",
+                    }}
+                  >
+                    Questions: {quiz.questions.length}
+                  </Typography>
+                </Box>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    fontSize: "18px",
+                  }}
+                >
+                  {quiz.title}
                 </Typography>
                 {time[quiz.id] && (
-                  <Typography variant="h6">
-                    Time left: {time[quiz.id].day} days {time[quiz.id].hour}{" "}
-                    hours {time[quiz.id].minute} minutes {time[quiz.id].second}{" "}
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "16px",
+                    }}
+                  >
+                    Time left: <br />
+                    {time[quiz.id].day} days {time[quiz.id].hour} hours{" "}
+                    {time[quiz.id].minute} minutes {time[quiz.id].second}{" "}
                     seconds
                   </Typography>
                 )}
@@ -198,6 +268,17 @@ export default function PrivateRooms({ quizList }) {
                 >
                   See Quiz
                 </button>
+                <BsSend
+                  style={{
+                    position: "absolute",
+                    bottom: "20px",
+                    right: "10px",
+                    fontSize: "25px",
+                  }}
+                  onClick={() => {
+                    console.log("first");
+                  }}
+                />
               </Box>
             );
           })}
