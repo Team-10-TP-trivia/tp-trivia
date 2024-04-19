@@ -113,7 +113,6 @@ const Profile = () => {
       navigate(`/quiz/${quiz.quizId}/enter-code`);
     }
   };
-
   
   const handleRejectQuiz = (quiz) => {
     userRejectQuiz(userData.username, quiz);

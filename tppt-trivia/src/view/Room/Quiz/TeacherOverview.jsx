@@ -80,7 +80,7 @@ export default function TeacherOverview({ quiz, quizId, participants }) {
           height: "fit-content",
         }}
       >
-        <Box display={"flex"} gap={"20px"}>
+        {/* <Box display={"flex"} gap={"20px"}>
           {students &&
             students.map((student) => {
               return (
@@ -101,13 +101,13 @@ export default function TeacherOverview({ quiz, quizId, participants }) {
                   </Typography>
                   <Typography variant="h6">Email: {student.email}</Typography>
                   <button onClick={() => sendInvite(student.username)}>
-                    Send Invite for quiz
+                    Assign quiz
                   </button>
                 </Box>
               );
             })}
           {invitationSent && <p>Invitation sent!</p>}
-        </Box>
+        </Box> */}
         <Box id="students-results">
           <Typography variant="h6">
             Participants: {participants ? Object.keys(participants).length : 0}

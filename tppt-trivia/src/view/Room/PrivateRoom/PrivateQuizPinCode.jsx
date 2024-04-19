@@ -1,14 +1,15 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import {
   getQuizById,
   updateQuizParticipants,
 } from "../../../services/QuizService/Quizzes";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../../context/appContext";
 
 export const PrivateQuizPinCode = () => {
   const location = useLocation();
-  const userData = location.state.userData;
+  const { userData } = useContext(AppContext);
   const quizzes = location.state.quizzes;
   const quizId = location.state.quizId;
   const [quiz, setQuiz] = useState(null);

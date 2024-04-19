@@ -34,6 +34,8 @@ export default function UserQuizzes() {
       sx={{
         flexDirection: "column",
         width: "100%",
+        minHeight: "400px",
+        height: "fit-content",
       }}
       gap={"20px"}
     >

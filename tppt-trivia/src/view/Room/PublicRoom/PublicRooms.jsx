@@ -97,35 +97,110 @@ export default function PublicRooms() {
       sx={{
         flexDirection: "column",
         width: "100%",
+        minHeight: "400px",
+        height: "fit-content",
       }}
       gap={"20px"}
     >
       <Typography variant="h4">Public Quizzes</Typography>
       {userData.role === "student" && quizzes.length > 0 && (
-        <Box display={"flex"} gap={"20px"}>
+        <Box
+          display={"flex"}
+          sx={{
+            marginTop: "20px",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap: "90px",
+            justifyContent: "center",
+          }}
+        >
           {quizzes.map((quiz) => {
             return (
-              quiz.isActive === false && (
+              quiz.isActive === true && (
                 <Box
                   key={quiz.id}
                   sx={{
+                    position: "relative",
                     border: "1px solid black",
                     borderRadius: "10px",
                     padding: "10px",
-                    marginLeft: "10px",
-                    minWidth: "300px",
-                    marginTop: "10px",
+                    width: "200px",
+                    minHeight: "100px",
+                    ":hover": {
+                      backgroundColor: "#d2f5bf",
+                    },
+                    "&:hover div": {
+                      display: "block",
+                    },
                   }}
                 >
-                  <Typography variant="h6">Quiz Title: {quiz.title}</Typography>
-                  <Typography variant="h6">
-                    Quiz description: {quiz.description}
+                  <Box
+                    sx={{
+                      display: "none",
+                      position: "absolute",
+                      backgroundColor: "white",
+                      padding: "10px",
+                      borderRadius: "10px",
+                      border: "1px solid black",
+                      bottom: "185px",
+                      minHeight: "50px",
+                      height: "fit-content",
+                      width: "fit-content",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontSize: "16px",
+                      }}
+                    >
+                      {quiz.title}
+                    </Typography>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontSize: "16px",
+                      }}
+                    >
+                      Created on:{" "}
+                      {quiz.createdOn instanceof Date
+                        ? quiz.createdOn.toLocaleDateString("en-GB", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          })
+                        : ""}
+                    </Typography>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontSize: "16px",
+                      }}
+                    >
+                      Questions: {quiz.questions.length}
+                    </Typography>
+                  </Box>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      fontSize: "18px",
+                    }}
+                  >
+                    {quiz.title}
                   </Typography>
                   <Typography variant="h6">
                     Questions: {quiz.questions.length}
                   </Typography>
                   {time[quiz.id] && (
-                    <Typography variant="h5">
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontSize: "16px",
+                      }}
+                    >
                       Time left: {time[quiz.id].day} days {time[quiz.id].hour}{" "}
                       hours {time[quiz.id].minute} minutes{" "}
                       {time[quiz.id].second} seconds
@@ -141,25 +216,6 @@ export default function PublicRooms() {
                 </Box>
               )
             );
-            // : (
-            //   <Box key={quiz.id} display={"flex"}>
-            //     <Typography variant="h6">Quiz Title: {quiz.title}</Typography>
-            //     <Typography variant="h6">
-            //       Quiz description: {quiz.description}
-            //     </Typography>
-            //     <Typography variant="h6">
-            //       Questions: {quiz.questions.length}
-            //     </Typography>
-            //     <button
-            //       disabled={true}
-            //       onClick={() => {
-            //         joinQuiz(quiz.id);
-            //       }}
-            //     >
-            //       Join Quiz
-            //     </button>
-            //   </Box>
-            // );
           })}
         </Box>
       )}
@@ -293,3 +349,6 @@ export default function PublicRooms() {
 PublicRooms.propTypes = {
   quizList: PropTypes.array,
 };
+
+//https://mui.com/material-ui/react-card/
+//Maybe it will look better if we use Card component from Material UI
