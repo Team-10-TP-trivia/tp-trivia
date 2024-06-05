@@ -1,6 +1,6 @@
 // Navigation.jsx
 import { useContext, useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import { AppContext } from "../../context/appContext";
 import { logoutUser } from "../../services/Authentication/auth-service";
@@ -74,6 +74,49 @@ export default function Navigation() {
       <NavLink to={"/home"} id="app-name">
         TP-Trivia
       </NavLink>
+      {user && (
+        userData.blocked ? (
+          <div className="blocked-user-message">
+            <div id="header-container">
+              <div>
+                {userData.role === "teacher" ||
+                userData.role === "admin" ? (
+                  <Link className="user-options">
+                  </Link>
+                ) : (
+                  ""
+                )}
+                <Link className="user-options">
+                  Join quiz
+                </Link>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div id="header-container">
+            <Box display={"flex"}>
+              {userData.role === "teacher" ||
+              userData.role === "admin" ? (
+                <Link
+                  to={user ? "/create-trivia" : "/login"}
+                  className="user-options"
+                >
+                  Create quiz
+                </Link>
+              ) : (
+                ""
+              )}
+
+              <Link
+                to={user ? "/join-quiz" : "/login"}
+                className="user-options"
+              >
+                Browse quizzes
+              </Link>
+            </Box>
+          </div>
+        )
+      )}
       <div>
         <nav
           className={user ? "navigation-with-user" : "navigation-without-user"}
@@ -101,7 +144,7 @@ export default function Navigation() {
                     className="profile-avatar"
                     sx={{ width: "50px", height: "50px" }}
                   />
-                  <span>{`${userData?.username}'s Profile`}</span>
+                  <span>{`${userData?.firstName} ${userData?.lastName}`}</span>
                   {profileClicked && (
                     <Menu
                       anchorEl={document.getElementById("profile-link")}

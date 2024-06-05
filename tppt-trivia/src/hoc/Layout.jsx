@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import Navigation from '../components/Navigation/Navigation';
-import Header from '../components/Header/Header';
 import RequestStatus from '../components/RequestsStatus/RequestStatus';
 import Footer from '../view/Fotter/Footer';
 
@@ -17,7 +16,6 @@ const Layout = props =>  {
   return (
     <div>
       <Navigation />
-      <Header />
       {props.children}
       <RequestStatus />
       <Footer />

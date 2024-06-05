@@ -3,24 +3,16 @@
   justify-content: space-between;
   gap: 2vw;
   align-items: center;
-  padding: 10px 20px;
+  padding: 1px 10px;
   margin: 5px;
-  border-radius: 10px;
-  height: 10vh;
+  height: fit-content;
   margin-bottom: 10px;
   margin-top: 10px;
 }
 .navigation-menu {
   margin: 10px;
 }
-/* .navigation-with-user{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f5f5f5;
-    box-shadow: 5px 6px 5px 0 rgba(0,0,0,0.2);
-    padding: 10px;
-} */
+
 .navigation-with-user a:hover {
   transform: scale(1.1);
   transition: 0.5s;
@@ -29,15 +21,6 @@
   transform: scale(1.1);
   transition: 0.5s;
 }
-/* .navigation-without-user{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f5f5f5;
-    box-shadow: 5px 6px 5px 0 rgba(0,0,0,0.2);
-    padding: 10px;
-    gap: 10px;
-} */
 
 .navigation-menu {
   background-color: rgb(240, 248, 135);
@@ -52,12 +35,21 @@
 }
 a {
   text-decoration: none;
-  color: black;
+  color: #22223b;
   margin: 0 10px;
 }
 
 .login-register-buttons {
   color: #8024f1;
+  border: 2px solid #8024f1;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1em;
+  padding: 10px 20px;
+}
+
+.user-options{
+  color: #272727;
   border: 2px solid #8024f1;
   border-radius: 20px;
   cursor: pointer;
@@ -79,12 +71,10 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
 }
 
 #profile-link{
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
 }
