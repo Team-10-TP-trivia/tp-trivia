@@ -1,10 +1,10 @@
 // Navigation.jsx
 import { useContext, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { AppContext } from "../../context/appContext";
 import { logoutUser } from "../../services/Authentication/auth-service";
-import { Avatar } from "@mui/material";
+import { Avatar, Box, Menu, MenuItem } from "@mui/material";
 import "./Navigation.css";
 
 /**
@@ -17,7 +17,9 @@ export default function Navigation() {
   const { user, userData, setContext } = useContext(AppContext);
   const [admin, setAdmin] = useState(false);
   const [teacher, setTeacher] = useState(false);
-  const [ blockedUser, setBlockedUser ] = useState(false);
+  const [blockedUser, setBlockedUser] = useState(false);
+  const [profileClicked, setProfileClicked] = useState(false);
+  const navigate = useNavigate();
 
   /**
    * Checks if the user is an admin when the component mounts or when userData changes.
@@ -48,65 +50,92 @@ export default function Navigation() {
   const logOut = () => {
     logoutUser();
     setContext({ user: null, userData: null });
+    navigate("/home");
+  };
+
+  const clickProfile = () => {
+    setProfileClicked(!profileClicked);
+  };
+
+  const goToGroups = () => {
+    navigate("/groups");
+  };
+
+  const goToAdminPanel = () => {
+    navigate("/admin");
+  };
+
+  const goToProfile = () => {
+    navigate("/profile");
   };
 
   return (
-    <div className="navigation-container">
-      <nav
-        className={user ? "navigation-with-user" : "navigation-without-user"}
-      >
-        <NavLink className={user ? "navigation-with-user" : "navigation-without-user"} to="/home">
-          Home
-        </NavLink>
-        {blockedUser ? (
-          <div className="blocked-user-message">
-            <p>Your account has been blocked. Please contact the administrator.</p>
-          </div>
-        ) : (
-          user ? (
+    <div id="navigation-container">
+      <NavLink to={"/home"} id="app-name">
+        TP-Trivia
+      </NavLink>
+      <div>
+        <nav
+          className={user ? "navigation-with-user" : "navigation-without-user"}
+        >
+          {blockedUser ? (
+            <div className="blocked-user-message">
+              <p>
+                Your account has been blocked. Please contact the administrator.
+              </p>
+            </div>
+          ) : user ? (
             <>
-              {admin && (
-                <NavLink className={user ? "navigation-with-user" : "navigation-without-user"} to="/admin">
-                  Admin&apos;s panel
-                </NavLink>
-              )}
-              {teacher && (
-                <NavLink className={user ? "navigation-with-user" : "navigation-without-user"} to="/groups">
-                  Groups
-                </NavLink>
-              )}
-  
-              <NavLink className={user ? "navigation-with-user" : "navigation-without-user"} onClick={logOut} to="/">
-                Log Out
-              </NavLink>
-  
-              <NavLink
-                to="/profile"
-                id="profile-link"
-                className={user ? "navigation-with-user" : "navigation-without-user"}
-              >
-                <Avatar
-                  src={userData.photoURL}
-                  alt="User Avatar"
-                  className="profile-avatar"
-                  sx={{ width: 25, height: 25 }}
-                />
-                <span>{`${userData?.username}'s Profile`}</span>
-              </NavLink>
+              <div id="profile-navigation">
+                <Box
+                  id="profile-link"
+                  className={
+                    user ? "navigation-with-user" : "navigation-without-user"
+                  }
+                  onClick={clickProfile}
+                  sx={{ cursor: "pointer" }}
+                >
+                  <Avatar
+                    src={userData.photoURL}
+                    alt="User Avatar"
+                    className="profile-avatar"
+                    sx={{ width: "50px", height: "50px" }}
+                  />
+                  <span>{`${userData?.username}'s Profile`}</span>
+                  {profileClicked && (
+                    <Menu
+                      anchorEl={document.getElementById("profile-link")}
+                      open={profileClicked}
+                      onClose={clickProfile}
+                    >
+                      <MenuItem onClick={goToProfile}>Profile</MenuItem>
+                      {teacher && (
+                        <MenuItem onClick={goToGroups}>Groups</MenuItem>
+                      )}
+                      {admin && (
+                        <MenuItem onClick={goToAdminPanel}>
+                          Admin panel
+                        </MenuItem>
+                      )}
+                      <MenuItem onClick={logOut}>Log Out</MenuItem>
+                    </Menu>
+                  )}
+                </Box>
+              </div>
             </>
           ) : (
             <>
-              <NavLink className={user ? "navigation-with-user" : "navigation-without-user"} to="/login">
-                Login
+              <NavLink className={"login-register-buttons"} to="/login">
+                Log in
               </NavLink>
-  
-              <NavLink className={user ? "navigation-with-user" : "navigation-without-user"} to="/register">
-                Register
+
+              <NavLink className={"login-register-buttons"} to="/register">
+                Sign up
               </NavLink>
             </>
-          )
-        )}
-      </nav>
+          )}
+        </nav>
+      </div>
     </div>
   );
 }

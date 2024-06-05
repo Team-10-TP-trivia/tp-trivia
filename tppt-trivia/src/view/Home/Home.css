@@ -7,8 +7,9 @@
 
 .hero-section {
   position: relative;
-  width: 100%;
-  height: 100vh; 
+  height: 100vh;
+  margin: 5px;
+  border-radius: 10px;
   background-image: url('https://images.prismic.io/quizlet-web/1691181762152_Full-BleedImage.png?auto=format,compress');
   background-size: cover;
   background-position: center;
@@ -16,7 +17,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: white; 
+  color: white;
 }
 
 
