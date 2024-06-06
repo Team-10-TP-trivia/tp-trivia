@@ -1,10 +1,9 @@
 #navigation-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: 2vw;
   align-items: center;
   padding: 1px 10px;
-  margin: 5px;
   height: fit-content;
   margin-bottom: 10px;
   margin-top: 10px;
@@ -46,6 +45,12 @@ a {
   cursor: pointer;
   font-size: 1em;
   padding: 10px 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-register-buttons:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(128, 36, 241, 0.5);
 }
 
 .user-options{
@@ -63,7 +68,7 @@ a {
   text-decoration: none;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(0deg, #cdabf7 0%, #8024f1 100%);
+  background-image: linear-gradient(0deg, #cdabf7 15%, #190237 100%);
   font-family: "Cormorant Upright", serif;
 }
 

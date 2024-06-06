@@ -21,7 +21,7 @@
   min-height: 100vh;
 }
 
-button {
+/* button {
   background: linear-gradient(145deg, #ff8811, #ff6600);
   border: none;
   border-radius: 5px;
@@ -31,12 +31,12 @@ button {
   font-weight: bold;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   margin: 5px;
-}
+} */
 
-button:hover {
+/* button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 20px rgba(255, 105, 0, 0.5);
-}
+} */
 
 input[type="text"], select {
   width: 100%;
