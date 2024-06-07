@@ -230,7 +230,7 @@ export default function CreateTrivia() {
 
     try {
       await saveQuiz(quizData);
-      navigate('/join-room');
+      navigate('/join-quiz');
     } catch (error) {
       console.error("Error saving quiz:", error);
     }

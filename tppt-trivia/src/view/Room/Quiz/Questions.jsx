@@ -23,13 +23,14 @@ export default function Questions({
     const newAnswers = [...selectedAnswers];
     newAnswers[visibleQuestionIndex] = e.target.value.trim();
     setSelectedAnswers(newAnswers);
-
+    
     const newAnsweredQuestions = [...answeredQuestions];
     newAnsweredQuestions[visibleQuestionIndex] = true;
     setAnsweredQuestions(newAnsweredQuestions);
   };
 
   const handleNextQuestion = () => {
+    console.log(selectedAnswers);
     const nextIndex = visibleQuestionIndex + 1;
     const newIndex = nextIndex >= quizQuestions.length ? 0 : nextIndex;
     setVisibleQuestionIndex(newIndex);
@@ -71,7 +72,7 @@ export default function Questions({
             key={question.id}
             onClick={() => setVisibleQuestionIndex(index)}
             className={`${
-              answeredQuestions[index] ? 'answered' : 'not-answered'
+              answeredQuestions[index] ? "answered" : "not-answered"
             }`}
           >
             {index + 1}
@@ -80,36 +81,109 @@ export default function Questions({
       </div>
       {visibleQuestionIndex !== null && (
         <div className="question-content">
-          <p>
-            Question {visibleQuestionIndex + 1}:{" "}
-            {quizQuestions[visibleQuestionIndex].question}
-          </p>
-          <p>Points: {quizQuestions[visibleQuestionIndex].points}</p>
-          {getMediaUrl(quizQuestions[visibleQuestionIndex]) && (
-            <img
-              src={getMediaUrl(quizQuestions[visibleQuestionIndex])}
-              alt="Question media"
-              className="question-image"
-            />
-          )}
-          <div className="question-answer-options">
-            {answers[visibleQuestionIndex].map((ans) => (
-              <div key={ans.id}>
-                <input
-                  type="radio"
-                  id={ans.id}
-                  name={quizQuestions[visibleQuestionIndex].id}
-                  value={`${ans.text}-${ans.isCorrect}-${quizQuestions[visibleQuestionIndex].points}`}
-                  checked={selectedAnswerId[visibleQuestionIndex] === ans.id}
-                  onChange={handleAnswerChange}
-                />
-                <label htmlFor={ans.id}>{ans.text}</label>
-              </div>
-            ))}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "10px",
+            }}
+          >
+            <p style={{
+              fontSize: "1.3rem",
+              fontWeight: "bold",
+            }}>
+              Question {visibleQuestionIndex + 1}:{" "}
+              {quizQuestions[visibleQuestionIndex].question}
+            </p>
+            <p style={{
+              fontSize: "1.3rem",
+            }}>Points: {quizQuestions[visibleQuestionIndex].points}</p>
           </div>
+          {getMediaUrl(quizQuestions[visibleQuestionIndex]) ? (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "20px",
+              }}
+            >
+              <img
+                src={getMediaUrl(quizQuestions[visibleQuestionIndex])}
+                alt="Question media"
+                className="question-image"
+              />
+              <div className="question-answer-options">
+                {answers[visibleQuestionIndex].map((ans) => {
+                  const handleClick = () => {
+                    setSelectedAnswerId(prevState => {
+                      const newState = [...prevState];
+                      newState[visibleQuestionIndex] = ans.id;
+                      return newState;
+                    });
+                  };
+
+                  return (
+                    <div key={ans.id} onClick={() => {
+                      handleClick();
+                      handleAnswerChange({target: {id: ans.id, value: `${ans.text}-${ans.isCorrect}-${quizQuestions[visibleQuestionIndex].points}`}});
+                    
+                    }}>
+                      <input
+                        type="radio"
+                        id={ans.id}
+                        name={quizQuestions[visibleQuestionIndex].id}
+                        value={`${ans.text}-${ans.isCorrect}-${quizQuestions[visibleQuestionIndex].points}`}
+                        checked={
+                          selectedAnswerId[visibleQuestionIndex] === ans.id
+                        }
+                        onChange={handleAnswerChange}
+                      />
+                      <label htmlFor={ans.id}>{ans.text}</label>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            <div className="question-answer-options">
+              {answers[visibleQuestionIndex].map((ans) => {
+                  const handleClick = () => {
+                    setSelectedAnswerId(prevState => {
+                      const newState = [...prevState];
+                      newState[visibleQuestionIndex] = ans.id;
+                      return newState;
+                    });
+                  };
+
+                  return (
+                    <div key={ans.id} onClick={() => {
+                      handleClick();
+                      handleAnswerChange({target: {id: ans.id, value: `${ans.text}-${ans.isCorrect}-${quizQuestions[visibleQuestionIndex].points}`}});
+                    
+                    }}>
+                      <input
+                        type="radio"
+                        id={ans.id}
+                        name={quizQuestions[visibleQuestionIndex].id}
+                        value={`${ans.text}-${ans.isCorrect}-${quizQuestions[visibleQuestionIndex].points}`}
+                        checked={
+                          selectedAnswerId[visibleQuestionIndex] === ans.id
+                        }
+                        onChange={handleAnswerChange}
+                      />
+                      <label htmlFor={ans.id}>{ans.text}</label>
+                    </div>
+                  );
+                })}
+            </div>
+          )}
           <div className="navigation-buttons">
             {quizQuestions.length > 1 && (
-              <button onClick={handlePreviousQuestion}>Previous Question</button>
+              <button onClick={handlePreviousQuestion}>
+                Previous Question
+              </button>
             )}
             {quizQuestions.length > 1 && (
               <button onClick={handleNextQuestion}>Next Question</button>

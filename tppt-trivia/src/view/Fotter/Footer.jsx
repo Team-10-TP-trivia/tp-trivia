@@ -2,16 +2,28 @@ import { Box } from "@mui/material";
 
 export default function Footer() {
   return (
-    <Box sx={{backgroundColor: "#91fd5e",
-    height: "fit-content",
-    flexDirection: "column",
-    padding: "10px",
-    }}
-    display={"flex"}>
+    <Box
+      sx={{
+        height: "fit-content",
+        flexDirection: "row",
+        padding: "10px",
+        gap: "10px",
+        justifyContent: "center",
+      }}
+      display={"flex"}
+    >
       <p>© 2021 TP-Trivia</p>
-      <div>Created by:
-        <p>Tihomir Petrov</p>
-        <p>Petar Tzanov</p></div>
+      <Box sx={{
+        display: "flex",
+        flexDirection: "row",
+        gap: "10px",
+      }}>
+        <p>Created by:</p>
+        <Box>
+          <p>Tihomir Petrov</p>
+          <p>Petar Tzanov</p>
+        </Box>
+      </Box>
     </Box>
   );
 }

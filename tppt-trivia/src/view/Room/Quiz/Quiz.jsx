@@ -21,7 +21,7 @@ export default function Quiz() {
   const navigate = useNavigate();
   const [showUnansweredPopup, setShowUnansweredPopup] = useState(false);
   const [quizPoints, setQuizPoints] = useState(0);
-
+  
   useEffect(() => {
     if (!quizId) return;
 
@@ -108,7 +108,7 @@ export default function Quiz() {
       quizPoints,
       userPoints
     );
-    if (selectedAnswers.length <= quizQuestions.length) {
+    if (selectedAnswers.length < quizQuestions.length) {
       setShowUnansweredPopup(true);
     } else {
       moveToNextPage();
@@ -124,16 +124,34 @@ export default function Quiz() {
   if (!userData || !quiz) return null;
 
   return (
-    <div>
+    <>
       {userData.role === "student" && quiz && (
-        <div>
-          <h1>Quiz Title: {quiz.title}</h1>
-          <h2>Quiz description: {quiz.description}</h2>
-          <h2>
-            Time left: {time.minute < 10 ? "0" : ""}
-            {time.minute}:{time.second < 10 ? "0" : ""}
-            {time.second}
-          </h2>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "10px",
+          }}
+        >
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "10px",
+            width: "75%",
+          }}>
+            <div>
+              <h1>Quiz Title: {quiz.title}</h1>
+              <h2>Quiz description: {quiz.description}</h2>
+            </div>
+            <h2>
+              Time left: {time.minute < 10 ? "0" : ""}
+              {time.minute}:{time.second < 10 ? "0" : ""}
+              {time.second}
+            </h2>
+          </div>
           <Questions
             quizQuestions={quizQuestions}
             answers={answers}
@@ -174,6 +192,6 @@ export default function Quiz() {
           participants={participants}
         />
       )}
-    </div>
+    </>
   );
 }
