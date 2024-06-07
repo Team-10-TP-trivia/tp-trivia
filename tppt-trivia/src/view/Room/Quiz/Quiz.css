@@ -1,0 +1,10 @@
+.save-proceed-cancel-buttons {
+  border: 2px solid #8024f1;
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  color: #22223b;
+  min-width: 150px;
+  margin-bottom: 10px;
+}

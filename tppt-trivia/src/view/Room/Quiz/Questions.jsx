@@ -179,7 +179,12 @@ export default function Questions({
                 })}
             </div>
           )}
-          <div className="navigation-buttons">
+          <div className="navigation-buttons" style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            padding: "10px",
+            gap: "20px",
+          }}>
             {quizQuestions.length > 1 && (
               <button onClick={handlePreviousQuestion}>
                 Previous Question

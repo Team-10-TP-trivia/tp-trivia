@@ -6,6 +6,7 @@ import Questions from "./Questions";
 import { AppContext } from "../../../context/appContext";
 import { useNavigate } from "react-router-dom";
 import TeacherOverview from "./TeacherOverview";
+import "./Quiz.css";
 
 export default function Quiz() {
   const { userData } = useContext(AppContext);
@@ -21,7 +22,7 @@ export default function Quiz() {
   const navigate = useNavigate();
   const [showUnansweredPopup, setShowUnansweredPopup] = useState(false);
   const [quizPoints, setQuizPoints] = useState(0);
-  
+
   useEffect(() => {
     if (!quizId) return;
 
@@ -174,15 +175,20 @@ export default function Quiz() {
               }
             })}
           {showUnansweredPopup && (
-            <div>
+            <div style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>
               <p>You have unanswered questions. Do you want to proceed?</p>
-              <button onClick={() => setShowUnansweredPopup(false)}>
+              <button className="save-proceed-cancel-buttons" onClick={() => setShowUnansweredPopup(false)}>
                 Cancel
               </button>
-              <button onClick={() => moveToNextPage()}>Proceed</button>
+              <button className="save-proceed-cancel-buttons" onClick={() => moveToNextPage()}>Proceed</button>
             </div>
           )}
-          <button onClick={() => saveAnswers()}>Save answers</button>
+          <button className="save-proceed-cancel-buttons" onClick={() => saveAnswers()}>Save answers</button>
         </div>
       )}
       {userData.role === "teacher" && quiz && (
