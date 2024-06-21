@@ -6,6 +6,8 @@ import { AppContext } from "../../context/appContext";
 import { logoutUser } from "../../services/Authentication/auth-service";
 import { Avatar, Box, Menu, MenuItem } from "@mui/material";
 import "./Navigation.css";
+import SearchBar from "./Searchbar/SearchBar";
+import logo from "../../assets/tplogo.png";
 
 /**
  * Component for the navigation bar of the webpage.
@@ -71,32 +73,30 @@ export default function Navigation() {
 
   return (
     <div id="navigation-container">
-      <NavLink to={"/home"} id="app-name">
-        TP-Trivia
-      </NavLink>
-      {user && (
-        userData.blocked ? (
+      <div id="logo-search-bar">
+        <NavLink to={"/home"} id="app-name">
+          <img src={logo} alt="" />
+        </NavLink>
+        <SearchBar />
+      </div>
+      {user &&
+        (userData.blocked ? (
           <div className="blocked-user-message">
             <div id="header-container">
               <div>
-                {userData.role === "teacher" ||
-                userData.role === "admin" ? (
-                  <Link className="user-options">
-                  </Link>
+                {userData.role === "teacher" || userData.role === "admin" ? (
+                  <Link className="user-options"></Link>
                 ) : (
                   ""
                 )}
-                <Link className="user-options">
-                  Join quiz
-                </Link>
+                <Link className="user-options">Join quiz</Link>
               </div>
             </div>
           </div>
         ) : (
           <div id="header-container">
             <Box display={"flex"}>
-              {userData.role === "teacher" ||
-              userData.role === "admin" ? (
+              {userData.role === "teacher" || userData.role === "admin" ? (
                 <Link
                   to={user ? "/create-trivia" : "/login"}
                   className="user-options"
@@ -115,8 +115,7 @@ export default function Navigation() {
               </Link>
             </Box>
           </div>
-        )
-      )}
+        ))}
       <div>
         <nav
           className={user ? "navigation-with-user" : "navigation-without-user"}
@@ -144,7 +143,7 @@ export default function Navigation() {
                     className="profile-avatar"
                     sx={{ width: "50px", height: "50px" }}
                   />
-                  <span>{`${userData?.firstName} ${userData?.lastName}`}</span>
+
                   {profileClicked && (
                     <Menu
                       anchorEl={document.getElementById("profile-link")}
