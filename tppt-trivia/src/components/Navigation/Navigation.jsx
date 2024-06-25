@@ -8,6 +8,7 @@ import { Avatar, Box, Menu, MenuItem } from "@mui/material";
 import "./Navigation.css";
 import SearchBar from "./Searchbar/SearchBar";
 import logo from "../../assets/tplogo.png";
+import NotificationContainer from "./Notifications/Notification";
 
 /**
  * Component for the navigation bar of the webpage.
@@ -129,6 +130,7 @@ export default function Navigation() {
           ) : user ? (
             <>
               <div id="profile-navigation">
+                <NotificationContainer />
                 <Box
                   id="profile-link"
                   className={

@@ -1,0 +1,14 @@
+.notification{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #e2e2e2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notification svg{
+    width: 50px;
+    height: 25px;
+}
