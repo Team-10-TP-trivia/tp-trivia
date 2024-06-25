@@ -12,7 +12,7 @@ const SearchBar = () => {
         if (!search) return;
         users = users.filter((user) => {
             return user.firstName.toLowerCase().includes(search.toLowerCase())
-            || user.lastName.toLowerCase().includes(search.toLowerCase())
+            || user.lastName.toLowerCase().includes(search.toLowerCase()) || user.username.toLowerCase().includes(search.toLowerCase())
             ;
         })
         setUsers(users);
