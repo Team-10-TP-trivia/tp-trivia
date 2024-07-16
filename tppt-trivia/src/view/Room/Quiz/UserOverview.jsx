@@ -37,6 +37,7 @@ export default function UserOverview() {
       alignItems: "center",
       height: "fit-content",
       minHeight: "60vh",
+      margin: "20px",
     }}>
     <h1>Your results for quiz {quiz.title}</h1>
     {userQuizResults && (

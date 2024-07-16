@@ -136,22 +136,26 @@ export default function Quiz() {
             padding: "10px",
           }}
         >
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "10px",
-            width: "75%",
-          }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "10px",
+              width: "75%",
+            }}
+          >
             <div>
               <h1>Quiz Title: {quiz.title}</h1>
               <h2>Quiz description: {quiz.description}</h2>
             </div>
-            <h2>
-              Time left: {time.minute < 10 ? "0" : ""}
-              {time.minute}:{time.second < 10 ? "0" : ""}
-              {time.second}
-            </h2>
+              <h2 style={{
+                color: time.minute === 0 && time.second <= 10 ? "red" : "black",
+              }}>
+                Time left: {time.minute < 10 ? "0" : ""}
+                {time.minute}:{time.second < 10 ? "0" : ""}
+                {time.second}
+              </h2>
           </div>
           <Questions
             quizQuestions={quizQuestions}
@@ -175,20 +179,35 @@ export default function Quiz() {
               }
             })}
           {showUnansweredPopup && (
-            <div style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <p>You have unanswered questions. Do you want to proceed?</p>
-              <button className="save-proceed-cancel-buttons" onClick={() => setShowUnansweredPopup(false)}>
+              <button
+                className="save-proceed-cancel-buttons"
+                onClick={() => setShowUnansweredPopup(false)}
+              >
                 Cancel
               </button>
-              <button className="save-proceed-cancel-buttons" onClick={() => moveToNextPage()}>Proceed</button>
+              <button
+                className="save-proceed-cancel-buttons"
+                onClick={() => moveToNextPage()}
+              >
+                Proceed
+              </button>
             </div>
           )}
-          <button className="save-proceed-cancel-buttons" onClick={() => saveAnswers()}>Save answers</button>
+          <button
+            className="save-proceed-cancel-buttons"
+            onClick={() => saveAnswers()}
+          >
+            Save answers
+          </button>
         </div>
       )}
       {userData.role === "teacher" && quiz && (
